@@ -168,6 +168,55 @@ button{color:inherit}
 .menu-item strong{font-size:17px}.menu-item b{font-size:17px;color:var(--menu-accent)}.menu-item span{grid-column:1/3;color:#857b70;font-size:11px}
 .menu-foot{text-align:center;margin-top:40px;padding-top:22px;border-top:1px solid #cfc7b8;color:#817668;font-size:11px}
 
+/* menu — layout picker */
+.layout-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.layout-row::-webkit-scrollbar{height:6px}.layout-row::-webkit-scrollbar-thumb{background:#2a3040;border-radius:6px}
+.layout-card{flex:0 0 130px;border:2px solid var(--line2);border-radius:14px;background:#0d1017;cursor:pointer;overflow:hidden;position:relative;transition:transform .2s cubic-bezier(.2,.7,.3,1),border-color .2s,box-shadow .2s}
+.layout-card:hover{transform:translateY(-4px) scale(1.02);border-color:#4a4170}
+.layout-card.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.2),0 16px 34px rgba(124,92,255,.25)}
+.layout-card .lc-thumb{height:84px;background:#f7f3eb;padding:11px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.layout-card .lc-name{padding:8px 10px;font-size:11px;font-weight:750;color:#cfd4e2;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.layout-card .lc-check{width:16px;height:16px;border-radius:50%;background:var(--purple);display:none;place-items:center;font-size:9px;color:#fff;flex:none}
+.layout-card.on .lc-check{display:grid}
+.t-line{height:5px;border-radius:2px;background:#cabfa8}
+.t-row{display:flex;justify-content:space-between;gap:6px}.t-row .t-line{flex:1}.t-row .t-line.s{flex:0 0 20px;background:var(--purple)}
+.t-head{height:7px;width:52%;margin:0 auto 3px;border-radius:2px;background:#a89a80}
+.t-col{display:grid;grid-template-columns:1fr 1fr;gap:5px 8px}
+.t-pic{height:20px;border-radius:3px;background:#d8cdb6}
+.lc-thumb.dark{background:#191d29}.lc-thumb.dark .t-line{background:#39405a}.lc-thumb.dark .t-head{background:#4a5170}
+.lc-thumb.ai{background:linear-gradient(135deg,#251e50,#12122a);align-items:center;justify-content:center;color:#b9a9ff;font-size:20px;font-weight:900}
+
+/* menu — dynamic form */
+.mform-cat{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px;background:#0c0f16}
+.mform-cat-head{display:flex;gap:8px;margin-bottom:10px}
+.mform-cat-head .input{height:40px;font-weight:800}
+.mitem{display:grid;grid-template-columns:1fr 96px 32px;gap:7px;margin-bottom:7px}
+.mitem.photo{grid-template-columns:46px 1fr 90px 32px}
+.icon-btn{border:1px solid var(--line2);border-radius:10px;background:#151924;color:var(--danger);cursor:pointer;font-size:17px;line-height:1}
+.icon-btn:hover{border-color:var(--danger);background:rgba(255,101,119,.08)}
+.mphoto{height:47px;border-radius:10px;border:1px dashed #3a4054;background:#0d1017;display:grid;place-items:center;color:#687083;cursor:pointer;overflow:hidden;font-size:16px}
+.mphoto img{width:100%;height:100%;object-fit:cover}
+.mdesc{margin-bottom:11px}
+.add-btn{width:100%;height:41px;border:1px dashed #3a4054;border-radius:11px;background:transparent;color:var(--purple2);font-weight:800;cursor:pointer;font-size:12px;transition:.18s}
+.add-btn:hover{background:rgba(124,92,255,.06);border-color:var(--purple)}
+.add-cat{margin-top:2px}
+.ai-hint{font-size:12px;color:var(--sub);line-height:1.7;padding:2px 2px 12px;border-bottom:1px solid var(--line);margin-bottom:12px}
+
+/* menu — layout previews */
+.menu-board.hair .mh-cat{margin-bottom:24px}
+.menu-board.hair .mh-cat h3{font-size:14px;letter-spacing:.16em;color:var(--menu-accent);border-bottom:2px solid var(--menu-accent);padding-bottom:7px;margin:0 0 12px;font-weight:900}
+.menu-board.hair .mh-row{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px dashed #d8cfbe}
+.menu-board.hair .mh-row b{color:#25211d;font-weight:800}
+.menu-board.twocol .menu-list{display:grid;grid-template-columns:1fr 1fr;gap:16px 32px}
+.menu-board.photo .pg{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.menu-board.photo .pg-card{display:flex;flex-direction:column;gap:7px}
+.menu-board.photo .pg-img{aspect-ratio:1.35;border-radius:11px;background:#e6ddca center/cover no-repeat;display:grid;place-items:center;color:#a89b82;font-size:11px}
+.menu-board.photo .pg-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.menu-board.photo .pg-top strong{font-size:15px}.menu-board.photo .pg-top b{color:var(--menu-accent);font-weight:900}
+.menu-board.photo .pg-desc{font-size:11px;color:#857b70}
+.menu-board.ai-board{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
+.menu-board.ai-board .ai-badge{font-size:11px;font-weight:900;letter-spacing:.2em;color:#7c5cff}
+
 @media(max-width:1050px){
   .topbar{flex-wrap:wrap;position:relative}.brand,.top-action{min-width:0}.nav{order:3;width:100%;overflow:auto}.nav button{flex:1;justify-content:center}
   .workspace{grid-template-columns:1fr}.preview-panel{position:relative;top:0}
@@ -242,29 +291,27 @@ button{color:inherit}
     <div class="workspace">
       <div class="left">
         <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">메뉴판 기본 정보</div></div></div>
+          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">가게 기본 정보</div></div></div>
           <div class="field"><div class="label">가게 이름</div><input class="input" id="menuShop" value="오늘의 카페"></div>
           <div class="field"><div class="label">소개 문구</div><input class="input" id="menuDesc" value="매일 신선한 원두로 정성껏 준비합니다"></div>
           <div class="field"><div class="label">연락처</div><input class="input" id="menuPhone" value="010-1234-5678"></div>
         </div>
         <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">메뉴 입력</div></div></div>
-          <div id="menuInputs"></div>
+          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">레이아웃 선택</div></div><span class="more" id="menuLayoutName"></span></div>
+          <div class="layout-row" id="menuLayoutRow"></div>
         </div>
         <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">포인트 색상</div></div></div>
+          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">메뉴 입력</div></div></div>
+          <div id="menuFormHost"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 04</div><div class="panel-title">포인트 색상</div></div></div>
           <div class="chips" id="menuChips"></div>
         </div>
       </div>
       <div class="preview-panel">
-        <div class="preview-head"><div class="preview-name">메뉴판 미리보기</div><div class="preview-note">A4 세로형 기준</div></div>
-        <div class="stage">
-          <div class="menu-board" id="menuBoard">
-            <div class="menu-top"><small>MENU & PRICE</small><h2 id="mvShop">오늘의 카페</h2><p id="mvDesc">매일 신선한 원두로 정성껏 준비합니다</p></div>
-            <div class="menu-list" id="menuList"></div>
-            <div class="menu-foot" id="mvPhone">문의 010-1234-5678</div>
-          </div>
-        </div>
+        <div class="preview-head"><div class="preview-name">메뉴판 미리보기</div><div class="preview-note" id="menuNote">A4 세로형 기준</div></div>
+        <div class="stage"><div id="menuBoard"></div></div>
         <div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div>
       </div>
     </div>
@@ -382,16 +429,112 @@ function bannerRender(){
 
 function makeQR(el,text,size=80){el.innerHTML="";if(!$("#cpQrOn")&&typeof QRCode==="undefined")return;try{new QRCode(el,{text:text||" ",width:size,height:size,colorDark:"#111",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
 
-/* menu */
-const initialMenus=[["아메리카노","4,000원","깔끔하고 진한 풍미"],["카페라떼","4,800원","부드러운 우유와 에스프레소"],["바닐라라떼","5,300원","달콤한 바닐라 향"],["딸기 에이드","5,800원","상큼한 생딸기 에이드"],["크로플","6,500원","바삭한 크로플과 아이스크림"]];
-initialMenus.forEach((m,i)=>{$("#menuInputs").insertAdjacentHTML("beforeend",`<div class="row2"><div class="field"><div class="label">메뉴 ${i+1}</div><input class="input menu-name" value="${m[0]}"></div><div class="field"><div class="label">가격</div><input class="input menu-price" value="${m[1]}"></div></div><div class="field"><input class="input menu-desc" value="${m[2]}" placeholder="메뉴 설명"></div>`)});
-SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===2?" on":"");e.style.background=c;e.onclick=()=>{$$("#menuChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");$("#menuBoard").style.setProperty("--menu-accent",c)};$("#menuChips").append(e)});
-["menuShop","menuDesc","menuPhone"].forEach(id=>$("#"+id).addEventListener("input",menuRender));$$(".menu-name,.menu-price,.menu-desc").forEach(x=>x.addEventListener("input",menuRender));
-function menuRender(){
- $("#mvShop").textContent=$("#menuShop").value;$("#mvDesc").textContent=$("#menuDesc").value;$("#mvPhone").textContent="문의 "+$("#menuPhone").value;
- const names=$$(".menu-name"),prices=$$(".menu-price"),descs=$$(".menu-desc");$("#menuList").innerHTML="";
- names.forEach((n,i)=>$("#menuList").insertAdjacentHTML("beforeend",`<div class="menu-item"><strong>${n.value}</strong><b>${prices[i].value}</b><span>${descs[i].value}</span></div>`))
+/* ===== menu — 레이아웃 구동형 엔진 =====
+   새 레이아웃 추가 = MENU_LAYOUTS 에 객체 1개 추가.
+   각 레이아웃: {label, thumb, def(), formHTML(d), collect(host,d), action(act,el,d), preview(base,d,accent), note?} */
+const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const menuState={layout:"cafe",accent:SOLID[2],data:{}};
+function menuBase(){return{shop:$("#menuShop").value,desc:$("#menuDesc").value,phone:$("#menuPhone").value}}
+function board(cls,b,inner,ac){return `<div class="menu-board ${cls}" style="--menu-accent:${ac}"><div class="menu-top"><small>MENU & PRICE</small><h2>${esc(b.shop)}</h2><p>${esc(b.desc)}</p></div>${inner}<div class="menu-foot">문의 ${esc(b.phone)}</div></div>`}
+
+// 평면 목록 폼(카페/2단/사진/AI 공용)
+const flatForm={
+ formHTML(d){return d.items.map((it,i)=>`
+   <div class="mitem"><input class="input f-name" data-i="${i}" value="${esc(it.name)}" placeholder="메뉴명"><input class="input f-price" data-i="${i}" value="${esc(it.price)}" placeholder="가격"><button class="icon-btn" data-act="del" data-i="${i}">×</button></div>
+   <div class="field mdesc"><input class="input f-desc" data-i="${i}" value="${esc(it.desc)}" placeholder="설명 (선택)"></div>`).join("")+`<button class="add-btn" data-act="add">+ 메뉴 추가</button>`},
+ collect(host,d){host.querySelectorAll(".f-name").forEach((n,i)=>d.items[i]&&(d.items[i].name=n.value));host.querySelectorAll(".f-price").forEach((n,i)=>d.items[i]&&(d.items[i].price=n.value));host.querySelectorAll(".f-desc").forEach((n,i)=>d.items[i]&&(d.items[i].desc=n.value))},
+ action(a,el,d){const i=+el.dataset.i;if(a==="add")d.items.push({name:"",price:"",desc:"",img:null});if(a==="del")d.items.splice(i,1)}
+};
+const cafeItems=()=>({items:[["아메리카노","4,000원","깔끔하고 진한 풍미"],["카페라떼","4,800원","부드러운 우유와 에스프레소"],["바닐라라떼","5,300원","달콤한 바닐라 향"],["딸기 에이드","5,800원","상큼한 생딸기 에이드"],["크로플","6,500원","바삭한 크로플과 아이스크림"]].map(m=>({name:m[0],price:m[1],desc:m[2],img:null}))});
+const rowItem=it=>`<div class="menu-item"><strong>${esc(it.name)}</strong><b>${esc(it.price)}</b>${it.desc?`<span>${esc(it.desc)}</span>`:""}</div>`;
+
+const MENU_LAYOUTS={
+ cafe:{
+  label:"심플 카페형",
+  thumb:`<div class="lc-thumb"><div class="t-head"></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div></div>`,
+  def:cafeItems, formHTML:flatForm.formHTML, collect:flatForm.collect, action:flatForm.action,
+  preview(b,d,ac){return board("",b,`<div class="menu-list">${d.items.map(rowItem).join("")}</div>`,ac)}
+ },
+ hair:{
+  label:"미용실 가격표형",
+  thumb:`<div class="lc-thumb"><div class="t-line s" style="width:34%"></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-line s" style="width:34%;margin-top:3px"></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div></div>`,
+  def(){return{cats:[
+    {name:"CUT",items:[{name:"학생컷",price:"13,000원"},{name:"남자컷",price:"15,000원"},{name:"여자컷",price:"20,000원"}]},
+    {name:"DRY",items:[{name:"남자 드라이",price:"15,000원"},{name:"여자 드라이",price:"20,000원"}]},
+    {name:"PERM",items:[{name:"일반 펌",price:"60,000원"},{name:"디지털 펌",price:"90,000원"}]},
+    {name:"COLOR",items:[{name:"전체 염색",price:"70,000원"},{name:"뿌리 염색",price:"50,000원"}]},
+    {name:"CLINIC",items:[{name:"두피 클리닉",price:"40,000원"}]}
+  ]}},
+  formHTML(d){return d.cats.map((c,ci)=>`
+    <div class="mform-cat">
+      <div class="mform-cat-head"><input class="input f-cat" data-ci="${ci}" value="${esc(c.name)}" placeholder="카테고리"><button class="icon-btn" data-act="delcat" data-ci="${ci}">×</button></div>
+      ${c.items.map((it,i)=>`<div class="mitem"><input class="input f-hname" data-ci="${ci}" data-i="${i}" value="${esc(it.name)}" placeholder="메뉴명"><input class="input f-hprice" data-ci="${ci}" data-i="${i}" value="${esc(it.price)}" placeholder="가격"><button class="icon-btn" data-act="delitem" data-ci="${ci}" data-i="${i}">×</button></div>`).join("")}
+      <button class="add-btn" data-act="additem" data-ci="${ci}">+ 메뉴 추가</button>
+    </div>`).join("")+`<button class="add-btn add-cat" data-act="addcat">+ 카테고리 추가</button>`},
+  collect(host,d){host.querySelectorAll(".f-cat").forEach(n=>{d.cats[+n.dataset.ci].name=n.value});host.querySelectorAll(".f-hname").forEach(n=>{d.cats[+n.dataset.ci].items[+n.dataset.i].name=n.value});host.querySelectorAll(".f-hprice").forEach(n=>{d.cats[+n.dataset.ci].items[+n.dataset.i].price=n.value})},
+  action(a,el,d){const ci=+el.dataset.ci,i=+el.dataset.i;if(a==="additem")d.cats[ci].items.push({name:"",price:""});if(a==="delitem")d.cats[ci].items.splice(i,1);if(a==="addcat")d.cats.push({name:"NEW",items:[{name:"",price:""}]});if(a==="delcat")d.cats.splice(ci,1)},
+  preview(b,d,ac){return board("hair",b,d.cats.map(c=>`<div class="mh-cat"><h3>${esc(c.name)}</h3>${c.items.map(it=>`<div class="mh-row"><span>${esc(it.name)}</span><b>${esc(it.price)}</b></div>`).join("")}</div>`).join(""),ac)}
+ },
+ twocol:{
+  label:"2단 메뉴판",
+  thumb:`<div class="lc-thumb"><div class="t-head"></div><div class="t-col"><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div></div></div>`,
+  def:cafeItems, formHTML:flatForm.formHTML, collect:flatForm.collect, action:flatForm.action,
+  preview(b,d,ac){return board("twocol",b,`<div class="menu-list">${d.items.map(rowItem).join("")}</div>`,ac)}
+ },
+ photo:{
+  label:"사진 포함 메뉴판",
+  thumb:`<div class="lc-thumb"><div class="t-col"><div class="t-pic"></div><div class="t-pic"></div></div><div class="t-row" style="margin-top:4px"><div class="t-line"></div><div class="t-line s"></div></div></div>`,
+  def(){return{items:[{name:"시그니처 라떼",price:"5,500원",desc:"고소한 우유 거품",img:null},{name:"수제 티라미수",price:"6,000원",desc:"매일 직접 만드는 디저트",img:null}]}},
+  formHTML(d){return d.items.map((it,i)=>`
+    <div class="mitem photo"><label class="mphoto" for="pimg${i}">${it.img?`<img src="${it.img}">`:"＋"}</label><input class="input f-name" data-i="${i}" value="${esc(it.name)}" placeholder="메뉴명"><input class="input f-price" data-i="${i}" value="${esc(it.price)}" placeholder="가격"><button class="icon-btn" data-act="del" data-i="${i}">×</button></div>
+    <input hidden type="file" id="pimg${i}" class="f-img" data-i="${i}" accept="image/*">
+    <div class="field mdesc"><input class="input f-desc" data-i="${i}" value="${esc(it.desc)}" placeholder="설명 (선택)"></div>`).join("")+`<button class="add-btn" data-act="add">+ 메뉴 추가</button>`},
+  collect:flatForm.collect, action:flatForm.action,
+  preview(b,d,ac){return board("photo",b,`<div class="pg">${d.items.map(it=>`<div class="pg-card"><div class="pg-img" style="${it.img?`background-image:url(${it.img})`:""}">${it.img?"":"사진"}</div><div class="pg-top"><strong>${esc(it.name)}</strong><b>${esc(it.price)}</b></div>${it.desc?`<div class="pg-desc">${esc(it.desc)}</div>`:""}</div>`).join("")}</div>`,ac)}
+ },
+ ai:{
+  label:"AI 추천",
+  thumb:`<div class="lc-thumb ai">AI</div>`,
+  note:"OpenAI 연동 예정",
+  def:cafeItems,
+  formHTML(d){return `<div class="ai-hint">메뉴 정보를 입력하면 <b style="color:var(--purple2)">OpenAI</b>가 업종과 분위기에 맞는 메뉴판 디자인을 자동으로 생성합니다. (곧 제공)</div>`+flatForm.formHTML(d)},
+  collect:flatForm.collect, action:flatForm.action,
+  preview(b,d,ac){return `<div class="menu-board ai-board" style="--menu-accent:${ac}"><div class="ai-badge">AI DESIGN</div><strong style="font-size:22px;color:#2a2620">AI 디자인 미리보기</strong><span style="font-size:12px;color:#6b6252;line-height:1.7">메뉴 ${d.items.length}개 입력됨 · 곧 제공될<br>OpenAI 기반 자동 디자인으로 완성하세요.</span></div>`}
+ }
+};
+
+// 레이아웃 카드
+function menuLayoutPick(){
+ const row=$("#menuLayoutRow");row.innerHTML="";
+ Object.entries(MENU_LAYOUTS).forEach(([id,L])=>{
+  const c=document.createElement("div");c.className="layout-card"+(id===menuState.layout?" on":"");
+  c.innerHTML=L.thumb+`<div class="lc-name">${L.label}<span class="lc-check">✓</span></div>`;
+  c.onclick=()=>selectLayout(id);row.append(c)
+ })
 }
+function selectLayout(id){
+ menuState.layout=id;
+ if(!menuState.data[id])menuState.data[id]=MENU_LAYOUTS[id].def();
+ $$("#menuLayoutRow .layout-card").forEach(c=>c.classList.remove("on"));
+ [...$$("#menuLayoutRow .layout-card")][Object.keys(MENU_LAYOUTS).indexOf(id)].classList.add("on");
+ $("#menuLayoutName").textContent=MENU_LAYOUTS[id].label;
+ mountMenuForm();menuRender()
+}
+function mountMenuForm(){
+ const L=MENU_LAYOUTS[menuState.layout],host=$("#menuFormHost"),d=menuState.data[menuState.layout];
+ host.innerHTML=L.formHTML(d);
+ host.oninput=()=>{L.collect(host,d);menuRender()};
+ host.onclick=e=>{const a=e.target.closest("[data-act]");if(!a)return;L.collect(host,d);L.action(a.dataset.act,a,d);mountMenuForm();menuRender()};
+ host.onchange=e=>{const f=e.target;if(f.classList&&f.classList.contains("f-img")){const file=f.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{d.items[+f.dataset.i].img=r.result;mountMenuForm();menuRender()};r.readAsDataURL(file)}}
+}
+function menuRender(){
+ const L=MENU_LAYOUTS[menuState.layout];
+ $("#menuBoard").innerHTML=L.preview(menuBase(),menuState.data[menuState.layout],menuState.accent);
+ $("#menuNote").textContent=L.note||"A4 세로형 기준"
+}
+SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===2?" on":"");e.style.background=c;e.onclick=()=>{$$("#menuChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");menuState.accent=c;menuRender()};$("#menuChips").append(e)});
+["menuShop","menuDesc","menuPhone"].forEach(id=>$("#"+id).addEventListener("input",menuRender));
+menuLayoutPick();selectLayout("cafe");
 
 /* coupon */
 let cpState={accent:"#df4b3f"};

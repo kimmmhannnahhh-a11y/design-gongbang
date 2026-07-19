@@ -3,814 +3,426 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>디자인공방 — 사장님용 홍보물 제작</title>
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;600;700;900&family=Nanum+Gothic:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<title>디자인공방 - 우리 가게 홍보물 만들기</title>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a/qrcode.min.js"></script>
 <style>
-  :root{
-    --bg:#0B0F17; --card:#111827; --line:#1F2937; --line2:#273244;
-    --txt:#E8ECF3; --sub:#8B95A7; --dim:#5C6678;
-    --blue:#4F7CFF; --violet:#6C63FF; --focus:#4F7CFF;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{height:100%;}
-  body{
-    font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
-    background:var(--bg); color:var(--txt);
-    -webkit-font-smoothing:antialiased; letter-spacing:-.01em;
-    background-image:radial-gradient(1200px 600px at 80% -10%, rgba(108,99,255,.06), transparent 60%);
-  }
-  .wrap{max-width:1240px; margin:0 auto; padding:32px;}
+:root{
+  --bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;
+  --line:#252938;--line2:#33394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;
+  --purple:#7c5cff;--purple2:#9a7cff;--green:#35d08a;--danger:#ff6577;
+  --shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{
+  color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),
+    radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),
+    var(--bg);
+  letter-spacing:-.02em;-webkit-font-smoothing:antialiased
+}
+button,input,select{font:inherit}
+button{color:inherit}
+.app{max-width:1500px;margin:auto;padding:22px 28px 44px}
+.topbar{
+  min-height:76px;display:flex;align-items:center;gap:22px;padding:0 4px 20px;
+  position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(8,9,13,.96) 72%,transparent);
+  backdrop-filter:blur(18px)
+}
+.brand{display:flex;align-items:center;gap:13px;min-width:250px}
+.brand-mark{
+  width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#8c6cff,#6545ed);box-shadow:0 12px 28px rgba(124,92,255,.27)
+}
+.brand-title{font-size:20px;font-weight:850;line-height:1.05}
+.brand-sub{margin-top:5px;color:var(--sub);font-size:12px;font-weight:600}
+.nav{
+  margin:auto;display:flex;align-items:center;padding:5px;background:rgba(16,18,25,.92);
+  border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)
+}
+.nav button{
+  border:0;background:transparent;color:var(--sub);height:42px;padding:0 18px;border-radius:11px;
+  display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;cursor:pointer;transition:.18s
+}
+.nav button:hover{color:#fff;background:rgba(255,255,255,.035)}
+.nav button.on{color:#fff;background:var(--surface3);box-shadow:inset 0 0 0 1px #34394c,0 5px 16px rgba(0,0,0,.2)}
+.top-action{
+  min-width:250px;display:flex;justify-content:flex-end
+}
+.top-action button{
+  height:43px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);
+  background:#12151e;font-weight:700;cursor:pointer
+}
+.view{display:none}.view.on{display:block}
+.workspace{display:grid;grid-template-columns:390px minmax(0,1fr);gap:24px;align-items:start}
+.left{display:flex;flex-direction:column;gap:14px}
+.panel,.preview-panel{
+  background:linear-gradient(180deg,rgba(20,23,32,.98),rgba(14,16,23,.98));
+  border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 44px rgba(0,0,0,.18)
+}
+.panel{padding:20px}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
+.step{color:var(--purple2);font-size:11px;font-weight:850;letter-spacing:.07em}
+.panel-title{font-size:16px;font-weight:800;margin-top:5px}
+.more{font-size:12px;color:var(--sub)}
+.field{margin-bottom:14px}.field:last-child{margin-bottom:0}
+.label{display:flex;justify-content:space-between;margin-bottom:7px;color:#b8bfd0;font-size:12px;font-weight:700}
+.count{color:var(--muted);font-weight:600}
+.input,.select{
+  width:100%;height:49px;border:1px solid var(--line2);border-radius:13px;background:#0d1017;color:#fff;
+  padding:0 14px;outline:none;transition:.18s
+}
+.input::placeholder{color:#535b6d}.input:focus,.select:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.14)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.segment{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;padding:5px;border:1px solid var(--line);border-radius:13px;background:#0d1017}
+.segment.wrap{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}
+.segment button{
+  height:38px;border:0;border-radius:9px;background:transparent;color:var(--sub);font-size:12px;font-weight:750;cursor:pointer
+}
+.segment button.on{background:#222738;color:#fff;box-shadow:inset 0 0 0 1px #383e52}
+.minilabel{font-size:12px;color:#b8bfd0;font-weight:700;margin:18px 0 10px}
+.minilabel:first-child{margin-top:0}
+.chips{display:flex;gap:11px;flex-wrap:wrap}
+.chip{width:29px;height:29px;border-radius:9px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:.18s}
+.chip:hover{transform:translateY(-2px)}.chip.on{outline:2px solid #fff;outline-offset:3px}
+.switchrow{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:13px;font-weight:700}
+.switch{width:44px;height:25px;position:relative}.switch input{display:none}
+.switch span{position:absolute;inset:0;background:#2a3040;border-radius:30px;cursor:pointer;transition:.2s}
+.switch span:after{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+span{background:var(--purple)}.switch input:checked+span:after{transform:translateX(19px)}
+.upload{
+  height:62px;border:1px dashed #3a4054;border-radius:14px;background:#0d1017;
+  display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer
+}
+.upload:hover{border-color:var(--purple);background:rgba(124,92,255,.045)}
+.upload-icon{width:35px;height:35px;border-radius:10px;background:#202536;display:grid;place-items:center;color:#c7cdde}
+.upload strong{font-size:12px}.upload small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.preview-panel{padding:18px;position:sticky;top:100px}
+.preview-head{display:flex;align-items:center;justify-content:space-between;padding:2px 3px 16px}
+.preview-name{font-size:14px;font-weight:800}.preview-note{font-size:11px;color:var(--muted)}
+.stage{
+  min-height:570px;border:1px solid #202432;border-radius:18px;background:
+  linear-gradient(45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,
+  linear-gradient(-45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,
+  linear-gradient(45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,
+  linear-gradient(-45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,#0e1118;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:38px
+}
+.actions{display:flex;gap:9px;justify-content:center;padding-top:16px;flex-wrap:wrap}
+.btn{height:46px;padding:0 17px;border-radius:12px;border:1px solid var(--line2);background:#151924;font-weight:800;font-size:13px;cursor:pointer}
+.btn.primary{border:0;background:linear-gradient(135deg,#8767ff,#6949ed);box-shadow:0 11px 26px rgba(124,92,255,.25)}
+.btn:hover{transform:translateY(-1px)}
+.hint{padding-top:12px;text-align:center;color:var(--muted);font-size:11px}
+.template-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.template{aspect-ratio:1.55;border:2px solid var(--line2);border-radius:10px;cursor:pointer;position:relative;overflow:hidden}
+.template.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.12)}
+.template span{position:absolute;left:0;right:0;bottom:0;padding:4px;background:rgba(0,0,0,.5);text-align:center;font-size:9px;font-weight:700}
 
-  /* 상단 */
-  header{display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; gap:16px;}
-  .brand{display:flex; align-items:center; gap:12px; flex:none;}
-  .brand .logo{width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
-    background:linear-gradient(135deg,var(--blue),var(--violet));
-    box-shadow:0 6px 18px rgba(79,124,255,.28);}
-  .brand h1{font-size:19px; font-weight:700; white-space:nowrap;}
-  .brand .tag{font-size:13px; color:var(--sub); font-weight:500; margin-left:2px;}
+/* banner */
+.banner{width:100%;max-width:720px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;position:relative;color:#fff;box-shadow:var(--shadow)}
+.banner.sq{max-width:520px;aspect-ratio:1}.banner.story{max-width:440px;aspect-ratio:4/5}.banner.wide{aspect-ratio:16/9}
+.banner:before{content:"";position:absolute;width:62%;aspect-ratio:1;border-radius:50%;right:-16%;top:-35%;background:rgba(255,255,255,.13)}
+.banner:after{content:"";position:absolute;width:38%;aspect-ratio:1;border-radius:50%;right:15%;bottom:-28%;background:rgba(255,255,255,.08)}
+.banner-inner{position:absolute;inset:0;padding:7%;display:flex;flex-direction:column;justify-content:space-between;z-index:2}
+.badge{align-self:flex-start;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.12);backdrop-filter:blur(8px);font-size:12px;font-weight:800}
+.headline{font-size:clamp(30px,5.3vw,62px);font-weight:950;line-height:1.02;letter-spacing:-.055em;max-width:80%;text-shadow:0 6px 24px rgba(0,0,0,.2)}
+.subline{font-size:clamp(13px,1.8vw,19px);font-weight:650;margin-top:12px}
+.banner-bottom{display:flex;align-items:flex-end;justify-content:space-between}
+.pill{background:#fff;color:#111522;padding:9px 15px;border-radius:999px;font-size:12px;font-weight:900}
+.phone{font-size:13px;font-weight:800}
 
-  .tabs{display:flex; gap:6px; background:#0E1420; border:1px solid var(--line2);
-    padding:5px; border-radius:14px;}
-  .tab{height:42px; padding:0 18px; border:1px solid transparent; background:transparent;
-    color:var(--sub); font-weight:600; font-size:14px; border-radius:10px; cursor:pointer;
-    display:inline-flex; align-items:center; gap:8px; font-family:inherit; transition:.2s; white-space:nowrap;}
-  .tab:hover:not(.on){color:var(--txt);}
-  .tab.on{background:rgba(79,124,255,.12); border-color:var(--blue); color:#fff;
-    box-shadow:0 0 0 3px rgba(79,124,255,.10);}
+/* coupon */
+.coupon{width:100%;max-width:760px;aspect-ratio:2.45/1;display:grid;grid-template-columns:1.05fr 1.45fr .86fr;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);position:relative}
+.cp-a,.cp-c{background:var(--cp-bg);color:var(--cp-ink);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px}
+.cp-b{background:var(--cp-accent);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px}
+.cp-eyebrow{font-size:10px;font-weight:900;letter-spacing:.2em;color:var(--cp-accent)}
+.cp-title{font-size:clamp(18px,2.8vw,29px);font-weight:950;line-height:1.13;margin-top:10px}
+.cp-value{font-size:clamp(48px,8vw,88px);font-weight:950;line-height:.9}.cp-unit{font-size:28px}
+.cp-cond{font-size:14px;font-weight:750;margin-top:10px}.cp-valid{font-size:11px;margin-top:10px;padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px}
+.qrbox{width:88px;height:88px;background:#fff;padding:5px;border-radius:10px}.qrbox canvas,.qrbox img{width:100%!important;height:100%!important}
+.cp-c strong{font-size:12px;letter-spacing:.14em;color:var(--cp-accent);margin-bottom:12px}.cp-c small{font-size:9px;color:var(--cp-sub);margin-top:9px}
 
-  .ghost-btn{display:inline-flex; align-items:center; gap:7px; height:42px; padding:0 18px; flex:none;
-    background:transparent; border:1px solid var(--line2); color:var(--txt); border-radius:12px;
-    font-size:14px; font-weight:600; cursor:pointer; transition:.2s; white-space:nowrap;}
-  .ghost-btn:hover{border-color:#3A465C; background:rgba(255,255,255,.02);}
+/* cards */
+.card-preview{width:100%;max-width:610px;aspect-ratio:1.8;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);position:relative;font-family:var(--nc-font)}
+.nc-front{display:grid;grid-template-columns:.95fr 1.35fr;background:#fff;color:#151923}
+.nc-left{padding:30px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #eceef3}
+.nc-logo{width:56px;height:56px;border-radius:15px;background:var(--nc-accent);display:grid;place-items:center;color:#fff;margin-bottom:18px}
+.nc-logo img{width:100%;height:100%;object-fit:cover;border-radius:15px}
+.nc-company{font-size:20px;font-weight:900}.nc-company-sub{font-size:9px;color:#8991a1;margin-top:5px;letter-spacing:.08em}
+.nc-right{padding:30px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.nc-name{font-size:24px;font-weight:900;letter-spacing:.05em}.nc-role{font-size:11px;color:#687083;margin-left:7px}
+.nc-lines{margin-top:15px;display:flex;flex-direction:column;gap:7px;font-size:11px;color:#3c4350}
+.nc-qr{position:absolute;right:20px;bottom:20px;width:58px;height:58px;padding:4px;background:#fff;border:1px solid var(--nc-accent);border-radius:8px}
+.nc-qr canvas,.nc-qr img{width:100%!important;height:100%!important}
+.nc-back{background:var(--nc-accent);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.nc-back:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.13),transparent 40%)}
+.nc-back>*{position:relative}.nc-back strong{font-size:25px}.nc-back span{font-size:11px;opacity:.78;margin-top:8px}
+.side-label{font-size:11px;color:var(--muted);margin-bottom:-14px}
 
-  /* 레이아웃 */
-  .view{display:none;}
-  .view.on{display:block;}
-  .grid{display:grid; grid-template-columns:380px 1fr; gap:32px; align-items:start;}
-  @media(max-width:980px){ .grid{grid-template-columns:1fr;} }
-  .col-left{display:flex; flex-direction:column; gap:24px;}
+/* menu */
+.menu-board{width:100%;max-width:620px;min-height:760px;background:#f7f3eb;color:#25211d;border-radius:12px;padding:48px;box-shadow:var(--shadow)}
+.menu-top{text-align:center;border-bottom:1px solid #cfc7b8;padding-bottom:25px;margin-bottom:28px}
+.menu-top small{font-size:10px;letter-spacing:.22em;color:#8a7d6d;font-weight:800}.menu-top h2{font-size:40px;margin:8px 0 5px}.menu-top p{font-size:12px;color:#82796e}
+.menu-list{display:flex;flex-direction:column;gap:20px}.menu-item{display:grid;grid-template-columns:1fr auto;gap:6px 18px}
+.menu-item strong{font-size:17px}.menu-item b{font-size:17px;color:var(--menu-accent)}.menu-item span{grid-column:1/3;color:#857b70;font-size:11px}
+.menu-foot{text-align:center;margin-top:40px;padding-top:22px;border-top:1px solid #cfc7b8;color:#817668;font-size:11px}
 
-  /* 카드 */
-  .card{background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px;
-    transition:transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s, border-color .25s;}
-  .card:hover{transform:translateY(-3px); box-shadow:0 18px 40px rgba(0,0,0,.35); border-color:var(--line2);}
-  .card .step{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;}
-  .card .step .n{font-size:11px; font-weight:700; color:var(--violet); letter-spacing:.04em;}
-  .card .step .more{font-size:12px; color:var(--sub); cursor:pointer; font-weight:600;}
-  .card .step .more:hover{color:var(--txt);}
-
-  /* 셀렉트 */
-  .select-wrap{position:relative;}
-  .select-wrap select{appearance:none; -webkit-appearance:none; width:100%; height:52px;
-    background:#0E1420; border:1px solid var(--line2); color:var(--txt);
-    border-radius:14px; padding:0 44px 0 16px; font-size:15px; font-family:inherit;
-    font-weight:500; cursor:pointer; transition:border-color .2s, box-shadow .2s;}
-  .select-wrap select:focus{outline:none; border-color:var(--focus); box-shadow:0 0 0 3px rgba(79,124,255,.15);}
-  .select-wrap .chev{position:absolute; right:16px; top:50%; transform:translateY(-50%); pointer-events:none; color:var(--sub);}
-  .select-wrap select option{background:#0E1420;}
-
-  /* 입력 */
-  .field{margin-bottom:16px;}
-  .field:last-child{margin-bottom:0;}
-  .field .lab{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
-  .field .lab > span{font-size:13px; color:var(--sub); font-weight:500;}
-  .field .lab .cnt{font-size:11px; color:var(--dim);}
-  .inp{width:100%; height:52px; background:#0E1420; border:1px solid var(--line2); color:var(--txt);
-    border-radius:14px; padding:0 16px; font-size:15px; font-family:inherit; font-weight:400;
-    transition:border-color .2s, box-shadow .2s;}
-  .inp::placeholder{color:var(--dim);}
-  .inp:focus{outline:none; border-color:var(--focus); box-shadow:0 0 0 3px rgba(79,124,255,.15);}
-  .inp::-webkit-calendar-picker-indicator{filter:invert(.6);}
-  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-  .row2 .field{margin-bottom:16px;}
-
-  .lab-mini{font-size:13px; color:var(--sub); font-weight:500; margin-bottom:12px;}
-  .lab-mini.mt{margin-top:22px;}
-
-  /* 색 칩 */
-  .chips{display:flex; gap:12px; flex-wrap:wrap;}
-  .chip{width:30px; height:30px; border-radius:50%; cursor:pointer; position:relative;
-    transition:transform .18s cubic-bezier(.2,.7,.3,1); box-shadow:0 2px 8px rgba(0,0,0,.3); border:2px solid transparent;}
-  .chip:hover{transform:scale(1.1);}
-  .chip.on{transform:scale(1.12); box-shadow:0 0 0 2px var(--bg), 0 0 0 4px #fff;}
-
-  /* 세그먼트 */
-  .seg{display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:6px; background:#0E1420;
-    border:1px solid var(--line2); border-radius:14px; padding:5px;}
-  .seg button{height:40px; border:none; background:transparent; color:var(--sub);
-    font-size:13px; font-weight:600; border-radius:10px; cursor:pointer; transition:.18s; font-family:inherit; white-space:nowrap;}
-  .seg button:hover{color:var(--txt);}
-  .seg button.on{background:#1C2740; color:#fff; box-shadow:0 2px 8px rgba(0,0,0,.25);}
-
-  /* 토글 스위치 */
-  .switch{position:relative; display:inline-block; width:44px; height:26px; flex:none;}
-  .switch input{display:none;}
-  .switch .sl{position:absolute; inset:0; background:#1C2740; border-radius:20px; transition:.2s; cursor:pointer;}
-  .switch .sl:before{content:""; position:absolute; width:20px; height:20px; left:3px; top:3px;
-    background:#fff; border-radius:50%; transition:.2s;}
-  .switch input:checked + .sl{background:var(--blue);}
-  .switch input:checked + .sl:before{transform:translateX(18px);}
-  .row-toggle{display:flex; align-items:center; justify-content:space-between; padding:6px 0;}
-  .row-toggle span{font-size:14px; font-weight:500;}
-
-  /* 업로드 */
-  .upload{display:flex; align-items:center; gap:12px; height:60px; border:1.5px dashed var(--line2);
-    border-radius:14px; padding:0 14px; cursor:pointer; transition:.2s; background:#0E1420;}
-  .upload:hover{border-color:var(--blue); background:rgba(79,124,255,.04);}
-  .upload .ic{width:34px; height:34px; border-radius:9px; background:#1C2740; display:grid; place-items:center; color:var(--sub); flex:none;}
-  .upload .t{font-size:13px; font-weight:600;}
-  .upload .s{font-size:11px; color:var(--dim);}
-  .upload img.thumb{width:34px; height:34px; border-radius:9px; object-fit:cover; flex:none;}
-
-  /* 썸네일 템플릿 */
-  .tpl-row{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
-  .tpl{border:2px solid var(--line2); border-radius:12px; overflow:hidden; cursor:pointer;
-    transition:.18s; aspect-ratio:1.6/1; position:relative;}
-  .tpl:hover{border-color:#3A465C;}
-  .tpl.on{border-color:var(--blue); box-shadow:0 0 0 3px rgba(79,124,255,.15);}
-  .tpl .mini{position:absolute; inset:0; padding:8px; display:flex; flex-direction:column; justify-content:center; gap:3px;}
-  .tpl .ml{height:4px; border-radius:2px; background:currentColor; opacity:.85;}
-  .tpl .tpl-nm{position:absolute; bottom:0; left:0; right:0; font-size:10px; text-align:center;
-    padding:3px 0; background:rgba(0,0,0,.35); color:#fff; font-weight:600;}
-  .tpl .chk{position:absolute; top:5px; right:5px; width:16px; height:16px; border-radius:50%;
-    background:var(--blue); display:none; place-items:center; color:#fff;}
-  .tpl.on .chk{display:grid;}
-
-  /* 우측 프리뷰 카드 */
-  .preview-card{background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px;
-    display:flex; flex-direction:column; gap:20px;}
-  .preview-head{display:flex; align-items:center; justify-content:space-between;}
-  .preview-head .ph-l{display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sub);}
-  .preview-head .ph-r{font-size:12px; color:var(--dim);}
-  .side-btns{display:flex; gap:6px; background:#0E1420; border:1px solid var(--line2); padding:4px; border-radius:11px;}
-  .side-btns button{height:30px; padding:0 14px; border:none; background:transparent; color:var(--sub);
-    font-size:12.5px; font-weight:600; border-radius:8px; cursor:pointer; font-family:inherit; transition:.18s;}
-  .side-btns button.on{background:#1C2740; color:#fff;}
-  .stage{background:#0A0E16; border:1px solid var(--line); border-radius:16px; padding:28px;
-    display:flex; flex-direction:column; justify-content:center; align-items:center; gap:22px; min-height:380px;}
-
-  .actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
-  .btn{height:50px; padding:0 20px; border-radius:14px; font-size:14px; font-weight:700;
-    cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:8px;
-    transition:transform .2s, box-shadow .2s, filter .2s; border:1px solid transparent;}
-  .btn.outline{background:transparent; border-color:var(--line2); color:var(--txt);}
-  .btn.outline:hover{border-color:#3A465C; background:rgba(255,255,255,.02);}
-  .btn.primary{background:linear-gradient(135deg,var(--blue),var(--violet)); color:#fff;
-    box-shadow:0 8px 22px rgba(79,124,255,.32);}
-  .btn.primary:hover{filter:brightness(1.08); transform:translateY(-1px); box-shadow:0 12px 28px rgba(79,124,255,.4);}
-  .btn.wide{width:100%; justify-content:center;}
-  .hint{text-align:center; font-size:12.5px; color:var(--dim);}
-
-  /* Tip */
-  .tip{background:linear-gradient(180deg, rgba(108,99,255,.06), rgba(108,99,255,0));}
-  .tip .th{display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; margin-bottom:14px;}
-  .tip ul{list-style:none; display:flex; flex-direction:column; gap:10px;}
-  .tip li{display:flex; align-items:center; gap:10px; font-size:13.5px; color:var(--sub); font-weight:500;}
-  .tip li .ck{width:18px; height:18px; border-radius:6px; display:grid; place-items:center; flex:none;
-    background:rgba(79,124,255,.15); color:var(--blue);}
-
-  /* ===== 홍보 배너 ===== */
-  .banner{position:relative; width:100%; max-width:640px; aspect-ratio:16/9; border-radius:20px;
-    overflow:hidden; color:#fff; display:flex; box-shadow:0 24px 60px rgba(0,0,0,.5); transition:aspect-ratio .3s, background .3s;}
-  .banner.sq{aspect-ratio:1/1; max-width:460px;}
-  .banner.story{aspect-ratio:4/5; max-width:400px;}
-  .banner.wide{aspect-ratio:16/9; max-width:640px;}
-  .banner .orb{position:absolute; border-radius:50%; filter:blur(6px); opacity:.5; pointer-events:none;}
-  .banner .orb.a{width:320px; height:320px; right:-60px; top:-90px; background:rgba(255,255,255,.18);}
-  .banner .orb.b{width:220px; height:220px; right:120px; bottom:-80px; background:rgba(255,255,255,.10);}
-  .banner .b-inner{position:relative; z-index:2; display:flex; flex-direction:column; justify-content:space-between; padding:min(6%,40px); width:78%;}
-  .banner .b-cat{align-self:flex-start; font-size:clamp(11px,1.6vw,14px); font-weight:700;
-    background:rgba(255,255,255,.16); backdrop-filter:blur(8px); padding:7px 15px; border-radius:30px; border:1px solid rgba(255,255,255,.14);}
-  .banner .b-headline{font-size:clamp(28px,5vw,54px); font-weight:800; line-height:1.05; letter-spacing:-.03em; text-shadow:0 4px 20px rgba(0,0,0,.25);}
-  .banner .b-sub{font-size:clamp(13px,1.9vw,19px); font-weight:600; margin-top:12px; opacity:.95;}
-  .banner .b-tag{align-self:flex-start; display:inline-flex; align-items:center; gap:7px; margin-top:16px;
-    background:#fff; color:#0B0F17; font-size:clamp(12px,1.7vw,15px); font-weight:800; padding:9px 18px; border-radius:30px; box-shadow:0 8px 20px rgba(0,0,0,.25);}
-  .banner .b-info{position:absolute; z-index:3; right:min(6%,32px); bottom:min(6%,28px);
-    font-size:clamp(12px,1.7vw,16px); font-weight:700; display:flex; align-items:center; gap:6px; text-shadow:0 2px 8px rgba(0,0,0,.4);}
-
-  /* ===== 명함 ===== */
-  .namecard{width:100%; max-width:500px; aspect-ratio:9/5.2; border-radius:16px; overflow:hidden;
-    position:relative; box-shadow:0 20px 50px rgba(0,0,0,.45); font-family:var(--nc-font,'Pretendard'); transition:.25s;}
-  .nc-wrap{position:relative; width:100%; max-width:500px;}
-  .nc-side-lab{position:absolute; top:10px; right:-40px; font-size:12px; color:var(--sub); font-weight:600;}
-  /* 앞면 */
-  .nc-front{display:grid; grid-template-columns:1fr 1.25fr; background:#fff; color:#1a1f2b;}
-  .nc-front .fl{padding:26px 22px; display:flex; flex-direction:column; justify-content:center; gap:12px; border-right:1px solid #eef0f4;}
-  .nc-front .logo-box{width:56px; height:56px; border-radius:14px; display:grid; place-items:center;
-    background:var(--nc-accent); color:#fff;}
-  .nc-front .logo-box img{width:100%; height:100%; object-fit:cover; border-radius:14px;}
-  .nc-front .co{font-size:20px; font-weight:800; letter-spacing:-.02em;}
-  .nc-front .co-sub{font-size:11px; color:#8a93a3; font-weight:600; letter-spacing:.02em;}
-  .nc-front .fr{padding:24px 22px; display:flex; flex-direction:column; justify-content:center; gap:5px; position:relative;}
-  .nc-front .nm{font-size:23px; font-weight:800; letter-spacing:.06em;}
-  .nc-front .nm .role{font-size:13px; font-weight:600; color:#6b7383; margin-left:8px; letter-spacing:0;}
-  .nc-front .rows{margin-top:10px; display:flex; flex-direction:column; gap:7px;}
-  .nc-front .rw{display:flex; align-items:center; gap:9px; font-size:12.5px; color:#333a47; font-weight:500;}
-  .nc-front .rw svg{color:var(--nc-accent); flex:none;}
-  .nc-front .qr{position:absolute; right:20px; bottom:18px; width:62px; height:62px; padding:4px;
-    background:#fff; border:1.5px solid var(--nc-accent); border-radius:8px;}
-  .nc-front .qr canvas, .nc-front .qr img{width:100%!important; height:100%!important;}
-  /* 정렬 변형 */
-  .namecard.al-center .fr{text-align:center; align-items:center;}
-  .namecard.al-center .rw{justify-content:center;}
-  .namecard.al-right .fr{text-align:right; align-items:flex-end;}
-  .namecard.al-right .rw{flex-direction:row-reverse;}
-  /* 모서리 */
-  .namecard.corner-sharp{border-radius:0;}
-  .namecard.corner-sharp .logo-box{border-radius:8px;}
-  /* 템플릿 다크 */
-  .namecard.tpl-dark .nc-front{background:#141a26; color:#eef1f6;}
-  .namecard.tpl-dark .nc-front .fl{border-right-color:#232c3c;}
-  .namecard.tpl-dark .nc-front .co-sub{color:#9aa3b4;}
-  .namecard.tpl-dark .nc-front .nm .role{color:#9aa3b4;}
-  .namecard.tpl-dark .nc-front .rw{color:#c7cede;}
-  .namecard.tpl-dark .nc-front .qr{background:#fff;}
-  /* 템플릿 프리미엄 */
-  .namecard.tpl-premium .nc-front{background:#faf8f3; color:#26221c;}
-  .namecard.tpl-premium .nc-front .fl{border-right:none; border-top:4px solid var(--nc-accent);}
-  .namecard.tpl-premium .nc-front .co{font-family:'Nanum Myeongjo',serif;}
-  /* 템플릿 미니멀 */
-  .namecard.tpl-minimal .nc-front{grid-template-columns:1fr;}
-  .namecard.tpl-minimal .nc-front .fl{border-right:none; align-items:flex-start;}
-  .namecard.tpl-minimal .nc-front .fr{padding-top:0;}
-  /* 뒷면 */
-  .nc-back{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-    background:var(--nc-accent); color:#fff; position:relative; overflow:hidden;}
-  .nc-back:before{content:""; position:absolute; inset:0;
-    background:repeating-linear-gradient(135deg, rgba(255,255,255,.06) 0 2px, transparent 2px 22px);}
-  .nc-back .bl-mark{width:70px; height:70px; border-radius:18px; background:rgba(255,255,255,.14);
-    display:grid; place-items:center; position:relative; z-index:2; backdrop-filter:blur(4px);}
-  .nc-back .bl-co{font-size:22px; font-weight:800; position:relative; z-index:2; letter-spacing:-.02em;}
-  .nc-back .bl-slogan{font-size:12.5px; opacity:.85; position:relative; z-index:2; font-weight:500;}
-
-  /* ===== 쿠폰 ===== */
-  .coupon{width:100%; max-width:660px; aspect-ratio:2.35/1; border-radius:18px; overflow:hidden;
-    position:relative; display:grid; grid-template-columns:1fr 1.55fr 0.9fr; box-shadow:0 24px 60px rgba(0,0,0,.5); transition:.25s;}
-  .cp-left{background:var(--cp-bg2,#f3ede2); color:var(--cp-ink,#2a2622); padding:6% 4%;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; text-align:center;}
-  .cp-left .store-ic{color:var(--cp-accent);}
-  .cp-left .oe{font-size:clamp(10px,1.5vw,13px); font-weight:700; letter-spacing:.18em; color:var(--cp-accent);}
-  .cp-left .ct{font-size:clamp(18px,3.2vw,30px); font-weight:900; line-height:1.15; letter-spacing:-.02em;}
-  .cp-left .dots{display:flex; gap:6px;}
-  .cp-left .dots i{width:6px; height:6px; border-radius:50%; background:var(--cp-accent); opacity:.6;}
-  .cp-mid{background:var(--cp-accent); color:#fff; padding:5% 4%; position:relative;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center;}
-  .cp-mid .big{display:flex; align-items:flex-start; line-height:.9;}
-  .cp-mid .big .num{font-size:clamp(48px,10vw,96px); font-weight:900; letter-spacing:-.04em;}
-  .cp-mid .big .unit{font-size:clamp(20px,3.5vw,34px); font-weight:800; margin-top:6px;}
-  .cp-mid .cond{font-size:clamp(12px,1.9vw,18px); font-weight:600; opacity:.96;}
-  .cp-mid .valid{margin-top:6px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25);
-    backdrop-filter:blur(4px); padding:7px 16px; border-radius:30px; font-size:clamp(11px,1.6vw,14px); font-weight:700;}
-  .cp-right{background:var(--cp-bg2,#f3ede2); color:var(--cp-ink,#2a2622); padding:5% 3%;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center;}
-  .cp-right .cw{font-size:clamp(12px,1.7vw,16px); font-weight:800; letter-spacing:.16em; color:var(--cp-accent);}
-  .cp-right .qr{width:clamp(70px,13vw,96px); aspect-ratio:1; padding:5px; background:#fff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,.12);}
-  .cp-right .qr canvas, .cp-right .qr img{width:100%!important; height:100%!important;}
-  .cp-right .use{font-size:clamp(9px,1.3vw,11px); color:var(--cp-sub,#8a8177); font-weight:600;}
-  /* 절취선 */
-  .cp-perf{position:absolute; top:0; bottom:0; width:0; border-left:2px dashed rgba(0,0,0,.16);}
-  .cp-perf.p1{left:calc(100% / 3.45);}
-  .cp-perf.p2{right:calc(100% / 3.55);}
-  .cp-notch{position:absolute; width:20px; height:20px; border-radius:50%; background:#0A0E16;}
-
-  /* 공유하기 */
-  .share-box{display:flex; flex-direction:column; gap:12px;}
-  .share-box .sh-t{font-size:13px; font-weight:700; color:var(--sub);}
-  .share-row{display:flex; gap:14px;}
-  .share-row .si{display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; font-size:11px; color:var(--sub); font-weight:600;}
-  .share-row .si .ic{width:46px; height:46px; border-radius:14px; display:grid; place-items:center; color:#fff; transition:.18s;}
-  .share-row .si:hover .ic{transform:translateY(-2px);}
-  .tip-share{display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap;}
+@media(max-width:1050px){
+  .topbar{flex-wrap:wrap;position:relative}.brand,.top-action{min-width:0}.nav{order:3;width:100%;overflow:auto}.nav button{flex:1;justify-content:center}
+  .workspace{grid-template-columns:1fr}.preview-panel{position:relative;top:0}
+}
+@media(max-width:650px){
+  .app{padding:14px}.top-action{display:none}.brand-sub{font-size:11px}.nav button{padding:0 12px;font-size:12px}
+  .row2{grid-template-columns:1fr}.stage{padding:20px;min-height:430px}.coupon{grid-template-columns:1fr;aspect-ratio:auto}.cp-a,.cp-b,.cp-c{min-height:170px}
+  .card-preview{max-width:100%}.nc-left,.nc-right{padding:18px}.nc-lines{font-size:8px}.nc-name{font-size:18px}.menu-board{padding:28px 22px;min-height:650px}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+<div class="app">
+  <header class="topbar">
     <div class="brand">
-      <div class="logo">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 2a10 10 0 1 0 0 20c1 0 1.5-.8 1.5-1.5 0-.5-.3-.9-.6-1.3-.3-.4-.6-.8-.6-1.3 0-.8.7-1.4 1.5-1.4H16a4 4 0 0 0 4-4c0-4.4-3.6-8-8-8z"/></svg>
+      <div class="brand-mark">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/><path d="M5 4h5M7.5 1.5v5"/></svg>
       </div>
-      <div><h1>디자인공방 <span class="tag">사장님용</span></h1></div>
+      <div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div>
     </div>
-
-    <div class="tabs">
-      <button class="tab on" data-tab="banner">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>
-        홍보 배너
-      </button>
-      <button class="tab" data-tab="menu">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h16v18H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-        메뉴판
-      </button>
-      <button class="tab" data-tab="coupon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M12 5v14" stroke-dasharray="2 3"/></svg>
-        쿠폰
-      </button>
-      <button class="tab" data-tab="card">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.2"/><path d="M13 10h5M13 14h5"/></svg>
-        명함
-      </button>
-    </div>
-
-    <button class="ghost-btn">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      미리보기 다운로드
-    </button>
+    <nav class="nav">
+      <button class="on" data-tab="banner">홍보 배너</button>
+      <button data-tab="menu">메뉴판·가격표</button>
+      <button data-tab="coupon">쿠폰</button>
+      <button data-tab="card">명함</button>
+    </nav>
+    <div class="top-action"><button>내 디자인 보관함</button></div>
   </header>
 
-  <!-- ================= 홍보 배너 ================= -->
-  <div class="view on" id="view-banner">
-   <div class="grid">
-    <div class="col-left">
-      <div class="card">
-        <div class="step"><span class="n">1. 업종 선택</span></div>
-        <div class="select-wrap">
-          <select id="bizSelect"></select>
-          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  <section class="view on" id="view-banner">
+    <div class="workspace">
+      <div class="left">
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">업종 선택</div></div></div>
+          <select class="select" id="bizSelect"></select>
         </div>
-      </div>
-      <div class="card">
-        <div class="step"><span class="n">2. 내용 입력</span></div>
-        <div class="field">
-          <div class="lab"><span>가게 이름</span><span class="cnt" id="c_shop">0/20</span></div>
-          <input class="inp" id="shop" maxlength="20" value="행복 헤어살롱" placeholder="가게 이름 입력">
-        </div>
-        <div class="field">
-          <div class="lab"><span>메인 문구 (헤드라인)</span><span class="cnt" id="c_headline">0/20</span></div>
-          <input class="inp" id="headline" maxlength="20" value="오픈 기념 30% 할인" placeholder="메인 문구 입력">
-        </div>
-        <div class="field">
-          <div class="lab"><span>보조 문구</span><span class="cnt" id="c_sub">0/30</span></div>
-          <input class="inp" id="sub" maxlength="30" value="지금 예약하면 사은품 증정!" placeholder="보조 문구 입력">
-        </div>
-        <div class="row2">
-          <div class="field">
-            <div class="lab"><span>강조 요소</span><span class="cnt" id="c_tag">0/10</span></div>
-            <input class="inp" id="tag" maxlength="10" value="선착순 50명" placeholder="강조 태그">
-          </div>
-          <div class="field">
-            <div class="lab"><span>전화/정보</span><span class="cnt" id="c_info">0/13</span></div>
-            <input class="inp" id="info" maxlength="13" value="010-1234-5678" placeholder="전화번호">
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">홍보 문구 입력</div></div></div>
+          <div class="field"><div class="label"><span>가게 이름</span><span class="count" id="c_shop"></span></div><input class="input" id="shop" maxlength="20" value="행복 헤어살롱"></div>
+          <div class="field"><div class="label"><span>메인 문구</span><span class="count" id="c_headline"></span></div><input class="input" id="headline" maxlength="20" value="오픈 기념 30% 할인"></div>
+          <div class="field"><div class="label"><span>보조 문구</span><span class="count" id="c_sub"></span></div><input class="input" id="sub" maxlength="30" value="지금 예약하면 사은품 증정!"></div>
+          <div class="row2">
+            <div class="field"><div class="label"><span>강조 문구</span><span class="count" id="c_tag"></span></div><input class="input" id="tag" maxlength="10" value="선착순 50명"></div>
+            <div class="field"><div class="label"><span>연락처</span><span class="count" id="c_info"></span></div><input class="input" id="info" maxlength="13" value="010-1234-5678"></div>
           </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="step"><span class="n">3. 디자인 설정</span></div>
-        <div class="lab-mini">테마 컬러</div>
-        <div class="chips" id="chips"></div>
-        <div class="lab-mini mt">사이즈</div>
-        <div class="seg" id="seg">
-          <button data-s="sq">정사각형 (1:1)</button>
-          <button data-s="story">세로형 (4:5)</button>
-          <button class="on" data-s="wide">가로형 (16:9)</button>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">디자인 설정</div></div></div>
+          <div class="minilabel">테마 컬러</div><div class="chips" id="bannerChips"></div>
+          <div class="minilabel">이미지 비율</div>
+          <div class="segment" id="bannerSize"><button data-size="sq">정사각형</button><button data-size="story">세로형</button><button class="on" data-size="wide">가로형</button></div>
         </div>
       </div>
-    </div>
-    <div>
-      <div class="preview-card">
-        <div class="preview-head"><div class="ph-l">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          미리보기</div></div>
+      <div class="preview-panel">
+        <div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div><div class="preview-note">입력 즉시 반영됩니다</div></div>
         <div class="stage">
           <div class="banner wide" id="banner">
-            <span class="orb a"></span><span class="orb b"></span>
-            <div class="b-inner">
-              <span class="b-cat" id="bCat">휴대폰</span>
-              <div>
-                <div class="b-headline" id="bHead">오픈 기념 30% 할인</div>
-                <div class="b-sub" id="bSub">지금 예약하면 사은품 증정!</div>
-              </div>
-              <span class="b-tag" id="bTag">선착순 50명</span>
-            </div>
-            <div class="b-info">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg>
-              <span id="bInfo">010-1234-5678</span>
+            <div class="banner-inner">
+              <span class="badge" id="bCat">헤어샵</span>
+              <div><div class="headline" id="bHead">오픈 기념 30% 할인</div><div class="subline" id="bSub">지금 예약하면 사은품 증정!</div></div>
+              <div class="banner-bottom"><span class="pill" id="bTag">선착순 50명</span><span class="phone" id="bInfo">010-1234-5678</span></div>
             </div>
           </div>
         </div>
-        <div class="actions">
-          <button class="btn outline">템플릿 다운로드</button>
-          <button class="btn primary">이미지 저장 (PNG)</button>
-        </div>
-        <div class="hint">실제 사용 전, 오탈자와 정보를 한 번 더 확인해주세요.</div>
-        <div class="card tip">
-          <div class="th"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg> Tip. 이렇게 활용해보세요!</div>
-          <ul>
-            <li><span class="ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> 생성된 이미지를 SNS, 블로그, 카카오톡 채널에 공유하세요</li>
-            <li><span class="ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> 매장 인쇄물, 배너, 전단지로도 활용할 수 있어요</li>
-          </ul>
-        </div>
+        <div class="actions"><button class="btn">템플릿 다운로드</button><button class="btn primary">이미지 저장 PNG</button></div>
+        <div class="hint">저장 전 문구와 연락처를 한 번 더 확인해주세요.</div>
       </div>
     </div>
-   </div>
-  </div>
+  </section>
 
-  <!-- ================= 쿠폰 ================= -->
-  <div class="view" id="view-coupon">
-   <div class="grid">
-    <div class="col-left">
-      <div class="card">
-        <div class="step"><span class="n">1. 쿠폰 타입 선택</span></div>
-        <div class="seg" id="cpType" style="grid-auto-flow:row; grid-template-columns:repeat(3,1fr);">
-          <button class="on" data-t="discount">할인 쿠폰</button>
-          <button data-t="amount">금액 쿠폰</button>
-          <button data-t="visit">방문 쿠폰</button>
-          <button data-t="stamp">스탬프 쿠폰</button>
-          <button data-t="free">무료 증정</button>
+  <section class="view" id="view-menu">
+    <div class="workspace">
+      <div class="left">
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">메뉴판 기본 정보</div></div></div>
+          <div class="field"><div class="label">가게 이름</div><input class="input" id="menuShop" value="오늘의 카페"></div>
+          <div class="field"><div class="label">소개 문구</div><input class="input" id="menuDesc" value="매일 신선한 원두로 정성껏 준비합니다"></div>
+          <div class="field"><div class="label">연락처</div><input class="input" id="menuPhone" value="010-1234-5678"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">메뉴 입력</div></div></div>
+          <div id="menuInputs"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">포인트 색상</div></div></div>
+          <div class="chips" id="menuChips"></div>
         </div>
       </div>
-      <div class="card">
-        <div class="step"><span class="n">2. 내용 입력</span></div>
-        <div class="field">
-          <div class="lab"><span>상호명</span></div>
-          <input class="inp" id="cpShop" value="디자인공방" placeholder="상호명">
-        </div>
-        <div class="field">
-          <div class="lab"><span>쿠폰 제목</span></div>
-          <input class="inp" id="cpTitle" value="오픈 기념 감사 쿠폰" placeholder="쿠폰 제목">
-        </div>
-        <div class="field">
-          <div class="lab"><span>할인 내용</span></div>
-          <input class="inp" id="cpDiscount" value="10%" placeholder="예: 10%, 5,000원, 1+1">
-        </div>
-        <div class="field">
-          <div class="lab"><span>사용 조건</span></div>
-          <input class="inp" id="cpCond" value="20,000원 이상 구매 시" placeholder="사용 조건">
-        </div>
-        <div class="row2">
-          <div class="field">
-            <div class="lab"><span>유효기간 시작</span></div>
-            <input class="inp" type="date" id="cpFrom" value="2026-07-01">
-          </div>
-          <div class="field">
-            <div class="lab"><span>종료</span></div>
-            <input class="inp" type="date" id="cpTo" value="2026-08-31">
+      <div class="preview-panel">
+        <div class="preview-head"><div class="preview-name">메뉴판 미리보기</div><div class="preview-note">A4 세로형 기준</div></div>
+        <div class="stage">
+          <div class="menu-board" id="menuBoard">
+            <div class="menu-top"><small>MENU & PRICE</small><h2 id="mvShop">오늘의 카페</h2><p id="mvDesc">매일 신선한 원두로 정성껏 준비합니다</p></div>
+            <div class="menu-list" id="menuList"></div>
+            <div class="menu-foot" id="mvPhone">문의 010-1234-5678</div>
           </div>
         </div>
-        <div class="field">
-          <div class="lab"><span>전화번호</span></div>
-          <input class="inp" id="cpPhone" value="010-1234-5678" placeholder="전화번호">
-        </div>
-        <div class="field">
-          <div class="lab"><span>QR 링크 (홈페이지/SNS)</span></div>
-          <input class="inp" id="cpUrl" value="https://designgongbang.com" placeholder="https://">
-        </div>
-        <div class="row-toggle">
-          <span>QR코드 사용</span>
-          <label class="switch"><input type="checkbox" id="cpQrOn" checked><span class="sl"></span></label>
-        </div>
-      </div>
-      <div class="card">
-        <div class="step"><span class="n">3. 디자인 설정</span></div>
-        <div class="lab-mini">포인트 색상</div>
-        <div class="chips" id="cpChips"></div>
-        <div class="lab-mini mt">스타일</div>
-        <div class="seg" id="cpStyle"><button class="on" data-st="simple">심플</button><button data-st="modern">모던</button><button data-st="emotional">감성</button><button data-st="premium">프리미엄</button></div>
-        <div class="lab-mini mt">업종별 추천 템플릿</div>
-        <div class="seg" id="cpIndustry" style="grid-auto-flow:row; grid-template-columns:repeat(4,1fr);">
-          <button data-i="cafe">카페</button><button data-i="chicken">치킨</button><button data-i="hair">미용실</button><button data-i="academy">학원</button>
-          <button data-i="phone">휴대폰</button><button data-i="clinic">병원</button><button data-i="gym">헬스장</button><button data-i="nail">네일샵</button>
-        </div>
+        <div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div>
       </div>
     </div>
-    <div>
-      <div class="preview-card">
-        <div class="preview-head"><div class="ph-l">미리보기</div><div class="ph-r">실제 인쇄 시 색상 차이가 있을 수 있습니다.</div></div>
+  </section>
+
+  <section class="view" id="view-coupon">
+    <div class="workspace">
+      <div class="left">
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">쿠폰 종류</div></div></div>
+          <div class="segment wrap" id="cpType"><button class="on" data-type="discount">할인 쿠폰</button><button data-type="amount">금액 쿠폰</button><button data-type="visit">방문 쿠폰</button><button data-type="stamp">스탬프</button><button data-type="free">무료 증정</button></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">쿠폰 내용</div></div></div>
+          <div class="field"><div class="label">상호명</div><input class="input" id="cpShop" value="디자인공방"></div>
+          <div class="field"><div class="label">쿠폰 제목</div><input class="input" id="cpTitle" value="오픈 기념 감사 쿠폰"></div>
+          <div class="field"><div class="label">할인 내용</div><input class="input" id="cpDiscount" value="10%"></div>
+          <div class="field"><div class="label">사용 조건</div><input class="input" id="cpCond" value="20,000원 이상 구매 시"></div>
+          <div class="row2"><div class="field"><div class="label">시작일</div><input class="input" type="date" id="cpFrom" value="2026-07-01"></div><div class="field"><div class="label">종료일</div><input class="input" type="date" id="cpTo" value="2026-08-31"></div></div>
+          <div class="field"><div class="label">QR 링크</div><input class="input" id="cpUrl" value="https://designgongbang.com"></div>
+          <div class="switchrow"><span>QR코드 표시</span><label class="switch"><input type="checkbox" id="cpQrOn" checked><span></span></label></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">쿠폰 스타일</div></div></div>
+          <div class="chips" id="cpChips"></div>
+        </div>
+      </div>
+      <div class="preview-panel">
+        <div class="preview-head"><div class="preview-name">쿠폰 미리보기</div><div class="preview-note">모바일 공유·인쇄용</div></div>
         <div class="stage">
           <div class="coupon" id="coupon">
-            <div class="cp-left">
-              <svg class="store-ic" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10h16V9"/><path d="M9 19v-6h6v6"/></svg>
-              <div class="oe">OPEN EVENT</div>
-              <div class="ct" id="cpvTitle">오픈 기념<br>감사 쿠폰</div>
-              <div class="dots"><i></i><i></i><i></i></div>
-            </div>
-            <div class="cp-mid">
-              <div class="big"><span class="num" id="cpvNum">10</span><span class="unit" id="cpvUnit">%<br>OFF</span></div>
-              <div class="cond" id="cpvCond">20,000원 이상 구매 시</div>
-              <div class="valid" id="cpvValid">2026.07.01 ~ 2026.08.31</div>
-            </div>
-            <div class="cp-right">
-              <div class="cw">COUPON</div>
-              <div class="qr" id="cpQr"></div>
-              <div class="use">사용 시 제시해주세요.</div>
-            </div>
-            <div class="cp-perf p1"></div>
-            <div class="cp-perf p2"></div>
+            <div class="cp-a"><div class="cp-eyebrow">SPECIAL COUPON</div><div class="cp-title" id="cpvTitle">오픈 기념<br>감사 쿠폰</div></div>
+            <div class="cp-b"><div><span class="cp-value" id="cpvNum">10</span><span class="cp-unit" id="cpvUnit">%</span></div><div class="cp-cond" id="cpvCond">20,000원 이상 구매 시</div><div class="cp-valid" id="cpvValid"></div></div>
+            <div class="cp-c"><strong>COUPON</strong><div class="qrbox" id="cpQr"></div><small>사용 시 직원에게 보여주세요</small></div>
           </div>
         </div>
-        <div class="actions">
-          <button class="btn outline">앞면 / 뒷면 변경</button>
-          <button class="btn outline">사이즈 변경</button>
-          <button class="btn primary">PNG 다운로드</button>
-        </div>
-        <div class="card tip">
-          <div class="tip-share">
-            <div>
-              <div class="th"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg> Tip. 이렇게 활용해보세요!</div>
-              <ul>
-                <li><span class="ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> 생성된 쿠폰을 SNS, 블로그, 카카오톡 채널에 공유하세요</li>
-                <li><span class="ck"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> 인쇄 후 매장에 비치하거나 고객에게 직접 전달해보세요</li>
-              </ul>
-            </div>
-            <div class="share-box">
-              <div class="sh-t">공유하기</div>
-              <div class="share-row">
-                <div class="si"><span class="ic" style="background:#FAE100;color:#3C1E1E">카톡</span>카카오톡</div>
-                <div class="si"><span class="ic" style="background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF)">IG</span>인스타그램</div>
-                <div class="si"><span class="ic" style="background:#03C75A">B</span>블로그</div>
-                <div class="si"><span class="ic" style="background:#1C2740"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7L12 19"/></svg></span>링크 복사</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="actions"><button class="btn">인쇄용 PDF</button><button class="btn primary">이미지 저장 PNG</button></div>
       </div>
     </div>
-   </div>
-  </div>
+  </section>
 
-  <!-- ================= 명함 ================= -->
-  <div class="view" id="view-card">
-   <div class="grid">
-    <div class="col-left">
-      <div class="card">
-        <div class="step"><span class="n">1. 템플릿 선택</span><span class="more">전체 보기 ›</span></div>
-        <div class="tpl-row" id="ncTpl">
-          <div class="tpl on" data-tpl="simple" style="background:#fff;color:#4f7cff"><div class="mini"><div class="ml" style="width:60%"></div><div class="ml" style="width:40%;opacity:.4"></div><div class="ml" style="width:50%;opacity:.4"></div></div><div class="chk"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tpl-nm">심플</div></div>
-          <div class="tpl" data-tpl="premium" style="background:#faf8f3;color:#b08d57"><div class="mini"><div class="ml" style="width:70%"></div><div class="ml" style="width:35%;opacity:.4"></div><div class="ml" style="width:55%;opacity:.4"></div></div><div class="chk"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tpl-nm">프리미엄</div></div>
-          <div class="tpl" data-tpl="dark" style="background:#141a26;color:#6c8cff"><div class="mini"><div class="ml" style="width:60%"></div><div class="ml" style="width:40%;opacity:.5"></div><div class="ml" style="width:50%;opacity:.5"></div></div><div class="chk"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tpl-nm">다크</div></div>
-          <div class="tpl" data-tpl="minimal" style="background:#f4f6f9;color:#2a3140"><div class="mini"><div class="ml" style="width:45%"></div><div class="ml" style="width:65%;opacity:.35"></div></div><div class="chk"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div><div class="tpl-nm">미니멀</div></div>
+  <section class="view" id="view-card">
+    <div class="workspace">
+      <div class="left">
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 템플릿</div></div><span class="more">전체 보기</span></div>
+          <div class="template-row" id="ncTpl">
+            <div class="template on" data-tpl="simple" style="background:#fff;color:#6750ef"><span>심플</span></div>
+            <div class="template" data-tpl="premium" style="background:#f5efe2;color:#a57838"><span>프리미엄</span></div>
+            <div class="template" data-tpl="dark" style="background:#171b25;color:#8767ff"><span>다크</span></div>
+            <div class="template" data-tpl="minimal" style="background:#e9edf4;color:#222"><span>미니멀</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">명함 정보</div></div></div>
+          <div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div>
+          <div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="김우주"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div>
+          <div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div>
+          <div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div>
+          <div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div>
+          <div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="https://designgongbang.com"></div>
+          <div class="field"><div class="label">인스타그램</div><input class="input" id="ncInsta" value="@designgongbang"></div>
+          <div class="field"><div class="label">회사 로고</div><label class="upload" for="ncLogoFile"><span class="upload-icon">＋</span><span><strong>로고 이미지 선택</strong><small>PNG · JPG · 정사각형 권장</small></span></label><input hidden type="file" id="ncLogoFile" accept="image/*"></div>
+          <div class="switchrow"><span>QR코드 표시</span><label class="switch"><input type="checkbox" id="ncQrOn" checked><span></span></label></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">디자인 설정</div></div></div>
+          <div class="minilabel">포인트 색상</div><div class="chips" id="ncChips"></div>
+          <div class="minilabel">앞·뒷면 보기</div><div class="segment" id="ncSide"><button class="on" data-side="both">전체</button><button data-side="front">앞면</button><button data-side="back">뒷면</button></div>
         </div>
       </div>
-      <div class="card">
-        <div class="step"><span class="n">2. 정보 입력</span></div>
-        <div class="field"><div class="lab"><span>상호명</span></div><input class="inp" id="ncCo" value="디자인공방" placeholder="상호명"></div>
-        <div class="row2">
-          <div class="field"><div class="lab"><span>이름</span></div><input class="inp" id="ncName" value="김우주" placeholder="이름"></div>
-          <div class="field"><div class="lab"><span>직책</span></div><input class="inp" id="ncRole" value="대표" placeholder="직책"></div>
-        </div>
-        <div class="row2">
-          <div class="field"><div class="lab"><span>전화번호</span></div><input class="inp" id="ncTel" value="02-123-4567" placeholder="전화번호"></div>
-          <div class="field"><div class="lab"><span>휴대폰</span></div><input class="inp" id="ncMobile" value="010-1234-5678" placeholder="휴대폰"></div>
-        </div>
-        <div class="field"><div class="lab"><span>이메일</span></div><input class="inp" id="ncEmail" value="design@designstudio.com" placeholder="이메일"></div>
-        <div class="field"><div class="lab"><span>주소</span></div><input class="inp" id="ncAddr" value="서울특별시 강남구 테헤란로 123, 4층" placeholder="주소"></div>
-        <div class="field"><div class="lab"><span>홈페이지</span></div><input class="inp" id="ncWeb" value="https://designgongbang.com" placeholder="홈페이지"></div>
-        <div class="row2">
-          <div class="field"><div class="lab"><span>인스타그램</span></div><input class="inp" id="ncInsta" value="@designgongbang" placeholder="@아이디"></div>
-          <div class="field"><div class="lab"><span>카카오톡</span></div><input class="inp" id="ncKakao" value="디자인공방" placeholder="채널명"></div>
-        </div>
-        <div class="row-toggle"><span>QR코드 사용</span><label class="switch"><input type="checkbox" id="ncQrOn" checked><span class="sl"></span></label></div>
-        <div class="field" style="margin-top:8px"><div class="lab"><span>회사 로고 업로드</span></div>
-          <label class="upload" for="ncLogoFile"><span class="ic" id="ncLogoIc"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span><div><div class="t">로고 이미지 선택</div><div class="s">PNG · JPG · 정사각 권장</div></div></label>
-          <input type="file" id="ncLogoFile" accept="image/*" hidden>
-        </div>
-        <div class="field"><div class="lab"><span>프로필 사진 (선택)</span></div>
-          <label class="upload" for="ncPhotoFile"><span class="ic" id="ncPhotoIc"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></span><div><div class="t">프로필 사진 선택</div><div class="s">선택 사항</div></div></label>
-          <input type="file" id="ncPhotoFile" accept="image/*" hidden>
-        </div>
-      </div>
-      <div class="card">
-        <div class="step"><span class="n">3. 디자인 설정</span></div>
-        <div class="lab-mini">포인트 색상</div>
-        <div class="chips" id="ncChips"></div>
-        <div class="lab-mini mt">폰트</div>
-        <div class="select-wrap">
-          <select id="ncFont">
-            <option value="'Pretendard'">Pretendard</option>
-            <option value="'Noto Sans KR'">Noto Sans KR</option>
-            <option value="'Nanum Gothic'">나눔고딕</option>
-            <option value="'Nanum Myeongjo'">나눔명조</option>
-            <option value="'Gothic A1'">Gothic A1</option>
-          </select>
-          <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </div>
-        <div class="lab-mini mt">정렬</div>
-        <div class="seg" id="ncAlign"><button class="on" data-a="left">왼쪽형</button><button data-a="center">가운데형</button><button data-a="right">오른쪽형</button></div>
-        <div class="lab-mini mt">모서리</div>
-        <div class="seg" id="ncCorner"><button class="on" data-c="round">둥글게</button><button data-c="sharp">직각</button></div>
-      </div>
-    </div>
-    <div>
-      <div class="preview-card">
-        <div class="preview-head"><div class="ph-l">미리보기</div>
-          <div class="side-btns" id="ncSide"><button class="on" data-side="both">전체</button><button data-side="front">앞면</button><button data-side="back">뒷면</button></div>
-        </div>
+      <div class="preview-panel">
+        <div class="preview-head"><div class="preview-name">명함 미리보기</div><div class="preview-note">표준 90 × 50mm</div></div>
         <div class="stage">
-          <div class="nc-wrap" id="ncFrontWrap">
-            <span class="nc-side-lab">앞면</span>
-            <div class="namecard al-left corner-round tpl-simple" id="ncFront">
-              <div class="nc-front">
-                <div class="fl">
-                  <div class="logo-box" id="ncLogo"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4h7a5 5 0 0 1 0 10H6z" fill="currentColor" stroke="none" opacity=".25"/><path d="M6 4h7a5 5 0 0 1 0 10H6zM6 4v16" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                  <div>
-                    <div class="co" id="ncvCo">디자인공방</div>
-                    <div class="co-sub">AI Design Studio</div>
-                  </div>
-                </div>
-                <div class="fr">
-                  <div class="nm"><span id="ncvName">김우주</span><span class="role" id="ncvRole">대표</span></div>
-                  <div class="rows">
-                    <div class="rw"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.5-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2z"/></svg><span id="ncvMobile">010-1234-5678</span></div>
-                    <div class="rw"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg><span id="ncvEmail">design@designstudio.com</span></div>
-                    <div class="rw"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span id="ncvAddr">서울특별시 강남구 테헤란로 123, 4층</span></div>
-                    <div class="rw"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg><span id="ncvWeb">designgongbang.com</span></div>
-                    <div class="rw"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg><span id="ncvInsta">@designgongbang</span></div>
-                  </div>
-                  <div class="qr" id="ncQr"></div>
-                </div>
-              </div>
-            </div>
+          <div class="side-label" id="frontLabel">앞면</div>
+          <div class="card-preview nc-front" id="ncFront">
+            <div class="nc-left"><div class="nc-logo" id="ncLogo">D</div><div class="nc-company" id="ncvCo">디자인공방</div><div class="nc-company-sub">DESIGN STUDIO</div></div>
+            <div class="nc-right"><div class="nc-name"><span id="ncvName">김우주</span><span class="nc-role" id="ncvRole">대표</span></div><div class="nc-lines"><span id="ncvMobile">010-1234-5678</span><span id="ncvEmail">design@designstudio.com</span><span id="ncvAddr">서울특별시 강남구 테헤란로 123</span><span id="ncvWeb">designgongbang.com</span><span id="ncvInsta">@designgongbang</span></div><div class="nc-qr" id="ncQr"></div></div>
           </div>
-          <div class="nc-wrap" id="ncBackWrap">
-            <span class="nc-side-lab">뒷면</span>
-            <div class="namecard corner-round" id="ncBack">
-              <div class="nc-back">
-                <div class="bl-mark"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M6 4h7a5 5 0 0 1 0 10H6zM6 4v16" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="bl-co" id="ncvCoBack">디자인공방</div>
-                <div class="bl-slogan">사장님의 브랜드를 더 빛나게</div>
-              </div>
-            </div>
-          </div>
+          <div class="side-label" id="backLabel">뒷면</div>
+          <div class="card-preview nc-back" id="ncBack"><strong id="ncvCoBack">디자인공방</strong><span>사장님의 브랜드를 더 빛나게</span></div>
         </div>
-        <div class="actions">
-          <button class="btn primary">PNG 다운로드</button>
-          <button class="btn outline">PDF 다운로드</button>
-          <button class="btn outline">명함 사이즈 변경</button>
-          <button class="btn outline" id="ncFlip">앞 / 뒷면 변경</button>
-        </div>
-        <div class="hint">표준 명함 규격(90 × 50mm) · 실제 인쇄 시 색상 차이가 있을 수 있습니다.</div>
+        <div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div>
+        <div class="hint">인쇄 전 사방 여백과 오탈자를 확인해주세요.</div>
       </div>
     </div>
-   </div>
-  </div>
-
+  </section>
 </div>
 
 <script>
-  const $ = s => document.querySelector(s);
-  const $$ = s => document.querySelectorAll(s);
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const VIEWS={banner:"view-banner",menu:"view-menu",coupon:"view-coupon",card:"view-card"};
+$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on");if(b.dataset.tab==="coupon")couponRender();if(b.dataset.tab==="card")cardRender();if(b.dataset.tab==="menu")menuRender()});
 
-  /* ===== 탭 전환 ===== */
-  const VIEWS = {banner:'view-banner', coupon:'view-coupon', card:'view-card'};
-  $$('.tab').forEach(t=>{
-    t.onclick = ()=>{
-      const k = t.dataset.tab;
-      if(k === 'menu'){ alert('메뉴판 만들기는 곧 추가됩니다!'); return; }
-      $$('.tab').forEach(x=>x.classList.remove('on')); t.classList.add('on');
-      $$('.view').forEach(v=>v.classList.remove('on'));
-      $('#'+VIEWS[k]).classList.add('on');
-      if(k==='coupon') couponRender();
-      if(k==='card') cardRender();
-    };
-  });
+const PALETTE=[["#7657ff","#4e76ff"],["#ef4f91","#8458e9"],["#ff9a31","#f04b4b"],["#1eac73","#42cf8d"],["#168fb3","#43c9dd"],["#2f5bea","#7138dd"],["#30384a","#111827"]];
+const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f"];
 
-  const PALETTE = [
-    ['#6c63ff','#4f7cff'], ['#ec4899','#8b5cf6'], ['#f59e0b','#ef4444'],
-    ['#15803d','#22c55e'], ['#0891b2','#22d3ee'], ['#4f7cff','#2563eb'], ['#334155','#0f172a'],
-  ];
-  // 단색 팔레트(명함/쿠폰 포인트)
-  const SOLID = ['#4f7cff','#111827','#c08a5e','#16a34a','#0ea5e9','#7c3aed','#e11d48'];
+const BIZ=[
+ {nm:"학원",g:["#4656e7","#7b45e8"]},{nm:"헬스장",g:["#1a1d25","#d13a45"]},{nm:"헤어샵",g:["#d94f92","#8057e8"]},
+ {nm:"네일아트",g:["#f16eae","#e87a82"]},{nm:"휴대폰",g:["#4c6ff1","#7254f4"]},{nm:"음식점",g:["#f39b2e","#eb4b43"]},
+ {nm:"카페",g:["#85562e","#cb7f32"]},{nm:"치킨",g:["#d43d38","#f0a32c"]},{nm:"병원·의원",g:["#277ab9","#36b2db"]},
+ {nm:"꽃집",g:["#d34383","#9458d7"]},{nm:"세차·정비",g:["#354153","#2286ba"]},{nm:"기타",g:["#4a5365","#737d90"]}
+];
+let bState={biz:BIZ[2],theme:null,size:"wide"};
+BIZ.forEach((x,i)=>{const o=document.createElement("option");o.value=i;o.textContent=x.nm;if(i===2)o.selected=true;$("#bizSelect").append(o)});
+$("#bizSelect").onchange=e=>{bState.biz=BIZ[e.target.value];bState.theme=null;bannerRender()};
+PALETTE.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=`linear-gradient(135deg,${c[0]},${c[1]})`;e.onclick=()=>{$$("#bannerChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");bState.theme=c;bannerRender()};$("#bannerChips").append(e)});
+$$("#bannerSize button").forEach(b=>b.onclick=()=>{$$("#bannerSize button").forEach(x=>x.classList.remove("on"));b.classList.add("on");bState.size=b.dataset.size;bannerRender()});
+["shop","headline","sub","tag","info"].forEach(id=>$("#"+id).addEventListener("input",bannerRender));
+function bannerRender(){
+ const g=bState.theme||bState.biz.g, el=$("#banner");el.style.background=`linear-gradient(135deg,${g[0]},${g[1]})`;el.className="banner "+bState.size;
+ $("#bCat").textContent=bState.biz.nm;$("#bHead").textContent=$("#headline").value||"메인 문구";$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;
+ [["shop","c_shop"],["headline","c_headline"],["sub","c_sub"],["tag","c_tag"],["info","c_info"]].forEach(([a,b])=>$("#"+b).textContent=`${$("#"+a).value.length}/${$("#"+a).maxLength}`)
+}
 
-  /* ===================== 홍보 배너 ===================== */
-  const BIZ = [
-    {nm:'학원',g:['#4f46e5','#7c3aed']},{nm:'헬스장',g:['#0f172a','#dc2626']},{nm:'헤어샵',g:['#ec4899','#8b5cf6']},
-    {nm:'네일아트',g:['#f472b6','#fb7185']},{nm:'휴대폰',g:['#4f7cff','#6c63ff']},{nm:'음식점',g:['#f59e0b','#ef4444']},
-    {nm:'카페',g:['#92400e','#d97706']},{nm:'치킨',g:['#dc2626','#f59e0b']},{nm:'뷰티/피부',g:['#be185d','#f472b6']},
-    {nm:'PC방',g:['#1e293b','#3b82f6']},{nm:'스터디카페',g:['#0f766e','#14b8a6']},{nm:'애견샵',g:['#a16207','#facc15']},
-    {nm:'마트/편의',g:['#15803d','#22c55e']},{nm:'베이커리',g:['#b45309','#f59e0b']},{nm:'병원/의원',g:['#0369a1','#38bdf8']},
-    {nm:'약국',g:['#059669','#10b981']},{nm:'꽃집',g:['#db2777','#a855f7']},{nm:'세탁소',g:['#0891b2','#22d3ee']},
-    {nm:'세차/정비',g:['#334155','#0ea5e9']},{nm:'기타',g:['#4b5563','#6b7280']},
-  ];
-  const banner = $('#banner');
-  let bState = {biz:BIZ[4], theme:null, size:'wide'};
-  const bizSelect = $('#bizSelect');
-  BIZ.forEach((b,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=b.nm; if(b===bState.biz)o.selected=true; bizSelect.appendChild(o); });
-  bizSelect.onchange = ()=>{ bState.biz=BIZ[bizSelect.value]; bState.theme=null; bannerRender(); };
-  const chips = $('#chips');
-  PALETTE.forEach(t=>{ const e=document.createElement('div'); e.className='chip'; e.style.background=`linear-gradient(135deg,${t[0]},${t[1]})`;
-    e.onclick=()=>{ $$('#chips .chip').forEach(x=>x.classList.remove('on')); e.classList.add('on'); bState.theme=t; bannerRender(); }; chips.appendChild(e); });
-  $$('#seg button').forEach(el=>{ el.onclick=()=>{ $$('#seg button').forEach(x=>x.classList.remove('on')); el.classList.add('on'); bState.size=el.dataset.s; bannerRender(); }; });
-  const BCNT={shop:'c_shop',headline:'c_headline',sub:'c_sub',tag:'c_tag',info:'c_info'};
-  Object.keys(BCNT).forEach(id=> $('#'+id).addEventListener('input', bannerRender));
-  function bannerRender(){
-    const b=bState.biz, g=bState.theme||b.g;
-    banner.style.background=`linear-gradient(135deg,${g[0]},${g[1]})`;
-    banner.className='banner '+bState.size;
-    $('#bCat').textContent=b.nm;
-    $('#bHead').textContent=$('#headline').value||'메인 문구';
-    $('#bSub').textContent=$('#sub').value;
-    $('#bInfo').textContent=$('#info').value;
-    const tv=$('#tag').value; $('#bTag').textContent=tv; $('#bTag').style.display=tv?'inline-flex':'none';
-    Object.keys(BCNT).forEach(id=>{ const i=$('#'+id); $('#'+BCNT[id]).textContent=`${i.value.length}/${i.maxLength}`; });
-  }
-  bannerRender();
+function makeQR(el,text,size=80){el.innerHTML="";if(!$("#cpQrOn")&&typeof QRCode==="undefined")return;try{new QRCode(el,{text:text||" ",width:size,height:size,colorDark:"#111",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
 
-  /* ===================== QR 헬퍼 ===================== */
-  function makeQR(el, text, size, dark){
-    el.innerHTML='';
-    if(typeof QRCode==='undefined'){ el.style.background='#e5e7eb'; return; }
-    try{ new QRCode(el, {text:text||' ', width:size, height:size, colorDark:dark||'#111', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.M}); }catch(e){}
-  }
+/* menu */
+const initialMenus=[["아메리카노","4,000원","깔끔하고 진한 풍미"],["카페라떼","4,800원","부드러운 우유와 에스프레소"],["바닐라라떼","5,300원","달콤한 바닐라 향"],["딸기 에이드","5,800원","상큼한 생딸기 에이드"],["크로플","6,500원","바삭한 크로플과 아이스크림"]];
+initialMenus.forEach((m,i)=>{$("#menuInputs").insertAdjacentHTML("beforeend",`<div class="row2"><div class="field"><div class="label">메뉴 ${i+1}</div><input class="input menu-name" value="${m[0]}"></div><div class="field"><div class="label">가격</div><input class="input menu-price" value="${m[1]}"></div></div><div class="field"><input class="input menu-desc" value="${m[2]}" placeholder="메뉴 설명"></div>`)});
+SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===2?" on":"");e.style.background=c;e.onclick=()=>{$$("#menuChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");$("#menuBoard").style.setProperty("--menu-accent",c)};$("#menuChips").append(e)});
+["menuShop","menuDesc","menuPhone"].forEach(id=>$("#"+id).addEventListener("input",menuRender));$$(".menu-name,.menu-price,.menu-desc").forEach(x=>x.addEventListener("input",menuRender));
+function menuRender(){
+ $("#mvShop").textContent=$("#menuShop").value;$("#mvDesc").textContent=$("#menuDesc").value;$("#mvPhone").textContent="문의 "+$("#menuPhone").value;
+ const names=$$(".menu-name"),prices=$$(".menu-price"),descs=$$(".menu-desc");$("#menuList").innerHTML="";
+ names.forEach((n,i)=>$("#menuList").insertAdjacentHTML("beforeend",`<div class="menu-item"><strong>${n.value}</strong><b>${prices[i].value}</b><span>${descs[i].value}</span></div>`))
+}
 
-  /* ===================== 쿠폰 ===================== */
-  const CP_STYLE = {
-    simple:   {bg2:'#f3ede2', ink:'#2a2622', sub:'#8a8177'},
-    modern:   {bg2:'#0f1420', ink:'#e8ecf3', sub:'#8b95a7'},
-    emotional:{bg2:'#fbeff0', ink:'#4a2e33', sub:'#b08a90'},
-    premium:  {bg2:'#f7f3ea', ink:'#28241c', sub:'#9c8f76'},
-  };
-  const CP_IND = {
-    cafe:'#c0894e', chicken:'#e0432c', hair:'#8b5cf6', academy:'#4f7cff',
-    phone:'#2563eb', clinic:'#0ea5e9', gym:'#111827', nail:'#ec4899',
-  };
-  let cpState = {type:'discount', accent:'#e0432c', style:'simple'};
-  // 포인트 칩
-  const cpChips=$('#cpChips');
-  SOLID.forEach((c,i)=>{ const e=document.createElement('div'); e.className='chip'+(c==='#e11d48'?' on':''); e.style.background=c;
-    e.onclick=()=>{ $$('#cpChips .chip').forEach(x=>x.classList.remove('on')); e.classList.add('on'); cpState.accent=c; couponRender(); }; cpChips.appendChild(e); });
-  // 첫 로드 accent 맞춤(빨강 계열 없으면 별도) - 기본 빨강
-  cpState.accent = '#e0432c';
-  $$('#cpType button').forEach(b=> b.onclick=()=>{ $$('#cpType button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); cpState.type=b.dataset.t; couponRender(); });
-  $$('#cpStyle button').forEach(b=> b.onclick=()=>{ $$('#cpStyle button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); cpState.style=b.dataset.st; couponRender(); });
-  $$('#cpIndustry button').forEach(b=> b.onclick=()=>{ $$('#cpIndustry button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); cpState.accent=CP_IND[b.dataset.i]; $$('#cpChips .chip').forEach(x=>x.classList.remove('on')); couponRender(); });
-  ['cpShop','cpTitle','cpDiscount','cpCond','cpFrom','cpTo','cpPhone','cpUrl'].forEach(id=> $('#'+id).addEventListener('input', couponRender));
-  $('#cpQrOn').addEventListener('change', couponRender);
-  function fmtDate(v){ if(!v) return ''; return v.replace(/-/g,'.'); }
-  function couponRender(){
-    const cp=$('#coupon'); const st=CP_STYLE[cpState.style];
-    cp.style.setProperty('--cp-accent', cpState.accent);
-    cp.style.setProperty('--cp-bg2', st.bg2);
-    cp.style.setProperty('--cp-ink', st.ink);
-    cp.style.setProperty('--cp-sub', st.sub);
-    $('#cpvTitle').innerHTML = ($('#cpTitle').value||'쿠폰 제목').replace(/\n/g,'<br>');
-    $('#cpvCond').textContent = $('#cpCond').value;
-    $('#cpvValid').textContent = `${fmtDate($('#cpFrom').value)} ~ ${fmtDate($('#cpTo').value)}`;
-    // 할인 값 분해 (숫자 + 단위)
-    const d=($('#cpDiscount').value||'').trim();
-    const m=d.match(/^([0-9,\.]+)\s*(.*)$/);
-    if(m){ $('#cpvNum').textContent=m[1]; let u=m[2]||'';
-      if(cpState.type==='discount'&&(u==='%'||u==='')) u='%<br>OFF';
-      else if(u) u=u.replace('원','원<br>할인');
-      $('#cpvUnit').innerHTML=u; }
-    else { $('#cpvNum').textContent=d; $('#cpvUnit').innerHTML=''; }
-    // QR
-    const qrBox=$('#cpQr').parentElement;
-    if($('#cpQrOn').checked){ qrBox.style.visibility='visible'; makeQR($('#cpQr'), $('#cpUrl').value, 90, '#222'); }
-    else qrBox.style.visibility='hidden';
-  }
+/* coupon */
+let cpState={accent:"#df4b3f"};
+SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===6?" on":"");e.style.background=c;e.onclick=()=>{$$("#cpChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");cpState.accent=c;couponRender()};$("#cpChips").append(e)});
+$$("#cpType button").forEach(b=>b.onclick=()=>{$$("#cpType button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
+["cpShop","cpTitle","cpDiscount","cpCond","cpFrom","cpTo","cpUrl"].forEach(id=>$("#"+id).addEventListener("input",couponRender));$("#cpQrOn").onchange=couponRender;
+function couponRender(){
+ const cp=$("#coupon");cp.style.setProperty("--cp-accent",cpState.accent);cp.style.setProperty("--cp-bg","#f3eee4");cp.style.setProperty("--cp-ink","#28231f");cp.style.setProperty("--cp-sub","#887d70");
+ $("#cpvTitle").innerHTML=($("#cpTitle").value||"쿠폰 제목").replace(/\n/g,"<br>");
+ const d=$("#cpDiscount").value.trim(),m=d.match(/^([0-9,.]+)\s*(.*)$/);$("#cpvNum").textContent=m?m[1]:d;$("#cpvUnit").textContent=m?(m[2]||"%"):"";
+ $("#cpvCond").textContent=$("#cpCond").value;$("#cpvValid").textContent=`${$("#cpFrom").value.replaceAll("-",".")} ~ ${$("#cpTo").value.replaceAll("-",".")}`;
+ $("#cpQr").parentElement.style.display=$("#cpQrOn").checked?"flex":"none";if($("#cpQrOn").checked)makeQR($("#cpQr"),$("#cpUrl").value,78)
+}
 
-  /* ===================== 명함 ===================== */
-  let ncState = {tpl:'simple', accent:'#4f7cff', font:"'Pretendard'", align:'left', corner:'round', side:'both'};
-  const ncChips=$('#ncChips');
-  SOLID.forEach((c,i)=>{ const e=document.createElement('div'); e.className='chip'+(i===0?' on':''); e.style.background=c;
-    e.onclick=()=>{ $$('#ncChips .chip').forEach(x=>x.classList.remove('on')); e.classList.add('on'); ncState.accent=c; cardRender(); }; ncChips.appendChild(e); });
-  $$('#ncTpl .tpl').forEach(t=> t.onclick=()=>{ $$('#ncTpl .tpl').forEach(x=>x.classList.remove('on')); t.classList.add('on'); ncState.tpl=t.dataset.tpl; cardRender(); });
-  $$('#ncAlign button').forEach(b=> b.onclick=()=>{ $$('#ncAlign button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); ncState.align=b.dataset.a; cardRender(); });
-  $$('#ncCorner button').forEach(b=> b.onclick=()=>{ $$('#ncCorner button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); ncState.corner=b.dataset.c; cardRender(); });
-  $('#ncFont').onchange=()=>{ ncState.font=$('#ncFont').value; cardRender(); };
-  $$('#ncSide button').forEach(b=> b.onclick=()=>{ $$('#ncSide button').forEach(x=>x.classList.remove('on')); b.classList.add('on'); ncState.side=b.dataset.side; applySide(); });
-  $('#ncFlip').onclick=()=>{ ncState.side = ncState.side==='front'?'back':(ncState.side==='back'?'both':'front');
-    $$('#ncSide button').forEach(x=>x.classList.toggle('on', x.dataset.side===ncState.side)); applySide(); };
-  ['ncCo','ncName','ncRole','ncTel','ncMobile','ncEmail','ncAddr','ncWeb','ncInsta','ncKakao'].forEach(id=> $('#'+id).addEventListener('input', cardRender));
-  $('#ncQrOn').addEventListener('change', cardRender);
-  // 업로드
-  $('#ncLogoFile').onchange=e=>{ const f=e.target.files[0]; if(!f)return; const r=new FileReader();
-    r.onload=()=>{ $('#ncLogo').innerHTML=`<img src="${r.result}">`; $('#ncLogoIc').innerHTML='<img class="thumb" src="'+r.result+'">'; }; r.readAsDataURL(f); };
-  $('#ncPhotoFile').onchange=e=>{ const f=e.target.files[0]; if(!f)return; const r=new FileReader();
-    r.onload=()=>{ $('#ncPhotoIc').innerHTML='<img class="thumb" src="'+r.result+'">'; }; r.readAsDataURL(f); };
-  function applySide(){
-    $('#ncFrontWrap').style.display = ncState.side==='back'?'none':'block';
-    $('#ncBackWrap').style.display  = ncState.side==='front'?'none':'block';
-  }
-  function cardRender(){
-    const front=$('#ncFront'), back=$('#ncBack');
-    front.className = `namecard al-${ncState.align} corner-${ncState.corner} tpl-${ncState.tpl}`;
-    back.className  = `namecard corner-${ncState.corner}`;
-    front.style.setProperty('--nc-accent', ncState.accent);
-    front.style.setProperty('--nc-font', ncState.font);
-    back.style.setProperty('--nc-accent', ncState.accent);
-    back.style.setProperty('--nc-font', ncState.font);
-    $('#ncvCo').textContent=$('#ncCo').value;
-    $('#ncvCoBack').textContent=$('#ncCo').value;
-    $('#ncvName').textContent=$('#ncName').value;
-    $('#ncvRole').textContent=$('#ncRole').value;
-    $('#ncvMobile').textContent=$('#ncMobile').value||$('#ncTel').value;
-    $('#ncvEmail').textContent=$('#ncEmail').value;
-    $('#ncvAddr').textContent=$('#ncAddr').value;
-    $('#ncvWeb').textContent=($('#ncWeb').value||'').replace(/^https?:\/\//,'');
-    $('#ncvInsta').textContent=$('#ncInsta').value;
-    const qrBox=$('#ncQr');
-    if($('#ncQrOn').checked){ qrBox.style.display='block'; makeQR(qrBox, $('#ncWeb').value||$('#ncInsta').value, 60, '#111'); }
-    else qrBox.style.display='none';
-  }
+/* namecard */
+let ncState={accent:"#7657ff",side:"both",tpl:"simple"};
+SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=c;e.onclick=()=>{$$("#ncChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");ncState.accent=c;cardRender()};$("#ncChips").append(e)});
+$$("#ncTpl .template").forEach(t=>t.onclick=()=>{$$("#ncTpl .template").forEach(x=>x.classList.remove("on"));t.classList.add("on");ncState.tpl=t.dataset.tpl;cardRender()});
+$$("#ncSide button").forEach(b=>b.onclick=()=>{$$("#ncSide button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.side=b.dataset.side;cardRender()});
+["ncCo","ncName","ncRole","ncMobile","ncEmail","ncAddr","ncWeb","ncInsta"].forEach(id=>$("#"+id).addEventListener("input",cardRender));$("#ncQrOn").onchange=cardRender;
+$("#ncLogoFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>$("#ncLogo").innerHTML=`<img src="${r.result}">`;r.readAsDataURL(f)};
+function cardRender(){
+ const f=$("#ncFront"),b=$("#ncBack");f.style.setProperty("--nc-accent",ncState.accent);b.style.setProperty("--nc-accent",ncState.accent);
+ if(ncState.tpl==="dark"){f.style.background="#171b25";f.style.color="#f7f8fb"}else if(ncState.tpl==="premium"){f.style.background="#f5efe2";f.style.color="#27231e"}else if(ncState.tpl==="minimal"){f.style.background="#eef1f5";f.style.color="#151923"}else{f.style.background="#fff";f.style.color="#151923"}
+ $("#ncvCo").textContent=$("#ncCo").value;$("#ncvCoBack").textContent=$("#ncCo").value;$("#ncvName").textContent=$("#ncName").value;$("#ncvRole").textContent=$("#ncRole").value;
+ $("#ncvMobile").textContent=$("#ncMobile").value;$("#ncvEmail").textContent=$("#ncEmail").value;$("#ncvAddr").textContent=$("#ncAddr").value;$("#ncvWeb").textContent=$("#ncWeb").value.replace(/^https?:\/\//,"");$("#ncvInsta").textContent=$("#ncInsta").value;
+ const frontOn=ncState.side!=="back",backOn=ncState.side!=="front";f.style.display=frontOn?"grid":"none";$("#frontLabel").style.display=frontOn?"block":"none";b.style.display=backOn?"flex":"none";$("#backLabel").style.display=backOn?"block":"none";
+ $("#ncQr").style.display=$("#ncQrOn").checked?"block":"none";if($("#ncQrOn").checked)makeQR($("#ncQr"),$("#ncWeb").value||$("#ncInsta").value,50)
+}
 
-  // 초기 렌더
-  couponRender();
-  cardRender();
-  applySide();
+bannerRender();menuRender();couponRender();cardRender();
 </script>
 </body>
 </html>

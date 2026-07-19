@@ -202,13 +202,20 @@ const DECOS_BY_THEME={
 function themeDecos(theme){return DECOS_BY_THEME[theme]||DECOS_BY_THEME["기본"]}
 function refreshDecos(scope){const p=panelOf(scope);if(!p)return;const theme=p.querySelector(".ai-theme").value;const list=["(랜덤)"].concat(themeDecos(theme));p.querySelector(".ai-decos").innerHTML=list.map((d,i)=>`<button type="button" class="ai-deco${i===0?" on":""}" data-v="${d}">${d}</button>`).join("")}
 
-/* ===== 임시 무료 생성 제한: localStorage 하루 3회 =====
-   NOTE: 임시 구현. 추후 로그인/DB 기반 제한으로 교체 예정.
-   교체 시 아래 3개 함수(getFreeRemaining/consumeFree/freeKey)만 서버 연동으로 바꾸면 됨. */
-const FREE_LIMIT=3;
+/* ===== 무료 생성 제한: 하루 3회 무료 + 광고로 최대 2회 추가 =====
+   NOTE: 임시 localStorage 구현(우회 가능). 추후 로그인/DB 기반 서버 제한으로 교체 예정.
+   교체 시 아래 함수(getUsed/getAdGranted/consumeFree/grantAd)만 서버 연동으로 바꾸면 됨. */
+const FREE_LIMIT=3;    // 하루 무료 횟수
+const AD_MAX=2;        // 광고로 추가 가능한 최대 횟수(하루)
+const AD_SECONDS=30;   // 광고 시청 시간(초)
 function freeKey(){const d=new Date();return `dg_ai_free_${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`}
-function getFreeRemaining(){try{return Math.max(0,FREE_LIMIT-(+(localStorage.getItem(freeKey())||0)))}catch(e){return FREE_LIMIT}}
-function consumeFree(){try{localStorage.setItem(freeKey(),(+(localStorage.getItem(freeKey())||0))+1)}catch(e){}}
+function adKey(){const d=new Date();return `dg_ai_ad_${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`}
+function getUsed(){try{return +(localStorage.getItem(freeKey())||0)}catch(e){return 0}}
+function getAdGranted(){try{return Math.min(AD_MAX,+(localStorage.getItem(adKey())||0))}catch(e){return 0}}
+function adsLeft(){return Math.max(0,AD_MAX-getAdGranted())}
+function getFreeRemaining(){try{return Math.max(0,FREE_LIMIT+getAdGranted()-getUsed())}catch(e){return FREE_LIMIT}}
+function consumeFree(){try{localStorage.setItem(freeKey(),getUsed()+1)}catch(e){}}
+function grantAd(){try{localStorage.setItem(adKey(),getAdGranted()+1)}catch(e){}}
 
 function aiPanelHtml(scope){return `<div class="ai-panel" data-scope="${scope}">
 <div class="ai-top"><span class="ai-badge">🎨 AI 배경 디자인</span><span class="ai-remain"></span></div>
@@ -224,14 +231,44 @@ if(scope==="menu"){const t=menuTemplates.find(x=>x.id===menuState.tpl);return Ob
 if(scope==="coupon"){return Object.assign(base,{documentType:"coupon",layoutType:cpState.type,accentColor:cpState.accent,title:$("#cpTitle").value,subtitle:$("#cpCond").value})}
 return Object.assign(base,{documentType:"businessCard",orientation:ncState.orientation,layoutType:ncState.orientation+"/"+ncState.kind,accentColor:ncState.accent,title:$("#ncCo").value,subtitle:$("#ncName").value})}
 
-function updateRemainingUI(){const rem=getFreeRemaining();document.querySelectorAll(".ai-panel").forEach(p=>{p.querySelector(".ai-remain").textContent=`오늘 무료 생성 ${rem}회 남음`;const g=p.querySelector(".ai-gen");if(rem<=0){g.disabled=true;g.textContent="오늘 무료 횟수 소진"}else if(!aiBusy){g.disabled=false;g.textContent="AI 디자인 생성"}})}
+function updateRemainingUI(){const rem=getFreeRemaining(),canAd=adsLeft()>0;document.querySelectorAll(".ai-panel").forEach(p=>{
+  p.querySelector(".ai-remain").textContent = rem>0 ? `오늘 생성 ${rem}회 남음` : (canAd?`광고 보고 ${adsLeft()}회 더 받기`:"오늘 횟수 소진 (내일 초기화)");
+  if(aiBusy)return;
+  const g=p.querySelector(".ai-gen");
+  if(rem>0){g.disabled=false;g.textContent="AI 디자인 생성"}
+  else if(canAd){g.disabled=false;g.textContent="▶ 광고 보고 1회 추가"}
+  else{g.disabled=true;g.textContent="오늘 무료 횟수 소진"}
+})}
 
-function showLimitModal(){if(document.querySelector(".ai-modal"))return;const m=document.createElement("div");m.className="ai-modal";m.innerHTML=`<div class="box"><h3>오늘 무료 생성을 모두 사용했어요</h3><p>무료 AI 배경 생성은 하루 ${FREE_LIMIT}회까지 가능해요.<br>내일 다시 무료로 이용할 수 있어요.</p><button type="button" class="btn primary" style="width:100%">확인</button></div>`;m.querySelector("button").onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()};document.body.appendChild(m)}
+function showLimitModal(){if(document.querySelector(".ai-modal"))return;const m=document.createElement("div");m.className="ai-modal";m.innerHTML=`<div class="box"><h3>오늘 생성을 모두 사용했어요</h3><p>무료 ${FREE_LIMIT}회 + 광고 추가 ${AD_MAX}회를 모두 사용했어요.<br>내일 다시 무료로 이용할 수 있어요.</p><button type="button" class="btn primary" style="width:100%">확인</button></div>`;m.querySelector("button").onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()};document.body.appendChild(m)}
+
+// 광고 시청 후 +1회. 30초 카운트다운 = 광고 자리(placeholder).
+// TODO(광고연동): 아래 .ad-slot 안에 실제 보상형 광고 SDK 삽입.
+//   웹 보상형은 AdSense 불가 -> Google Ad Manager rewarded(H5) 또는 타 SSP 필요.
+//   실제 SDK 연동 시 "시청 완료 콜백"에서 grantAd() 호출하도록 교체.
+let adBusy=false;
+function showAdModal(scope){
+  if(adBusy||document.querySelector(".ai-modal"))return;
+  adBusy=true;let left=AD_SECONDS;
+  const m=document.createElement("div");m.className="ai-modal";
+  m.innerHTML=`<div class="box"><h3>광고 보고 1회 추가</h3><p>${AD_SECONDS}초 광고를 시청하면 AI 생성을 <b>1회</b> 더 사용할 수 있어요.<br>남은 광고 추가: ${adsLeft()}회</p>
+  <div class="ad-slot" style="margin:14px 0;padding:34px 20px;border:1px dashed var(--line2);border-radius:14px;text-align:center;color:var(--sub);font-size:13px;line-height:1.6">📺 광고 영역<br><b class="ad-count" style="font-size:22px;color:var(--text)">${left}</b> 초</div>
+  <button type="button" class="btn primary" style="width:100%" disabled>잠시만요… ${left}초</button></div>`;
+  document.body.appendChild(m);
+  const btn=m.querySelector("button"),cnt=m.querySelector(".ad-count");
+  const timer=setInterval(()=>{
+    left--;if(cnt)cnt.textContent=Math.max(0,left);
+    if(left<=0){clearInterval(timer);btn.disabled=false;btn.textContent="✓ 1회 받기";
+      btn.onclick=()=>{grantAd();m.remove();adBusy=false;updateRemainingUI()};
+    }else{btn.textContent=`잠시만요… ${left}초`}
+  },1000);
+  m.onclick=e=>{if(e.target===m){clearInterval(timer);m.remove();adBusy=false}}; // 중간에 닫으면 보상 없음
+}
 
 let aiBusy=false;
 async function aiGenerate(scope){
   if(aiBusy)return;
-  if(getFreeRemaining()<=0){showLimitModal();return}
+  if(getFreeRemaining()<=0){if(adsLeft()>0){showAdModal(scope)}else{showLimitModal()}return}
   const p=panelOf(scope),gen=p.querySelector(".ai-gen"),status=p.querySelector(".ai-status");
   aiBusy=true;
   document.querySelectorAll(".ai-gen,.ai-regen").forEach(b=>b.disabled=true);

@@ -2,570 +2,141 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>디자인공방 - 우리 가게 홍보물 만들기</title>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a/qrcode.min.js"></script>
 <style>
-:root{
-  --bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;
-  --line:#252938;--line2:#33394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;
-  --purple:#7c5cff;--purple2:#9a7cff;--green:#35d08a;--danger:#ff6577;
-  --shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px;
-}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%}
-body{
-  color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),
-    radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),
-    var(--bg);
-  letter-spacing:-.02em;-webkit-font-smoothing:antialiased
-}
-button,input,select{font:inherit}
-button{color:inherit}
-.app{max-width:1500px;margin:auto;padding:22px 28px 44px}
-.topbar{
-  min-height:76px;display:flex;align-items:center;gap:22px;padding:0 4px 20px;
-  position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(8,9,13,.96) 72%,transparent);
-  backdrop-filter:blur(18px)
-}
-.brand{display:flex;align-items:center;gap:13px;min-width:250px}
-.brand-mark{
-  width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
-  background:linear-gradient(145deg,#8c6cff,#6545ed);box-shadow:0 12px 28px rgba(124,92,255,.27)
-}
-.brand-title{font-size:20px;font-weight:850;line-height:1.05}
-.brand-sub{margin-top:5px;color:var(--sub);font-size:12px;font-weight:600}
-.nav{
-  margin:auto;display:flex;align-items:center;padding:5px;background:rgba(16,18,25,.92);
-  border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)
-}
-.nav button{
-  border:0;background:transparent;color:var(--sub);height:42px;padding:0 18px;border-radius:11px;
-  display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;cursor:pointer;transition:.18s
-}
-.nav button:hover{color:#fff;background:rgba(255,255,255,.035)}
-.nav button.on{color:#fff;background:var(--surface3);box-shadow:inset 0 0 0 1px #34394c,0 5px 16px rgba(0,0,0,.2)}
-.top-action{
-  min-width:250px;display:flex;justify-content:flex-end
-}
-.top-action button{
-  height:43px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);
-  background:#12151e;font-weight:700;cursor:pointer
-}
-.view{display:none}.view.on{display:block}
-.workspace{display:grid;grid-template-columns:390px minmax(0,1fr);gap:24px;align-items:start}
-.left{display:flex;flex-direction:column;gap:14px}
-.panel,.preview-panel{
-  background:linear-gradient(180deg,rgba(20,23,32,.98),rgba(14,16,23,.98));
-  border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 44px rgba(0,0,0,.18)
-}
-.panel{padding:20px}
-.panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px}
-.step{color:var(--purple2);font-size:11px;font-weight:850;letter-spacing:.07em}
-.panel-title{font-size:16px;font-weight:800;margin-top:5px}
-.more{font-size:12px;color:var(--sub)}
-.field{margin-bottom:14px}.field:last-child{margin-bottom:0}
-.label{display:flex;justify-content:space-between;margin-bottom:7px;color:#b8bfd0;font-size:12px;font-weight:700}
-.count{color:var(--muted);font-weight:600}
-.input,.select{
-  width:100%;height:49px;border:1px solid var(--line2);border-radius:13px;background:#0d1017;color:#fff;
-  padding:0 14px;outline:none;transition:.18s
-}
-.input::placeholder{color:#535b6d}.input:focus,.select:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.14)}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.segment{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;padding:5px;border:1px solid var(--line);border-radius:13px;background:#0d1017}
-.segment.wrap{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}
-.segment button{
-  height:38px;border:0;border-radius:9px;background:transparent;color:var(--sub);font-size:12px;font-weight:750;cursor:pointer
-}
-.segment button.on{background:#222738;color:#fff;box-shadow:inset 0 0 0 1px #383e52}
-.minilabel{font-size:12px;color:#b8bfd0;font-weight:700;margin:18px 0 10px}
-.minilabel:first-child{margin-top:0}
-.chips{display:flex;gap:11px;flex-wrap:wrap}
-.chip{width:29px;height:29px;border-radius:9px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);transition:.18s}
-.chip:hover{transform:translateY(-2px)}.chip.on{outline:2px solid #fff;outline-offset:3px}
-.switchrow{display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:13px;font-weight:700}
-.switch{width:44px;height:25px;position:relative}.switch input{display:none}
-.switch span{position:absolute;inset:0;background:#2a3040;border-radius:30px;cursor:pointer;transition:.2s}
-.switch span:after{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
-.switch input:checked+span{background:var(--purple)}.switch input:checked+span:after{transform:translateX(19px)}
-.upload{
-  height:62px;border:1px dashed #3a4054;border-radius:14px;background:#0d1017;
-  display:flex;align-items:center;gap:12px;padding:0 14px;cursor:pointer
-}
-.upload:hover{border-color:var(--purple);background:rgba(124,92,255,.045)}
-.upload-icon{width:35px;height:35px;border-radius:10px;background:#202536;display:grid;place-items:center;color:#c7cdde}
-.upload strong{font-size:12px}.upload small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
-.preview-panel{padding:18px;position:sticky;top:100px}
-.preview-head{display:flex;align-items:center;justify-content:space-between;padding:2px 3px 16px}
-.preview-name{font-size:14px;font-weight:800}.preview-note{font-size:11px;color:var(--muted)}
-.stage{
-  min-height:570px;border:1px solid #202432;border-radius:18px;background:
-  linear-gradient(45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,
-  linear-gradient(-45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,
-  linear-gradient(45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,
-  linear-gradient(-45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,#0e1118;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:38px
-}
-.actions{display:flex;gap:9px;justify-content:center;padding-top:16px;flex-wrap:wrap}
-.btn{height:46px;padding:0 17px;border-radius:12px;border:1px solid var(--line2);background:#151924;font-weight:800;font-size:13px;cursor:pointer}
-.btn.primary{border:0;background:linear-gradient(135deg,#8767ff,#6949ed);box-shadow:0 11px 26px rgba(124,92,255,.25)}
-.btn:hover{transform:translateY(-1px)}
-.hint{padding-top:12px;text-align:center;color:var(--muted);font-size:11px}
-.template-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.template{aspect-ratio:1.55;border:2px solid var(--line2);border-radius:10px;cursor:pointer;position:relative;overflow:hidden}
-.template.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.12)}
-.template span{position:absolute;left:0;right:0;bottom:0;padding:4px;background:rgba(0,0,0,.5);text-align:center;font-size:9px;font-weight:700}
-
-/* banner */
-.banner{width:100%;max-width:720px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;position:relative;color:#fff;box-shadow:var(--shadow)}
-.banner.sq{max-width:520px;aspect-ratio:1}.banner.story{max-width:440px;aspect-ratio:4/5}.banner.wide{aspect-ratio:16/9}
-.banner:before{content:"";position:absolute;width:62%;aspect-ratio:1;border-radius:50%;right:-16%;top:-35%;background:rgba(255,255,255,.13)}
-.banner:after{content:"";position:absolute;width:38%;aspect-ratio:1;border-radius:50%;right:15%;bottom:-28%;background:rgba(255,255,255,.08)}
-.banner-inner{position:absolute;inset:0;padding:7%;display:flex;flex-direction:column;justify-content:space-between;z-index:2}
-.badge{align-self:flex-start;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.12);backdrop-filter:blur(8px);font-size:12px;font-weight:800}
-.headline{font-size:clamp(30px,5.3vw,62px);font-weight:950;line-height:1.02;letter-spacing:-.055em;max-width:80%;text-shadow:0 6px 24px rgba(0,0,0,.2)}
-.subline{font-size:clamp(13px,1.8vw,19px);font-weight:650;margin-top:12px}
-.banner-bottom{display:flex;align-items:flex-end;justify-content:space-between}
-.pill{background:#fff;color:#111522;padding:9px 15px;border-radius:999px;font-size:12px;font-weight:900}
-.phone{font-size:13px;font-weight:800}
-
-/* coupon */
-.coupon{width:100%;max-width:760px;aspect-ratio:2.45/1;display:grid;grid-template-columns:1.05fr 1.45fr .86fr;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);position:relative}
-.cp-a,.cp-c{background:var(--cp-bg);color:var(--cp-ink);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px}
-.cp-b{background:var(--cp-accent);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px}
-.cp-eyebrow{font-size:10px;font-weight:900;letter-spacing:.2em;color:var(--cp-accent)}
-.cp-title{font-size:clamp(18px,2.8vw,29px);font-weight:950;line-height:1.13;margin-top:10px}
-.cp-value{font-size:clamp(48px,8vw,88px);font-weight:950;line-height:.9}.cp-unit{font-size:28px}
-.cp-cond{font-size:14px;font-weight:750;margin-top:10px}.cp-valid{font-size:11px;margin-top:10px;padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px}
-.qrbox{width:88px;height:88px;background:#fff;padding:5px;border-radius:10px}.qrbox canvas,.qrbox img{width:100%!important;height:100%!important}
-.cp-c strong{font-size:12px;letter-spacing:.14em;color:var(--cp-accent);margin-bottom:12px}.cp-c small{font-size:9px;color:var(--cp-sub);margin-top:9px}
-
-/* cards */
-.card-preview{width:100%;max-width:610px;aspect-ratio:1.8;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);position:relative;font-family:var(--nc-font)}
-.nc-front{display:grid;grid-template-columns:.95fr 1.35fr;background:#fff;color:#151923}
-.nc-left{padding:30px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #eceef3}
-.nc-logo{width:56px;height:56px;border-radius:15px;background:var(--nc-accent);display:grid;place-items:center;color:#fff;margin-bottom:18px}
-.nc-logo img{width:100%;height:100%;object-fit:cover;border-radius:15px}
-.nc-company{font-size:20px;font-weight:900}.nc-company-sub{font-size:9px;color:#8991a1;margin-top:5px;letter-spacing:.08em}
-.nc-right{padding:30px;display:flex;flex-direction:column;justify-content:center;position:relative}
-.nc-name{font-size:24px;font-weight:900;letter-spacing:.05em}.nc-role{font-size:11px;color:#687083;margin-left:7px}
-.nc-lines{margin-top:15px;display:flex;flex-direction:column;gap:7px;font-size:11px;color:#3c4350}
-.nc-qr{position:absolute;right:20px;bottom:20px;width:58px;height:58px;padding:4px;background:#fff;border:1px solid var(--nc-accent);border-radius:8px}
-.nc-qr canvas,.nc-qr img{width:100%!important;height:100%!important}
-.nc-back{background:var(--nc-accent);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.nc-back:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.13),transparent 40%)}
-.nc-back>*{position:relative}.nc-back strong{font-size:25px}.nc-back span{font-size:11px;opacity:.78;margin-top:8px}
-.side-label{font-size:11px;color:var(--muted);margin-bottom:-14px}
-
-/* menu */
-.menu-board{width:100%;max-width:620px;min-height:760px;background:#f7f3eb;color:#25211d;border-radius:12px;padding:48px;box-shadow:var(--shadow)}
-.menu-top{text-align:center;border-bottom:1px solid #cfc7b8;padding-bottom:25px;margin-bottom:28px}
-.menu-top small{font-size:10px;letter-spacing:.22em;color:#8a7d6d;font-weight:800}.menu-top h2{font-size:40px;margin:8px 0 5px}.menu-top p{font-size:12px;color:#82796e}
-.menu-list{display:flex;flex-direction:column;gap:20px}.menu-item{display:grid;grid-template-columns:1fr auto;gap:6px 18px}
-.menu-item strong{font-size:17px}.menu-item b{font-size:17px;color:var(--menu-accent)}.menu-item span{grid-column:1/3;color:#857b70;font-size:11px}
-.menu-foot{text-align:center;margin-top:40px;padding-top:22px;border-top:1px solid #cfc7b8;color:#817668;font-size:11px}
-
-/* menu — layout picker */
-.layout-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
-.layout-row::-webkit-scrollbar{height:6px}.layout-row::-webkit-scrollbar-thumb{background:#2a3040;border-radius:6px}
-.layout-card{flex:0 0 130px;border:2px solid var(--line2);border-radius:14px;background:#0d1017;cursor:pointer;overflow:hidden;position:relative;transition:transform .2s cubic-bezier(.2,.7,.3,1),border-color .2s,box-shadow .2s}
-.layout-card:hover{transform:translateY(-4px) scale(1.02);border-color:#4a4170}
-.layout-card.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.2),0 16px 34px rgba(124,92,255,.25)}
-.layout-card .lc-thumb{height:84px;background:#f7f3eb;padding:11px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
-.layout-card .lc-name{padding:8px 10px;font-size:11px;font-weight:750;color:#cfd4e2;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.layout-card .lc-check{width:16px;height:16px;border-radius:50%;background:var(--purple);display:none;place-items:center;font-size:9px;color:#fff;flex:none}
-.layout-card.on .lc-check{display:grid}
-.t-line{height:5px;border-radius:2px;background:#cabfa8}
-.t-row{display:flex;justify-content:space-between;gap:6px}.t-row .t-line{flex:1}.t-row .t-line.s{flex:0 0 20px;background:var(--purple)}
-.t-head{height:7px;width:52%;margin:0 auto 3px;border-radius:2px;background:#a89a80}
-.t-col{display:grid;grid-template-columns:1fr 1fr;gap:5px 8px}
-.t-pic{height:20px;border-radius:3px;background:#d8cdb6}
-.lc-thumb.dark{background:#191d29}.lc-thumb.dark .t-line{background:#39405a}.lc-thumb.dark .t-head{background:#4a5170}
-.lc-thumb.ai{background:linear-gradient(135deg,#251e50,#12122a);align-items:center;justify-content:center;color:#b9a9ff;font-size:20px;font-weight:900}
-
-/* menu — dynamic form */
-.mform-cat{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px;background:#0c0f16}
-.mform-cat-head{display:flex;gap:8px;margin-bottom:10px}
-.mform-cat-head .input{height:40px;font-weight:800}
-.mitem{display:grid;grid-template-columns:1fr 96px 32px;gap:7px;margin-bottom:7px}
-.mitem.photo{grid-template-columns:46px 1fr 90px 32px}
-.icon-btn{border:1px solid var(--line2);border-radius:10px;background:#151924;color:var(--danger);cursor:pointer;font-size:17px;line-height:1}
-.icon-btn:hover{border-color:var(--danger);background:rgba(255,101,119,.08)}
-.mphoto{height:47px;border-radius:10px;border:1px dashed #3a4054;background:#0d1017;display:grid;place-items:center;color:#687083;cursor:pointer;overflow:hidden;font-size:16px}
-.mphoto img{width:100%;height:100%;object-fit:cover}
-.mdesc{margin-bottom:11px}
-.add-btn{width:100%;height:41px;border:1px dashed #3a4054;border-radius:11px;background:transparent;color:var(--purple2);font-weight:800;cursor:pointer;font-size:12px;transition:.18s}
-.add-btn:hover{background:rgba(124,92,255,.06);border-color:var(--purple)}
-.add-cat{margin-top:2px}
-.ai-hint{font-size:12px;color:var(--sub);line-height:1.7;padding:2px 2px 12px;border-bottom:1px solid var(--line);margin-bottom:12px}
-
-/* menu — layout previews */
-.menu-board.hair .mh-cat{margin-bottom:24px}
-.menu-board.hair .mh-cat h3{font-size:14px;letter-spacing:.16em;color:var(--menu-accent);border-bottom:2px solid var(--menu-accent);padding-bottom:7px;margin:0 0 12px;font-weight:900}
-.menu-board.hair .mh-row{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px dashed #d8cfbe}
-.menu-board.hair .mh-row b{color:#25211d;font-weight:800}
-.menu-board.twocol .menu-list{display:grid;grid-template-columns:1fr 1fr;gap:16px 32px}
-.menu-board.photo .pg{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.menu-board.photo .pg-card{display:flex;flex-direction:column;gap:7px}
-.menu-board.photo .pg-img{aspect-ratio:1.35;border-radius:11px;background:#e6ddca center/cover no-repeat;display:grid;place-items:center;color:#a89b82;font-size:11px}
-.menu-board.photo .pg-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.menu-board.photo .pg-top strong{font-size:15px}.menu-board.photo .pg-top b{color:var(--menu-accent);font-weight:900}
-.menu-board.photo .pg-desc{font-size:11px;color:#857b70}
-.menu-board.ai-board{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
-.menu-board.ai-board .ai-badge{font-size:11px;font-weight:900;letter-spacing:.2em;color:#7c5cff}
-
-@media(max-width:1050px){
-  .topbar{flex-wrap:wrap;position:relative}.brand,.top-action{min-width:0}.nav{order:3;width:100%;overflow:auto}.nav button{flex:1;justify-content:center}
-  .workspace{grid-template-columns:1fr}.preview-panel{position:relative;top:0}
-}
-@media(max-width:650px){
-  .app{padding:14px}.top-action{display:none}.brand-sub{font-size:11px}.nav button{padding:0 12px;font-size:12px}
-  .row2{grid-template-columns:1fr}.stage{padding:20px;min-height:430px}.coupon{grid-template-columns:1fr;aspect-ratio:auto}.cp-a,.cp-b,.cp-c{min-height:170px}
-  .card-preview{max-width:100%}.nc-left,.nc-right{padding:18px}.nc-lines{font-size:8px}.nc-name{font-size:18px}.menu-board{padding:28px 22px;min-height:650px}
-}
+:root{--bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;--line:#252938;--line2:#34394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;--purple:#7c5cff;--purple2:#9a7cff;--danger:#ff6577;--shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}body{color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),var(--bg);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:1540px;margin:auto;padding:22px 28px 44px}.topbar{min-height:76px;display:flex;align-items:center;gap:22px;padding:0 4px 20px;position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(8,9,13,.96) 72%,transparent);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:13px;min-width:250px}.brand-mark{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#8c6cff,#6545ed);box-shadow:0 12px 28px rgba(124,92,255,.27)}.brand-title{font-size:20px;font-weight:850;line-height:1.05}.brand-sub{margin-top:5px;color:var(--sub);font-size:12px;font-weight:600}
+.nav{margin:auto;display:flex;align-items:center;padding:5px;background:rgba(16,18,25,.92);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}.nav button{border:0;background:transparent;color:var(--sub);height:42px;padding:0 18px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;transition:.18s}.nav button.on{color:#fff;background:var(--surface3);box-shadow:inset 0 0 0 1px #34394c}.top-action{min-width:250px;display:flex;justify-content:flex-end}.top-action button{height:43px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:#12151e;font-weight:700}
+.view{display:none}.view.on{display:block}.workspace{display:grid;grid-template-columns:410px minmax(0,1fr);gap:24px;align-items:start}.left{display:flex;flex-direction:column;gap:14px}.panel,.preview-panel{background:linear-gradient(180deg,rgba(20,23,32,.98),rgba(14,16,23,.98));border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 44px rgba(0,0,0,.18)}.panel{padding:20px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}.step{color:var(--purple2);font-size:11px;font-weight:850;letter-spacing:.07em}.panel-title{font-size:16px;font-weight:800;margin-top:5px}.field{margin-bottom:14px}.field:last-child{margin-bottom:0}.label{display:flex;justify-content:space-between;margin-bottom:7px;color:#b8bfd0;font-size:12px;font-weight:700}.input,.select,.textarea{width:100%;border:1px solid var(--line2);border-radius:13px;background:#0d1017;color:#fff;padding:0 14px;outline:none;transition:.18s}.input,.select{height:49px}.textarea{min-height:86px;padding:13px 14px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.14)}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.segment{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;padding:5px;border:1px solid var(--line);border-radius:13px;background:#0d1017}.segment.wrap{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}.segment button{height:38px;border:0;border-radius:9px;background:transparent;color:var(--sub);font-size:12px;font-weight:750;cursor:pointer}.segment button.on{background:#222738;color:#fff;box-shadow:inset 0 0 0 1px #383e52}.chips{display:flex;gap:11px;flex-wrap:wrap}.chip{width:29px;height:29px;border-radius:9px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}.chip.on{outline:2px solid #fff;outline-offset:3px}.btn{height:46px;padding:0 17px;border-radius:12px;border:1px solid var(--line2);background:#151924;font-weight:800;font-size:13px;cursor:pointer}.btn.primary{border:0;background:linear-gradient(135deg,#8767ff,#6949ed);box-shadow:0 11px 26px rgba(124,92,255,.25)}.btn.ghost{height:39px}.btn.danger{border-color:#5b2730;color:#ff8b98;background:#261318}.preview-panel{padding:18px;position:sticky;top:100px}.preview-head{display:flex;align-items:center;justify-content:space-between;padding:2px 3px 14px}.preview-name{font-size:14px;font-weight:800}.preview-note{font-size:11px;color:var(--muted)}.stage{min-height:590px;border:1px solid #202432;border-radius:18px;background:linear-gradient(45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,linear-gradient(-45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,linear-gradient(45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,linear-gradient(-45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,#0e1118;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:30px;overflow:auto}.actions{display:flex;gap:9px;justify-content:center;padding-top:16px;flex-wrap:wrap}
+.template-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.template-card{position:relative;min-height:118px;border:2px solid var(--line2);border-radius:14px;background:#0d1017;padding:10px;cursor:pointer;overflow:hidden}.template-card.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.12)}.template-card.on:after{content:"✓";position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--purple);font-size:12px;font-weight:900}.tpl-mini{height:70px;border-radius:9px;margin-bottom:8px;background:#eee;overflow:hidden;position:relative}.tpl-name{font-size:12px;font-weight:800}.tpl-tag{font-size:10px;color:var(--muted);margin-top:3px}.more-btn{width:100%;margin-top:10px}
+.editor-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#0d1017;margin-bottom:14px}.editor-toolbar .group{display:flex;align-items:center;gap:7px}.editor-toolbar label{font-size:11px;color:var(--sub);font-weight:700}.editor-toolbar input[type=number]{width:72px;height:36px;border:1px solid var(--line2);border-radius:9px;background:#131722;color:#fff;padding:0 9px}.editor-toolbar button{height:36px;padding:0 11px;border:1px solid var(--line2);border-radius:9px;background:#171b26;font-size:12px;font-weight:750}.edit-element{position:relative;cursor:move}.edit-element.selected{outline:2px dashed var(--purple);outline-offset:4px}
+.section-box{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px;background:#0d1017}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.section-title{font-size:13px;font-weight:850}.section-actions{display:flex;gap:6px}.section-actions button{height:31px;padding:0 9px;border-radius:8px;border:1px solid var(--line2);background:#161a24;font-size:11px}.item-row{display:grid;grid-template-columns:1fr 120px 34px;gap:7px;margin-bottom:7px}.item-row.desc{grid-template-columns:1fr 120px 34px}.item-row input{height:42px}.remove-x{border:1px solid #4b2830;background:#241318;border-radius:9px;color:#ff8b98}.add-row{width:100%;height:38px;border:1px dashed #434a60;border-radius:10px;background:#11151e;color:#bbb;font-size:12px;font-weight:750}
+.right-controls{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:0 2px 14px}.color-wrap{display:flex;align-items:center;gap:10px}.color-wrap strong{font-size:12px}.color-wrap .chips{gap:8px}.color-wrap .chip{width:24px;height:24px;border-radius:7px}
+.banner{width:100%;max-width:720px;aspect-ratio:16/9;border-radius:22px;overflow:hidden;position:relative;color:#fff;box-shadow:var(--shadow)}.banner-inner{position:absolute;inset:0;padding:7%;display:flex;flex-direction:column;justify-content:space-between}.badge{align-self:flex-start;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.12);font-size:12px;font-weight:800}.headline{font-size:54px;font-weight:950;line-height:1.02;max-width:80%}.subline{font-size:18px;margin-top:12px}.banner-bottom{display:flex;justify-content:space-between}.pill{background:#fff;color:#111;padding:9px 15px;border-radius:999px;font-size:12px;font-weight:900}
+.menu-board{--menu-accent:#bd8454;width:100%;max-width:620px;min-height:780px;background:#f7f3eb;color:#25211d;border-radius:12px;padding:48px;box-shadow:var(--shadow);position:relative;overflow:hidden}.menu-board.dark{background:#111;color:#f7f1e7}.menu-board.green{background:#edf2e8}.menu-board.blush{background:#f7ecee}.menu-board.blue{background:#eef3f8}.menu-top{text-align:center;border-bottom:1px solid rgba(80,70,60,.25);padding-bottom:24px;margin-bottom:28px}.menu-kicker{font-size:10px;letter-spacing:.22em;color:var(--menu-accent);font-weight:900}.menu-top h2{font-size:40px;margin:8px 0 5px}.menu-top p{font-size:12px;opacity:.62}.menu-columns{display:grid;gap:22px}.menu-columns.c1{grid-template-columns:1fr}.menu-columns.c2{grid-template-columns:1fr 1fr}.menu-columns.c3{grid-template-columns:repeat(3,1fr)}.menu-section h3{font-size:15px;letter-spacing:.08em;color:var(--menu-accent);padding-bottom:7px;border-bottom:2px solid var(--menu-accent);margin:0 0 13px}.menu-item{display:grid;grid-template-columns:1fr auto;gap:5px 14px;margin-bottom:15px}.menu-item strong,.menu-item b{font-size:15px}.menu-item b{color:var(--menu-accent)}.menu-item span{grid-column:1/3;font-size:10px;opacity:.57}.menu-foot{text-align:center;margin-top:34px;padding-top:20px;border-top:1px solid rgba(80,70,60,.25);font-size:11px;opacity:.65}
+.coupon{width:100%;max-width:760px;min-height:300px;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);position:relative}.coupon .cp-title{white-space:pre-line}.coupon.discount{display:grid;grid-template-columns:1.05fr 1.45fr .86fr}.coupon.discount .cp-a,.coupon.discount .cp-c{background:#f3eee4;color:#28231f}.coupon.discount .cp-b{background:var(--cp-accent);color:#fff}.cp-a,.cp-b,.cp-c{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px}.cp-eyebrow{font-size:10px;font-weight:900;letter-spacing:.2em;color:var(--cp-accent)}.cp-title{font-size:28px;font-weight:950;line-height:1.15;margin-top:10px}.cp-value{font-size:76px;font-weight:950;line-height:.9}.cp-unit{font-size:28px}.cp-cond{font-size:14px;font-weight:750;margin-top:10px}.cp-valid{font-size:11px;margin-top:10px;padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px}.qrbox{width:82px;height:82px;background:#fff;padding:5px;border-radius:10px}.qrbox canvas,.qrbox img{width:100%!important;height:100%!important}
+.coupon.amount{background:linear-gradient(135deg,#171923,#2b1f20);color:#fff;display:grid;grid-template-columns:1.2fr .8fr;padding:34px}.coupon.amount .cp-title{text-align:left;font-size:34px;margin:0}.coupon.amount .amount-value{font-size:72px;font-weight:950;color:#ffc65b}.coupon.amount .right{display:flex;align-items:center;justify-content:center;flex-direction:column;border-left:1px dashed rgba(255,255,255,.25)}.coupon.visit{background:#fff0f4;color:#44252f;padding:34px;display:flex;align-items:center;justify-content:space-between}.coupon.visit .stamp-row{display:flex;gap:10px}.coupon.visit .stamp{width:48px;height:48px;border-radius:50%;border:2px solid var(--cp-accent);display:grid;place-items:center;font-weight:900}.coupon.stamp{background:#f6f0df;color:#2b281f;padding:32px}.coupon.stamp .stamp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:24px}.coupon.stamp .stamp-cell{aspect-ratio:1;border-radius:50%;border:2px dashed var(--cp-accent);display:grid;place-items:center;font-size:11px}.coupon.free{background:linear-gradient(135deg,#e5f5ed,#d5ece0);color:#183627;padding:34px;display:grid;grid-template-columns:1fr .75fr}.coupon.free .gift{display:grid;place-items:center;font-size:90px}
+.card-preview{--nc-accent:#7657ff;width:100%;max-width:610px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);position:relative}.card-preview.horizontal{aspect-ratio:1.8}.card-preview.vertical{max-width:380px;aspect-ratio:.62}.nc-front{display:grid;background:#fff;color:#151923}.horizontal.nc-front{grid-template-columns:.95fr 1.35fr}.vertical.nc-front{grid-template-rows:.8fr 1.2fr}.nc-left{padding:28px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #eceef3}.vertical .nc-left{border-right:0;border-bottom:1px solid #eceef3;align-items:center;text-align:center}.nc-logo{width:56px;height:56px;border-radius:15px;background:var(--nc-accent);display:grid;place-items:center;color:#fff;margin-bottom:16px;overflow:hidden}.nc-logo img{width:100%;height:100%;object-fit:cover}.nc-company{font-size:20px;font-weight:900}.nc-right{padding:28px;display:flex;flex-direction:column;justify-content:center;position:relative}.nc-name{font-size:24px;font-weight:900}.nc-role{font-size:11px;color:#687083;margin-left:7px}.nc-lines{margin-top:15px;display:flex;flex-direction:column;gap:7px;font-size:11px;color:#3c4350}.nc-qr{position:absolute;right:18px;bottom:18px;width:58px;height:58px;padding:4px;background:#fff;border:1px solid var(--nc-accent);border-radius:8px}.nc-back{background:var(--nc-accent);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}.photo-card{display:grid;background:#fff;color:#111}.horizontal.photo-card{grid-template-columns:.9fr 1.1fr}.vertical.photo-card{grid-template-rows:1.15fr .85fr}.photo-area{background:#e8e9ef;min-height:210px}.photo-area img{width:100%;height:100%;object-fit:cover}.photo-info{padding:28px;display:flex;flex-direction:column;justify-content:center}.photo-info .nc-name{font-size:28px}.photo-upload-wrap{display:none}
+@media(max-width:1050px){.topbar{flex-wrap:wrap;position:relative}.brand,.top-action{min-width:0}.nav{order:3;width:100%;overflow:auto}.workspace{grid-template-columns:1fr}.preview-panel{position:relative;top:0}}
+@media(max-width:650px){.app{padding:14px}.top-action{display:none}.row2{grid-template-columns:1fr}.stage{padding:16px;min-height:430px}.template-grid{grid-template-columns:1fr 1fr}.menu-board{padding:28px 20px;min-height:650px}.menu-columns.c3{grid-template-columns:1fr 1fr}.coupon.discount{grid-template-columns:1fr}.coupon.amount,.coupon.free{grid-template-columns:1fr}.coupon.visit{flex-direction:column;gap:20px}.item-row{grid-template-columns:1fr 95px 34px}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark">
-        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/><path d="M5 4h5M7.5 1.5v5"/></svg>
-      </div>
-      <div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div>
-    </div>
-    <nav class="nav">
-      <button class="on" data-tab="banner">홍보 배너</button>
-      <button data-tab="menu">메뉴판·가격표</button>
-      <button data-tab="coupon">쿠폰</button>
-      <button data-tab="card">명함</button>
-    </nav>
-    <div class="top-action"><button>내 디자인 보관함</button></div>
-  </header>
+<header class="topbar">
+<div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div></div>
+<nav class="nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
+<div class="top-action"><button>내 디자인 보관함</button></div>
+</header>
 
-  <section class="view on" id="view-banner">
-    <div class="workspace">
-      <div class="left">
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">업종 선택</div></div></div>
-          <select class="select" id="bizSelect"></select>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">홍보 문구 입력</div></div></div>
-          <div class="field"><div class="label"><span>가게 이름</span><span class="count" id="c_shop"></span></div><input class="input" id="shop" maxlength="20" value="행복 헤어살롱"></div>
-          <div class="field"><div class="label"><span>메인 문구</span><span class="count" id="c_headline"></span></div><input class="input" id="headline" maxlength="20" value="오픈 기념 30% 할인"></div>
-          <div class="field"><div class="label"><span>보조 문구</span><span class="count" id="c_sub"></span></div><input class="input" id="sub" maxlength="30" value="지금 예약하면 사은품 증정!"></div>
-          <div class="row2">
-            <div class="field"><div class="label"><span>강조 문구</span><span class="count" id="c_tag"></span></div><input class="input" id="tag" maxlength="10" value="선착순 50명"></div>
-            <div class="field"><div class="label"><span>연락처</span><span class="count" id="c_info"></span></div><input class="input" id="info" maxlength="13" value="010-1234-5678"></div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">디자인 설정</div></div></div>
-          <div class="minilabel">테마 컬러</div><div class="chips" id="bannerChips"></div>
-          <div class="minilabel">이미지 비율</div>
-          <div class="segment" id="bannerSize"><button data-size="sq">정사각형</button><button data-size="story">세로형</button><button class="on" data-size="wide">가로형</button></div>
-        </div>
-      </div>
-      <div class="preview-panel">
-        <div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div><div class="preview-note">입력 즉시 반영됩니다</div></div>
-        <div class="stage">
-          <div class="banner wide" id="banner">
-            <div class="banner-inner">
-              <span class="badge" id="bCat">헤어샵</span>
-              <div><div class="headline" id="bHead">오픈 기념 30% 할인</div><div class="subline" id="bSub">지금 예약하면 사은품 증정!</div></div>
-              <div class="banner-bottom"><span class="pill" id="bTag">선착순 50명</span><span class="phone" id="bInfo">010-1234-5678</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="actions"><button class="btn">템플릿 다운로드</button><button class="btn primary">이미지 저장 PNG</button></div>
-        <div class="hint">저장 전 문구와 연락처를 한 번 더 확인해주세요.</div>
-      </div>
-    </div>
-  </section>
+<section class="view on" id="view-banner"><div class="workspace"><div class="left">
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">업종 선택</div></div></div><select class="select" id="bizSelect"></select></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">홍보 문구 입력</div></div></div>
+<div class="field"><div class="label">가게 이름</div><input class="input" id="shop" value="행복 헤어살롱"></div><div class="field"><div class="label">메인 문구</div><input class="input" id="headline" value="오픈 기념 30% 할인"></div><div class="field"><div class="label">보조 문구</div><input class="input" id="sub" value="지금 예약하면 사은품 증정!"></div><div class="row2"><div class="field"><div class="label">강조 문구</div><input class="input" id="tag" value="선착순 50명"></div><div class="field"><div class="label">연락처</div><input class="input" id="info" value="010-1234-5678"></div></div></div>
+</div><div class="preview-panel"><div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge" id="bCat">헤어샵</span><div><div class="headline" id="bHead">오픈 기념 30% 할인</div><div class="subline" id="bSub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill" id="bTag">선착순 50명</span><span id="bInfo">010-1234-5678</span></div></div></div></div></div></div></section>
 
-  <section class="view" id="view-menu">
-    <div class="workspace">
-      <div class="left">
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">가게 기본 정보</div></div></div>
-          <div class="field"><div class="label">가게 이름</div><input class="input" id="menuShop" value="오늘의 카페"></div>
-          <div class="field"><div class="label">소개 문구</div><input class="input" id="menuDesc" value="매일 신선한 원두로 정성껏 준비합니다"></div>
-          <div class="field"><div class="label">연락처</div><input class="input" id="menuPhone" value="010-1234-5678"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">레이아웃 선택</div></div><span class="more" id="menuLayoutName"></span></div>
-          <div class="layout-row" id="menuLayoutRow"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">메뉴 입력</div></div></div>
-          <div id="menuFormHost"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 04</div><div class="panel-title">포인트 색상</div></div></div>
-          <div class="chips" id="menuChips"></div>
-        </div>
-      </div>
-      <div class="preview-panel">
-        <div class="preview-head"><div class="preview-name">메뉴판 미리보기</div><div class="preview-note" id="menuNote">A4 세로형 기준</div></div>
-        <div class="stage"><div id="menuBoard"></div></div>
-        <div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div>
-      </div>
-    </div>
-  </section>
+<section class="view" id="view-menu"><div class="workspace"><div class="left">
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">기본 정보</div></div></div>
+<div class="field"><div class="label">상단 문구</div><input class="input" id="menuKicker" value="MENU & PRICE"></div>
+<div class="field"><div class="label">가게 이름</div><input class="input" id="menuShop" value="오늘의 카페"></div>
+<div class="field"><div class="label">소개 문구</div><input class="input" id="menuDesc" value="매일 신선한 원두로 정성껏 준비합니다"></div>
+<div class="field"><div class="label">하단 문구</div><input class="input" id="menuPhone" value="문의 010-1234-5678"></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">템플릿 선택</div></div></div><div class="template-grid" id="menuTemplates"></div><button class="btn ghost more-btn" id="menuMore">템플릿 더보기</button></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">메뉴 입력</div></div></div><div id="menuInputs"></div><button class="btn ghost" id="addSection">+ 카테고리 추가</button></div>
+</div><div class="preview-panel">
+<div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="menuChips"></div></div><button class="btn ghost" id="resetMenuEdit">편집 초기화</button></div>
+<div class="editor-toolbar" id="menuEditor"><div class="group"><label>선택 요소</label><span id="selectedName">없음</span></div><div class="group"><label>X</label><input type="number" id="editX" value="0"></div><div class="group"><label>Y</label><input type="number" id="editY" value="0"></div><div class="group"><label>크기</label><input type="number" id="editSize" value="100"></div><button id="alignLeft">왼쪽</button><button id="alignCenter">가운데</button><button id="alignRight">오른쪽</button></div>
+<div class="preview-head"><div class="preview-name">메뉴판 미리보기</div><div class="preview-note">요소를 클릭해 위치·크기 조정</div></div>
+<div class="stage"><div class="menu-board" id="menuBoard"><div class="menu-top edit-element" data-edit="header"><div class="menu-kicker" id="mvKicker">MENU & PRICE</div><h2 id="mvShop">오늘의 카페</h2><p id="mvDesc"></p></div><div class="menu-columns c1" id="menuList"></div><div class="menu-foot edit-element" data-edit="footer" id="mvPhone"></div></div></div>
+<div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 
-  <section class="view" id="view-coupon">
-    <div class="workspace">
-      <div class="left">
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">쿠폰 종류</div></div></div>
-          <div class="segment wrap" id="cpType"><button class="on" data-type="discount">할인 쿠폰</button><button data-type="amount">금액 쿠폰</button><button data-type="visit">방문 쿠폰</button><button data-type="stamp">스탬프</button><button data-type="free">무료 증정</button></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">쿠폰 내용</div></div></div>
-          <div class="field"><div class="label">상호명</div><input class="input" id="cpShop" value="디자인공방"></div>
-          <div class="field"><div class="label">쿠폰 제목</div><input class="input" id="cpTitle" value="오픈 기념 감사 쿠폰"></div>
-          <div class="field"><div class="label">할인 내용</div><input class="input" id="cpDiscount" value="10%"></div>
-          <div class="field"><div class="label">사용 조건</div><input class="input" id="cpCond" value="20,000원 이상 구매 시"></div>
-          <div class="row2"><div class="field"><div class="label">시작일</div><input class="input" type="date" id="cpFrom" value="2026-07-01"></div><div class="field"><div class="label">종료일</div><input class="input" type="date" id="cpTo" value="2026-08-31"></div></div>
-          <div class="field"><div class="label">QR 링크</div><input class="input" id="cpUrl" value="https://designgongbang.com"></div>
-          <div class="switchrow"><span>QR코드 표시</span><label class="switch"><input type="checkbox" id="cpQrOn" checked><span></span></label></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">쿠폰 스타일</div></div></div>
-          <div class="chips" id="cpChips"></div>
-        </div>
-      </div>
-      <div class="preview-panel">
-        <div class="preview-head"><div class="preview-name">쿠폰 미리보기</div><div class="preview-note">모바일 공유·인쇄용</div></div>
-        <div class="stage">
-          <div class="coupon" id="coupon">
-            <div class="cp-a"><div class="cp-eyebrow">SPECIAL COUPON</div><div class="cp-title" id="cpvTitle">오픈 기념<br>감사 쿠폰</div></div>
-            <div class="cp-b"><div><span class="cp-value" id="cpvNum">10</span><span class="cp-unit" id="cpvUnit">%</span></div><div class="cp-cond" id="cpvCond">20,000원 이상 구매 시</div><div class="cp-valid" id="cpvValid"></div></div>
-            <div class="cp-c"><strong>COUPON</strong><div class="qrbox" id="cpQr"></div><small>사용 시 직원에게 보여주세요</small></div>
-          </div>
-        </div>
-        <div class="actions"><button class="btn">인쇄용 PDF</button><button class="btn primary">이미지 저장 PNG</button></div>
-      </div>
-    </div>
-  </section>
+<section class="view" id="view-coupon"><div class="workspace"><div class="left">
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">쿠폰 종류</div></div></div><div class="segment wrap" id="cpType"><button class="on" data-type="discount">할인 쿠폰</button><button data-type="amount">금액 쿠폰</button><button data-type="visit">방문 쿠폰</button><button data-type="stamp">스탬프</button><button data-type="free">무료 증정</button></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">쿠폰 내용</div></div></div>
+<div class="field"><div class="label">상호명</div><input class="input" id="cpShop" value="디자인공방"></div><div class="field"><div class="label">쿠폰 제목</div><textarea class="textarea" id="cpTitle">오픈 기념
+감사 쿠폰</textarea></div><div class="field"><div class="label">혜택 내용</div><input class="input" id="cpDiscount" value="10%"></div><div class="field"><div class="label">사용 조건</div><input class="input" id="cpCond" value="20,000원 이상 구매 시"></div><div class="row2"><div class="field"><div class="label">시작일</div><input class="input" type="date" id="cpFrom" value="2026-07-01"></div><div class="field"><div class="label">종료일</div><input class="input" type="date" id="cpTo" value="2026-08-31"></div></div><div class="field"><div class="label">QR 링크</div><input class="input" id="cpUrl" value="https://designgongbang.com"></div></div>
+</div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="cpChips"></div></div></div><div class="preview-head"><div class="preview-name">쿠폰 미리보기</div><div class="preview-note">종류별 전용 디자인</div></div><div class="stage"><div class="coupon discount" id="coupon"></div></div><div class="actions"><button class="btn">인쇄용 PDF</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 
-  <section class="view" id="view-card">
-    <div class="workspace">
-      <div class="left">
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 템플릿</div></div><span class="more">전체 보기</span></div>
-          <div class="template-row" id="ncTpl">
-            <div class="template on" data-tpl="simple" style="background:#fff;color:#6750ef"><span>심플</span></div>
-            <div class="template" data-tpl="premium" style="background:#f5efe2;color:#a57838"><span>프리미엄</span></div>
-            <div class="template" data-tpl="dark" style="background:#171b25;color:#8767ff"><span>다크</span></div>
-            <div class="template" data-tpl="minimal" style="background:#e9edf4;color:#222"><span>미니멀</span></div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">명함 정보</div></div></div>
-          <div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div>
-          <div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="김우주"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div>
-          <div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div>
-          <div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div>
-          <div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div>
-          <div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="https://designgongbang.com"></div>
-          <div class="field"><div class="label">인스타그램</div><input class="input" id="ncInsta" value="@designgongbang"></div>
-          <div class="field"><div class="label">회사 로고</div><label class="upload" for="ncLogoFile"><span class="upload-icon">＋</span><span><strong>로고 이미지 선택</strong><small>PNG · JPG · 정사각형 권장</small></span></label><input hidden type="file" id="ncLogoFile" accept="image/*"></div>
-          <div class="switchrow"><span>QR코드 표시</span><label class="switch"><input type="checkbox" id="ncQrOn" checked><span></span></label></div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">디자인 설정</div></div></div>
-          <div class="minilabel">포인트 색상</div><div class="chips" id="ncChips"></div>
-          <div class="minilabel">앞·뒷면 보기</div><div class="segment" id="ncSide"><button class="on" data-side="both">전체</button><button data-side="front">앞면</button><button data-side="back">뒷면</button></div>
-        </div>
-      </div>
-      <div class="preview-panel">
-        <div class="preview-head"><div class="preview-name">명함 미리보기</div><div class="preview-note">표준 90 × 50mm</div></div>
-        <div class="stage">
-          <div class="side-label" id="frontLabel">앞면</div>
-          <div class="card-preview nc-front" id="ncFront">
-            <div class="nc-left"><div class="nc-logo" id="ncLogo">D</div><div class="nc-company" id="ncvCo">디자인공방</div><div class="nc-company-sub">DESIGN STUDIO</div></div>
-            <div class="nc-right"><div class="nc-name"><span id="ncvName">김우주</span><span class="nc-role" id="ncvRole">대표</span></div><div class="nc-lines"><span id="ncvMobile">010-1234-5678</span><span id="ncvEmail">design@designstudio.com</span><span id="ncvAddr">서울특별시 강남구 테헤란로 123</span><span id="ncvWeb">designgongbang.com</span><span id="ncvInsta">@designgongbang</span></div><div class="nc-qr" id="ncQr"></div></div>
-          </div>
-          <div class="side-label" id="backLabel">뒷면</div>
-          <div class="card-preview nc-back" id="ncBack"><strong id="ncvCoBack">디자인공방</strong><span>사장님의 브랜드를 더 빛나게</span></div>
-        </div>
-        <div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div>
-        <div class="hint">인쇄 전 사방 여백과 오탈자를 확인해주세요.</div>
-      </div>
-    </div>
-  </section>
+<section class="view" id="view-card"><div class="workspace"><div class="left">
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 형태</div></div></div>
+<div class="label">방향</div><div class="segment" id="ncOrientation"><button class="on" data-o="horizontal">가로형</button><button data-o="vertical">세로형</button></div>
+<div class="label" style="margin-top:14px">종류</div><div class="segment" id="ncKind"><button class="on" data-k="normal">일반 명함</button><button data-k="photo">포토 명함</button></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">템플릿 선택</div></div></div><div class="template-grid" id="ncTemplates"></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">명함 정보</div></div></div>
+<div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div><div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="김우주"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div><div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div><div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div><div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div><div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="designgongbang.com"></div>
+<div class="field photo-upload-wrap" id="photoWrap"><div class="label">프로필 사진</div><input class="input" type="file" id="ncPhoto" accept="image/*"></div></div>
+</div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="ncChips"></div></div></div><div class="preview-head"><div class="preview-name">명함 미리보기</div><div class="preview-note">가로·세로·포토 명함 지원</div></div><div class="stage"><div class="card-preview horizontal nc-front" id="ncFront"></div></div><div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 </div>
-
 <script>
-const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const VIEWS={banner:"view-banner",menu:"view-menu",coupon:"view-coupon",card:"view-card"};
-$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on");if(b.dataset.tab==="coupon")couponRender();if(b.dataset.tab==="card")cardRender();if(b.dataset.tab==="menu")menuRender()});
-
-const PALETTE=[["#7657ff","#4e76ff"],["#ef4f91","#8458e9"],["#ff9a31","#f04b4b"],["#1eac73","#42cf8d"],["#168fb3","#43c9dd"],["#2f5bea","#7138dd"],["#30384a","#111827"]];
+$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on")});
 const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f"];
+const BIZ=[["학원",["#4656e7","#7b45e8"]],["헬스장",["#1a1d25","#d13a45"]],["헤어샵",["#d94f92","#8057e8"]],["카페",["#85562e","#cb7f32"]],["음식점",["#f39b2e","#eb4b43"]],["기타",["#4a5365","#737d90"]]];
+BIZ.forEach((x,i)=>$("#bizSelect").insertAdjacentHTML("beforeend",`<option value="${i}" ${i===2?"selected":""}>${x[0]}</option>`));
+function bannerRender(){const i=+$("#bizSelect").value,g=BIZ[i][1];$("#banner").style.background=`linear-gradient(135deg,${g[0]},${g[1]})`;$("#bCat").textContent=BIZ[i][0];$("#bHead").textContent=$("#headline").value;$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value}
+["bizSelect","headline","sub","tag","info"].forEach(id=>$("#"+id).addEventListener("input",bannerRender));
 
-const BIZ=[
- {nm:"학원",g:["#4656e7","#7b45e8"]},{nm:"헬스장",g:["#1a1d25","#d13a45"]},{nm:"헤어샵",g:["#d94f92","#8057e8"]},
- {nm:"네일아트",g:["#f16eae","#e87a82"]},{nm:"휴대폰",g:["#4c6ff1","#7254f4"]},{nm:"음식점",g:["#f39b2e","#eb4b43"]},
- {nm:"카페",g:["#85562e","#cb7f32"]},{nm:"치킨",g:["#d43d38","#f0a32c"]},{nm:"병원·의원",g:["#277ab9","#36b2db"]},
- {nm:"꽃집",g:["#d34383","#9458d7"]},{nm:"세차·정비",g:["#354153","#2286ba"]},{nm:"기타",g:["#4a5365","#737d90"]}
+const menuTemplates=[
+{id:"simple1",name:"1단 심플형",tag:"기본 메뉴",cols:1,category:false,theme:"cream"},
+{id:"category1",name:"1단 카테고리형",tag:"분류별 가격표",cols:1,category:true,theme:"blush"},
+{id:"simple2",name:"2단 심플형",tag:"많은 메뉴",cols:2,category:false,theme:"green"},
+{id:"category2",name:"2단 카테고리형",tag:"분류별 2단",cols:2,category:true,theme:"dark"},
+{id:"simple3",name:"3단 심플형",tag:"컴팩트",cols:3,category:false,theme:"blue"},
+{id:"category3",name:"3단 카테고리형",tag:"분류별 3단",cols:3,category:true,theme:"cream"},
+{id:"photo",name:"사진형",tag:"사진 포함",cols:2,category:true,theme:"blush"},
+{id:"poster",name:"포스터형",tag:"강조형",cols:1,category:false,theme:"dark"}
 ];
-let bState={biz:BIZ[2],theme:null,size:"wide"};
-BIZ.forEach((x,i)=>{const o=document.createElement("option");o.value=i;o.textContent=x.nm;if(i===2)o.selected=true;$("#bizSelect").append(o)});
-$("#bizSelect").onchange=e=>{bState.biz=BIZ[e.target.value];bState.theme=null;bannerRender()};
-PALETTE.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=`linear-gradient(135deg,${c[0]},${c[1]})`;e.onclick=()=>{$$("#bannerChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");bState.theme=c;bannerRender()};$("#bannerChips").append(e)});
-$$("#bannerSize button").forEach(b=>b.onclick=()=>{$$("#bannerSize button").forEach(x=>x.classList.remove("on"));b.classList.add("on");bState.size=b.dataset.size;bannerRender()});
-["shop","headline","sub","tag","info"].forEach(id=>$("#"+id).addEventListener("input",bannerRender));
-function bannerRender(){
- const g=bState.theme||bState.biz.g, el=$("#banner");el.style.background=`linear-gradient(135deg,${g[0]},${g[1]})`;el.className="banner "+bState.size;
- $("#bCat").textContent=bState.biz.nm;$("#bHead").textContent=$("#headline").value||"메인 문구";$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;
- [["shop","c_shop"],["headline","c_headline"],["sub","c_sub"],["tag","c_tag"],["info","c_info"]].forEach(([a,b])=>$("#"+b).textContent=`${$("#"+a).value.length}/${$("#"+a).maxLength}`)
-}
-
-function makeQR(el,text,size=80){el.innerHTML="";if(!$("#cpQrOn")&&typeof QRCode==="undefined")return;try{new QRCode(el,{text:text||" ",width:size,height:size,colorDark:"#111",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.M})}catch(e){}}
-
-/* ===== menu — 레이아웃 구동형 엔진 =====
-   새 레이아웃 추가 = MENU_LAYOUTS 에 객체 1개 추가.
-   각 레이아웃: {label, thumb, def(), formHTML(d), collect(host,d), action(act,el,d), preview(base,d,accent), note?} */
-const esc=s=>(s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const menuState={layout:"cafe",accent:SOLID[2],data:{}};
-function menuBase(){return{shop:$("#menuShop").value,desc:$("#menuDesc").value,phone:$("#menuPhone").value}}
-function board(cls,b,inner,ac){return `<div class="menu-board ${cls}" style="--menu-accent:${ac}"><div class="menu-top"><small>MENU & PRICE</small><h2>${esc(b.shop)}</h2><p>${esc(b.desc)}</p></div>${inner}<div class="menu-foot">문의 ${esc(b.phone)}</div></div>`}
-
-// 평면 목록 폼(카페/2단/사진/AI 공용)
-const flatForm={
- formHTML(d){return d.items.map((it,i)=>`
-   <div class="mitem"><input class="input f-name" data-i="${i}" value="${esc(it.name)}" placeholder="메뉴명"><input class="input f-price" data-i="${i}" value="${esc(it.price)}" placeholder="가격"><button class="icon-btn" data-act="del" data-i="${i}">×</button></div>
-   <div class="field mdesc"><input class="input f-desc" data-i="${i}" value="${esc(it.desc)}" placeholder="설명 (선택)"></div>`).join("")+`<button class="add-btn" data-act="add">+ 메뉴 추가</button>`},
- collect(host,d){host.querySelectorAll(".f-name").forEach((n,i)=>d.items[i]&&(d.items[i].name=n.value));host.querySelectorAll(".f-price").forEach((n,i)=>d.items[i]&&(d.items[i].price=n.value));host.querySelectorAll(".f-desc").forEach((n,i)=>d.items[i]&&(d.items[i].desc=n.value))},
- action(a,el,d){const i=+el.dataset.i;if(a==="add")d.items.push({name:"",price:"",desc:"",img:null});if(a==="del")d.items.splice(i,1)}
-};
-const cafeItems=()=>({items:[["아메리카노","4,000원","깔끔하고 진한 풍미"],["카페라떼","4,800원","부드러운 우유와 에스프레소"],["바닐라라떼","5,300원","달콤한 바닐라 향"],["딸기 에이드","5,800원","상큼한 생딸기 에이드"],["크로플","6,500원","바삭한 크로플과 아이스크림"]].map(m=>({name:m[0],price:m[1],desc:m[2],img:null}))});
-const rowItem=it=>`<div class="menu-item"><strong>${esc(it.name)}</strong><b>${esc(it.price)}</b>${it.desc?`<span>${esc(it.desc)}</span>`:""}</div>`;
-
-const MENU_LAYOUTS={
- cafe:{
-  label:"심플 카페형",
-  thumb:`<div class="lc-thumb"><div class="t-head"></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div></div>`,
-  def:cafeItems, formHTML:flatForm.formHTML, collect:flatForm.collect, action:flatForm.action,
-  preview(b,d,ac){return board("",b,`<div class="menu-list">${d.items.map(rowItem).join("")}</div>`,ac)}
- },
- hair:{
-  label:"미용실 가격표형",
-  thumb:`<div class="lc-thumb"><div class="t-line s" style="width:34%"></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div><div class="t-line s" style="width:34%;margin-top:3px"></div><div class="t-row"><div class="t-line"></div><div class="t-line s"></div></div></div>`,
-  def(){return{cats:[
-    {name:"CUT",items:[{name:"학생컷",price:"13,000원"},{name:"남자컷",price:"15,000원"},{name:"여자컷",price:"20,000원"}]},
-    {name:"DRY",items:[{name:"남자 드라이",price:"15,000원"},{name:"여자 드라이",price:"20,000원"}]},
-    {name:"PERM",items:[{name:"일반 펌",price:"60,000원"},{name:"디지털 펌",price:"90,000원"}]},
-    {name:"COLOR",items:[{name:"전체 염색",price:"70,000원"},{name:"뿌리 염색",price:"50,000원"}]},
-    {name:"CLINIC",items:[{name:"두피 클리닉",price:"40,000원"}]}
-  ]}},
-  formHTML(d){return d.cats.map((c,ci)=>`
-    <div class="mform-cat">
-      <div class="mform-cat-head"><input class="input f-cat" data-ci="${ci}" value="${esc(c.name)}" placeholder="카테고리"><button class="icon-btn" data-act="delcat" data-ci="${ci}">×</button></div>
-      ${c.items.map((it,i)=>`<div class="mitem"><input class="input f-hname" data-ci="${ci}" data-i="${i}" value="${esc(it.name)}" placeholder="메뉴명"><input class="input f-hprice" data-ci="${ci}" data-i="${i}" value="${esc(it.price)}" placeholder="가격"><button class="icon-btn" data-act="delitem" data-ci="${ci}" data-i="${i}">×</button></div>`).join("")}
-      <button class="add-btn" data-act="additem" data-ci="${ci}">+ 메뉴 추가</button>
-    </div>`).join("")+`<button class="add-btn add-cat" data-act="addcat">+ 카테고리 추가</button>`},
-  collect(host,d){host.querySelectorAll(".f-cat").forEach(n=>{d.cats[+n.dataset.ci].name=n.value});host.querySelectorAll(".f-hname").forEach(n=>{d.cats[+n.dataset.ci].items[+n.dataset.i].name=n.value});host.querySelectorAll(".f-hprice").forEach(n=>{d.cats[+n.dataset.ci].items[+n.dataset.i].price=n.value})},
-  action(a,el,d){const ci=+el.dataset.ci,i=+el.dataset.i;if(a==="additem")d.cats[ci].items.push({name:"",price:""});if(a==="delitem")d.cats[ci].items.splice(i,1);if(a==="addcat")d.cats.push({name:"NEW",items:[{name:"",price:""}]});if(a==="delcat")d.cats.splice(ci,1)},
-  preview(b,d,ac){return board("hair",b,d.cats.map(c=>`<div class="mh-cat"><h3>${esc(c.name)}</h3>${c.items.map(it=>`<div class="mh-row"><span>${esc(it.name)}</span><b>${esc(it.price)}</b></div>`).join("")}</div>`).join(""),ac)}
- },
- twocol:{
-  label:"2단 메뉴판",
-  thumb:`<div class="lc-thumb"><div class="t-head"></div><div class="t-col"><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div><div class="t-line"></div></div></div>`,
-  def:cafeItems, formHTML:flatForm.formHTML, collect:flatForm.collect, action:flatForm.action,
-  preview(b,d,ac){return board("twocol",b,`<div class="menu-list">${d.items.map(rowItem).join("")}</div>`,ac)}
- },
- photo:{
-  label:"사진 포함 메뉴판",
-  thumb:`<div class="lc-thumb"><div class="t-col"><div class="t-pic"></div><div class="t-pic"></div></div><div class="t-row" style="margin-top:4px"><div class="t-line"></div><div class="t-line s"></div></div></div>`,
-  def(){return{items:[{name:"시그니처 라떼",price:"5,500원",desc:"고소한 우유 거품",img:null},{name:"수제 티라미수",price:"6,000원",desc:"매일 직접 만드는 디저트",img:null}]}},
-  formHTML(d){return d.items.map((it,i)=>`
-    <div class="mitem photo"><label class="mphoto" for="pimg${i}">${it.img?`<img src="${it.img}">`:"＋"}</label><input class="input f-name" data-i="${i}" value="${esc(it.name)}" placeholder="메뉴명"><input class="input f-price" data-i="${i}" value="${esc(it.price)}" placeholder="가격"><button class="icon-btn" data-act="del" data-i="${i}">×</button></div>
-    <input hidden type="file" id="pimg${i}" class="f-img" data-i="${i}" accept="image/*">
-    <div class="field mdesc"><input class="input f-desc" data-i="${i}" value="${esc(it.desc)}" placeholder="설명 (선택)"></div>`).join("")+`<button class="add-btn" data-act="add">+ 메뉴 추가</button>`},
-  collect:flatForm.collect, action:flatForm.action,
-  preview(b,d,ac){return board("photo",b,`<div class="pg">${d.items.map(it=>`<div class="pg-card"><div class="pg-img" style="${it.img?`background-image:url(${it.img})`:""}">${it.img?"":"사진"}</div><div class="pg-top"><strong>${esc(it.name)}</strong><b>${esc(it.price)}</b></div>${it.desc?`<div class="pg-desc">${esc(it.desc)}</div>`:""}</div>`).join("")}</div>`,ac)}
- },
- ai:{
-  label:"AI 추천",
-  thumb:`<div class="lc-thumb ai">AI</div>`,
-  note:"OpenAI 연동 예정",
-  def:cafeItems,
-  formHTML(d){return `<div class="ai-hint">메뉴 정보를 입력하면 <b style="color:var(--purple2)">OpenAI</b>가 업종과 분위기에 맞는 메뉴판 디자인을 자동으로 생성합니다. (곧 제공)</div>`+flatForm.formHTML(d)},
-  collect:flatForm.collect, action:flatForm.action,
-  preview(b,d,ac){return `<div class="menu-board ai-board" style="--menu-accent:${ac}"><div class="ai-badge">AI DESIGN</div><strong style="font-size:22px;color:#2a2620">AI 디자인 미리보기</strong><span style="font-size:12px;color:#6b6252;line-height:1.7">메뉴 ${d.items.length}개 입력됨 · 곧 제공될<br>OpenAI 기반 자동 디자인으로 완성하세요.</span></div>`}
- }
-};
-
-// 레이아웃 카드
-function menuLayoutPick(){
- const row=$("#menuLayoutRow");row.innerHTML="";
- Object.entries(MENU_LAYOUTS).forEach(([id,L])=>{
-  const c=document.createElement("div");c.className="layout-card"+(id===menuState.layout?" on":"");
-  c.innerHTML=L.thumb+`<div class="lc-name">${L.label}<span class="lc-check">✓</span></div>`;
-  c.onclick=()=>selectLayout(id);row.append(c)
- })
-}
-function selectLayout(id){
- menuState.layout=id;
- if(!menuState.data[id])menuState.data[id]=MENU_LAYOUTS[id].def();
- $$("#menuLayoutRow .layout-card").forEach(c=>c.classList.remove("on"));
- [...$$("#menuLayoutRow .layout-card")][Object.keys(MENU_LAYOUTS).indexOf(id)].classList.add("on");
- $("#menuLayoutName").textContent=MENU_LAYOUTS[id].label;
- mountMenuForm();menuRender()
-}
-function mountMenuForm(){
- const L=MENU_LAYOUTS[menuState.layout],host=$("#menuFormHost"),d=menuState.data[menuState.layout];
- host.innerHTML=L.formHTML(d);
- host.oninput=()=>{L.collect(host,d);menuRender()};
- host.onclick=e=>{const a=e.target.closest("[data-act]");if(!a)return;L.collect(host,d);L.action(a.dataset.act,a,d);mountMenuForm();menuRender()};
- host.onchange=e=>{const f=e.target;if(f.classList&&f.classList.contains("f-img")){const file=f.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{d.items[+f.dataset.i].img=r.result;mountMenuForm();menuRender()};r.readAsDataURL(file)}}
-}
-function menuRender(){
- const L=MENU_LAYOUTS[menuState.layout];
- $("#menuBoard").innerHTML=L.preview(menuBase(),menuState.data[menuState.layout],menuState.accent);
- $("#menuNote").textContent=L.note||"A4 세로형 기준"
-}
+let menuState={tpl:"simple1",accent:"#bd8454",sections:[{title:"MENU",items:[["아메리카노","4,000원","깔끔하고 진한 풍미"],["카페라떼","4,800원","부드러운 우유와 에스프레소"],["바닐라라떼","5,300원","달콤한 바닐라 향"],["딸기 에이드","5,800원","상큼한 생딸기 에이드"],["크로플","6,500원","바삭한 크로플과 아이스크림"]]}],edit:{header:{x:0,y:0,size:100,align:"center"},footer:{x:0,y:0,size:100,align:"center"}}};
+function tplThumb(t){return `<div class="tpl-mini" style="background:${t.theme==="dark"?"#171717":t.theme==="green"?"#e6eee0":t.theme==="blush"?"#f3e4e7":t.theme==="blue"?"#e6edf4":"#f3ede2"}"><div style="position:absolute;inset:10px;display:grid;grid-template-columns:repeat(${t.cols},1fr);gap:5px">${Array.from({length:t.cols}).map(()=>'<i style="display:block;border-top:3px solid #96745b;background:repeating-linear-gradient(#0000 0 8px,#7774 9px 10px)"></i>').join("")}</div></div>`}
+function renderMenuTemplates(){menuTemplates.forEach(t=>$("#menuTemplates").insertAdjacentHTML("beforeend",`<div class="template-card ${t.id===menuState.tpl?"on":""}" data-id="${t.id}">${tplThumb(t)}<div class="tpl-name">${t.name}</div><div class="tpl-tag">${t.tag}</div></div>`));$$("#menuTemplates .template-card").forEach(c=>c.onclick=()=>{menuState.tpl=c.dataset.id;$$("#menuTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");const t=menuTemplates.find(x=>x.id===menuState.tpl);if(t.category&&menuState.sections.length===1&&menuState.sections[0].title==="MENU"){menuState.sections=[{title:"CUT",items:[["학생컷","13,000원",""],["남자컷","15,000원",""]]},{title:"DRY",items:[["남자 드라이","15,000원",""],["여자 드라이","18,000원",""]]},{title:"PERM",items:[["일반펌","55,000원",""],["디지털펌","79,000원",""]]}]}renderMenuInputs();menuRender()})}
+function renderMenuInputs(){$("#menuInputs").innerHTML="";const t=menuTemplates.find(x=>x.id===menuState.tpl);menuState.sections.forEach((s,si)=>{$("#menuInputs").insertAdjacentHTML("beforeend",`<div class="section-box" data-si="${si}"><div class="section-head"><input class="input section-name" value="${s.title}" ${t.category?"":"style='display:none'"}><div class="section-actions"><button class="remove-section">삭제</button></div></div><div class="items">${s.items.map((it,ii)=>`<div class="item-row" data-ii="${ii}"><input class="input item-name" value="${it[0]}" placeholder="메뉴명"><input class="input item-price" value="${it[1]}" placeholder="가격"><button class="remove-x">×</button></div><div class="field"><input class="input item-desc" value="${it[2]}" placeholder="설명"></div>`).join("")}</div><button class="add-row">+ 메뉴 추가</button></div>`)});
+$$(".section-box").forEach(box=>{const si=+box.dataset.si;const sn=box.querySelector(".section-name");if(sn)sn.oninput=e=>{menuState.sections[si].title=e.target.value;menuRender()};box.querySelector(".add-row").onclick=()=>{menuState.sections[si].items.push(["새 메뉴","0원",""]);renderMenuInputs();menuRender()};box.querySelector(".remove-section").onclick=()=>{if(menuState.sections.length>1){menuState.sections.splice(si,1);renderMenuInputs();menuRender()}};box.querySelectorAll(".item-row").forEach((row,ri)=>{row.querySelector(".item-name").oninput=e=>{menuState.sections[si].items[ri][0]=e.target.value;menuRender()};row.querySelector(".item-price").oninput=e=>{menuState.sections[si].items[ri][1]=e.target.value;menuRender()};row.querySelector(".remove-x").onclick=()=>{menuState.sections[si].items.splice(ri,1);renderMenuInputs();menuRender()};row.nextElementSibling.querySelector(".item-desc").oninput=e=>{menuState.sections[si].items[ri][2]=e.target.value;menuRender()}})})}
+$("#addSection").onclick=()=>{menuState.sections.push({title:"NEW CATEGORY",items:[["새 메뉴","0원",""]]});renderMenuInputs();menuRender()};
+function menuRender(){const t=menuTemplates.find(x=>x.id===menuState.tpl),b=$("#menuBoard");b.className="menu-board "+(t.theme==="cream"?"":t.theme);b.style.setProperty("--menu-accent",menuState.accent);$("#mvKicker").textContent=$("#menuKicker").value;$("#mvShop").textContent=$("#menuShop").value;$("#mvDesc").textContent=$("#menuDesc").value;$("#mvPhone").textContent=$("#menuPhone").value;$("#menuList").className=`menu-columns c${t.cols}`;$("#menuList").innerHTML="";if(t.category){menuState.sections.forEach((s,si)=>$("#menuList").insertAdjacentHTML("beforeend",`<div class="menu-section edit-element" data-edit="section-${si}"><h3>${s.title}</h3>${s.items.map(it=>`<div class="menu-item"><strong>${it[0]}</strong><b>${it[1]}</b>${it[2]?`<span>${it[2]}</span>`:""}</div>`).join("")}</div>`))}else{const all=menuState.sections.flatMap(s=>s.items);const per=Math.ceil(all.length/t.cols);for(let c=0;c<t.cols;c++)$("#menuList").insertAdjacentHTML("beforeend",`<div class="menu-section edit-element" data-edit="section-${c}">${all.slice(c*per,(c+1)*per).map(it=>`<div class="menu-item"><strong>${it[0]}</strong><b>${it[1]}</b>${it[2]?`<span>${it[2]}</span>`:""}</div>`).join("")}</div>`)}bindEditable()}
+["menuKicker","menuShop","menuDesc","menuPhone"].forEach(id=>$("#"+id).addEventListener("input",menuRender));
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===2?" on":"");e.style.background=c;e.onclick=()=>{$$("#menuChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");menuState.accent=c;menuRender()};$("#menuChips").append(e)});
-["menuShop","menuDesc","menuPhone"].forEach(id=>$("#"+id).addEventListener("input",menuRender));
-menuLayoutPick();selectLayout("cafe");
+let selectedEdit=null,drag=null;
+function bindEditable(){$$("#menuBoard .edit-element").forEach(el=>{el.onclick=e=>{e.stopPropagation();selectEdit(el)};el.onmousedown=e=>{selectEdit(el);drag={el,startX:e.clientX,startY:e.clientY,ox:+(el.dataset.x||0),oy:+(el.dataset.y||0)}}})}
+document.addEventListener("mousemove",e=>{if(!drag)return;drag.el.dataset.x=drag.ox+e.clientX-drag.startX;drag.el.dataset.y=drag.oy+e.clientY-drag.startY;applyEdit(drag.el)});
+document.addEventListener("mouseup",()=>drag=null);
+function selectEdit(el){$$(".edit-element").forEach(x=>x.classList.remove("selected"));selectedEdit=el;el.classList.add("selected");$("#selectedName").textContent=el.dataset.edit;$("#editX").value=el.dataset.x||0;$("#editY").value=el.dataset.y||0;$("#editSize").value=el.dataset.size||100}
+function applyEdit(el){el.style.transform=`translate(${el.dataset.x||0}px,${el.dataset.y||0}px) scale(${(el.dataset.size||100)/100})`;el.style.textAlign=el.dataset.align||""}
+["editX","editY","editSize"].forEach(id=>$("#"+id).oninput=e=>{if(!selectedEdit)return;const map={editX:"x",editY:"y",editSize:"size"};selectedEdit.dataset[map[id]]=e.target.value;applyEdit(selectedEdit)});
+[["alignLeft","left"],["alignCenter","center"],["alignRight","right"]].forEach(([id,a])=>$("#"+id).onclick=()=>{if(!selectedEdit)return;selectedEdit.dataset.align=a;applyEdit(selectedEdit)});
+$("#resetMenuEdit").onclick=()=>{$$("#menuBoard .edit-element").forEach(el=>{delete el.dataset.x;delete el.dataset.y;delete el.dataset.size;delete el.dataset.align;el.style.transform="";el.style.textAlign=""})};
 
-/* coupon */
-let cpState={accent:"#df4b3f"};
+let cpState={type:"discount",accent:"#df4b3f"};
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===6?" on":"");e.style.background=c;e.onclick=()=>{$$("#cpChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");cpState.accent=c;couponRender()};$("#cpChips").append(e)});
-$$("#cpType button").forEach(b=>b.onclick=()=>{$$("#cpType button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
-["cpShop","cpTitle","cpDiscount","cpCond","cpFrom","cpTo","cpUrl"].forEach(id=>$("#"+id).addEventListener("input",couponRender));$("#cpQrOn").onchange=couponRender;
-function couponRender(){
- const cp=$("#coupon");cp.style.setProperty("--cp-accent",cpState.accent);cp.style.setProperty("--cp-bg","#f3eee4");cp.style.setProperty("--cp-ink","#28231f");cp.style.setProperty("--cp-sub","#887d70");
- $("#cpvTitle").innerHTML=($("#cpTitle").value||"쿠폰 제목").replace(/\n/g,"<br>");
- const d=$("#cpDiscount").value.trim(),m=d.match(/^([0-9,.]+)\s*(.*)$/);$("#cpvNum").textContent=m?m[1]:d;$("#cpvUnit").textContent=m?(m[2]||"%"):"";
- $("#cpvCond").textContent=$("#cpCond").value;$("#cpvValid").textContent=`${$("#cpFrom").value.replaceAll("-",".")} ~ ${$("#cpTo").value.replaceAll("-",".")}`;
- $("#cpQr").parentElement.style.display=$("#cpQrOn").checked?"flex":"none";if($("#cpQrOn").checked)makeQR($("#cpQr"),$("#cpUrl").value,78)
-}
+$$("#cpType button").forEach(b=>b.onclick=()=>{$$("#cpType button").forEach(x=>x.classList.remove("on"));b.classList.add("on");cpState.type=b.dataset.type;couponRender()});
+["cpShop","cpTitle","cpDiscount","cpCond","cpFrom","cpTo","cpUrl"].forEach(id=>$("#"+id).addEventListener("input",couponRender));
+function qrHtml(){return `<div class="qrbox" id="cpQr"></div>`}
+function makeQR(el,text,size=72){if(!el||typeof QRCode==="undefined")return;el.innerHTML="";try{new QRCode(el,{text:text||" ",width:size,height:size,colorDark:"#111",colorLight:"#fff"})}catch(e){}}
+function couponRender(){const c=$("#coupon"),title=$("#cpTitle").value,benefit=$("#cpDiscount").value,cond=$("#cpCond").value,valid=`${$("#cpFrom").value.replaceAll("-",".")} ~ ${$("#cpTo").value.replaceAll("-",".")}`;c.className=`coupon ${cpState.type}`;c.style.setProperty("--cp-accent",cpState.accent);
+if(cpState.type==="discount")c.innerHTML=`<div class="cp-a"><div class="cp-eyebrow">SPECIAL COUPON</div><div class="cp-title">${title}</div></div><div class="cp-b"><div><span class="cp-value">${benefit.replace(/[^0-9,.]/g,"")||benefit}</span><span class="cp-unit">${benefit.replace(/[0-9,.]/g,"")||"%"}</span></div><div class="cp-cond">${cond}</div><div class="cp-valid">${valid}</div></div><div class="cp-c">${qrHtml()}<small>사용 시 직원에게 보여주세요</small></div>`;
+if(cpState.type==="amount")c.innerHTML=`<div><div class="cp-eyebrow">GIFT VOUCHER</div><div class="cp-title">${title}</div><div class="amount-value">${benefit}</div><div class="cp-cond">${cond}</div><div class="cp-valid">${valid}</div></div><div class="right">${qrHtml()}<small>${$("#cpShop").value}</small></div>`;
+if(cpState.type==="visit")c.innerHTML=`<div><div class="cp-eyebrow">VISIT COUPON</div><div class="cp-title">${title}</div><div class="cp-cond">${cond}</div><div class="cp-valid">${valid}</div></div><div class="stamp-row">${[1,2,3,4,5].map(n=>`<div class="stamp">${n}</div>`).join("")}</div>`;
+if(cpState.type==="stamp")c.innerHTML=`<div class="cp-eyebrow">STAMP CARD</div><div class="cp-title">${title}</div><div class="stamp-grid">${Array.from({length:10},(_,i)=>`<div class="stamp-cell">${i+1}</div>`).join("")}</div><div class="cp-cond">${cond}</div>`;
+if(cpState.type==="free")c.innerHTML=`<div><div class="cp-eyebrow">FREE GIFT</div><div class="cp-title">${title}</div><div class="cp-value" style="font-size:52px;color:var(--cp-accent)">${benefit}</div><div class="cp-cond">${cond}</div><div class="cp-valid">${valid}</div></div><div class="gift">🎁</div>`;
+makeQR($("#cpQr"),$("#cpUrl").value)}
 
-/* namecard */
-let ncState={accent:"#7657ff",side:"both",tpl:"simple"};
+const ncTemplates=[{id:"simple",name:"심플",tag:"정돈된 기본형"},{id:"premium",name:"프리미엄",tag:"고급스러운 배치"},{id:"dark",name:"다크",tag:"강한 대비"},{id:"minimal",name:"미니멀",tag:"여백 중심"}];
+let ncState={orientation:"horizontal",kind:"normal",tpl:"simple",accent:"#7657ff",photo:""};
+ncTemplates.forEach(t=>$("#ncTemplates").insertAdjacentHTML("beforeend",`<div class="template-card ${t.id==="simple"?"on":""}" data-id="${t.id}"><div class="tpl-mini" style="background:${t.id==="dark"?"#171b25":t.id==="premium"?"#efe4d3":t.id==="minimal"?"#e8ecf1":"#fff"}"><div style="position:absolute;left:10px;top:10px;width:32%;bottom:10px;background:#7657ff22;border-radius:6px"></div><div style="position:absolute;right:10px;top:15px;width:48%;height:5px;background:#777"></div><div style="position:absolute;right:10px;top:28px;width:38%;height:3px;background:#aaa"></div></div><div class="tpl-name">${t.name}</div><div class="tpl-tag">${t.tag}</div></div>`));
+$$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");cardRender()});
+$$("#ncOrientation button").forEach(b=>b.onclick=()=>{$$("#ncOrientation button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.orientation=b.dataset.o;cardRender()});
+$$("#ncKind button").forEach(b=>b.onclick=()=>{$$("#ncKind button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.kind=b.dataset.k;$("#photoWrap").style.display=ncState.kind==="photo"?"block":"none";cardRender()});
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=c;e.onclick=()=>{$$("#ncChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");ncState.accent=c;cardRender()};$("#ncChips").append(e)});
-$$("#ncTpl .template").forEach(t=>t.onclick=()=>{$$("#ncTpl .template").forEach(x=>x.classList.remove("on"));t.classList.add("on");ncState.tpl=t.dataset.tpl;cardRender()});
-$$("#ncSide button").forEach(b=>b.onclick=()=>{$$("#ncSide button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.side=b.dataset.side;cardRender()});
-["ncCo","ncName","ncRole","ncMobile","ncEmail","ncAddr","ncWeb","ncInsta"].forEach(id=>$("#"+id).addEventListener("input",cardRender));$("#ncQrOn").onchange=cardRender;
-$("#ncLogoFile").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>$("#ncLogo").innerHTML=`<img src="${r.result}">`;r.readAsDataURL(f)};
-function cardRender(){
- const f=$("#ncFront"),b=$("#ncBack");f.style.setProperty("--nc-accent",ncState.accent);b.style.setProperty("--nc-accent",ncState.accent);
- if(ncState.tpl==="dark"){f.style.background="#171b25";f.style.color="#f7f8fb"}else if(ncState.tpl==="premium"){f.style.background="#f5efe2";f.style.color="#27231e"}else if(ncState.tpl==="minimal"){f.style.background="#eef1f5";f.style.color="#151923"}else{f.style.background="#fff";f.style.color="#151923"}
- $("#ncvCo").textContent=$("#ncCo").value;$("#ncvCoBack").textContent=$("#ncCo").value;$("#ncvName").textContent=$("#ncName").value;$("#ncvRole").textContent=$("#ncRole").value;
- $("#ncvMobile").textContent=$("#ncMobile").value;$("#ncvEmail").textContent=$("#ncEmail").value;$("#ncvAddr").textContent=$("#ncAddr").value;$("#ncvWeb").textContent=$("#ncWeb").value.replace(/^https?:\/\//,"");$("#ncvInsta").textContent=$("#ncInsta").value;
- const frontOn=ncState.side!=="back",backOn=ncState.side!=="front";f.style.display=frontOn?"grid":"none";$("#frontLabel").style.display=frontOn?"block":"none";b.style.display=backOn?"flex":"none";$("#backLabel").style.display=backOn?"block":"none";
- $("#ncQr").style.display=$("#ncQrOn").checked?"block":"none";if($("#ncQrOn").checked)makeQR($("#ncQr"),$("#ncWeb").value||$("#ncInsta").value,50)
-}
-
-bannerRender();menuRender();couponRender();cardRender();
+["ncCo","ncName","ncRole","ncMobile","ncEmail","ncAddr","ncWeb"].forEach(id=>$("#"+id).addEventListener("input",cardRender));
+$("#ncPhoto").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{ncState.photo=r.result;cardRender()};r.readAsDataURL(f)};
+function cardRender(){const el=$("#ncFront"),o=ncState.orientation;el.style.setProperty("--nc-accent",ncState.accent);if(ncState.kind==="photo"){el.className=`card-preview ${o} photo-card`;el.innerHTML=`<div class="photo-area">${ncState.photo?`<img src="${ncState.photo}">`:""}</div><div class="photo-info"><div class="nc-company">${$("#ncCo").value}</div><div class="nc-name">${$("#ncName").value}<span class="nc-role">${$("#ncRole").value}</span></div><div class="nc-lines"><span>${$("#ncMobile").value}</span><span>${$("#ncEmail").value}</span><span>${$("#ncAddr").value}</span><span>${$("#ncWeb").value}</span></div></div>`;return}
+el.className=`card-preview ${o} nc-front`;let bg="#fff",color="#151923";if(ncState.tpl==="dark"){bg="#171b25";color="#fff"}if(ncState.tpl==="premium"){bg="#f5efe2";color="#27231e"}if(ncState.tpl==="minimal"){bg="#eef1f5"}el.style.background=bg;el.style.color=color;el.innerHTML=`<div class="nc-left"><div class="nc-logo">D</div><div class="nc-company">${$("#ncCo").value}</div></div><div class="nc-right"><div class="nc-name">${$("#ncName").value}<span class="nc-role">${$("#ncRole").value}</span></div><div class="nc-lines"><span>${$("#ncMobile").value}</span><span>${$("#ncEmail").value}</span><span>${$("#ncAddr").value}</span><span>${$("#ncWeb").value}</span></div><div class="nc-qr" id="ncQr"></div></div>`;makeQR($("#ncQr"),$("#ncWeb").value,50)}
+renderMenuTemplates();renderMenuInputs();bannerRender();menuRender();couponRender();cardRender();
 </script>
 </body>
 </html>

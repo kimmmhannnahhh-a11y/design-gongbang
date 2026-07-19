@@ -36,7 +36,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <header class="topbar">
 <div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div></div>
 <nav class="nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
-<div class="top-action"><button>내 디자인 보관함</button></div>
+<div class="top-action" id="authArea"><button class="btn primary" id="loginBtn">로그인</button></div>
 </header>
 
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">
@@ -81,6 +81,35 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div><div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="김우주"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div><div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div><div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div><div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div><div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="designgongbang.com"></div>
 <div class="field photo-upload-wrap" id="photoWrap"><div class="label">프로필 사진</div><input class="input" type="file" id="ncPhoto" accept="image/*"></div></div>
 </div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="ncChips"></div></div></div><div class="preview-head"><div class="preview-name">명함 미리보기</div><div class="preview-note">가로·세로·포토 명함 지원</div></div><div class="stage"><div class="card-preview horizontal nc-front" id="ncFront"></div></div><div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
+</div>
+<style>
+.top-action .auth-chip{display:flex;align-items:center;gap:10px}.auth-email{font-size:12.5px;color:var(--sub);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+.lg-modal{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}.lg-modal.open{display:flex}
+.lg-box{width:100%;max-width:384px;background:linear-gradient(180deg,#151822,#0f1118);border:1px solid var(--line2);border-radius:22px;padding:26px 24px 24px;box-shadow:var(--shadow)}
+.lg-box h3{font-size:20px;font-weight:850;margin-bottom:6px}.lg-sub{color:var(--sub);font-size:13px;margin-bottom:18px}
+.lg-box .input{margin-bottom:10px}
+.lg-btn{width:100%;height:48px;border-radius:12px;border:0;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}.lg-btn:disabled{opacity:.6;cursor:default}
+.lg-primary{background:linear-gradient(135deg,#8767ff,#6949ed);color:#fff}
+.lg-kakao{background:#FEE500;color:#3C1E1E}.lg-google{background:#fff;color:#1a1a1a}
+.lg-div{display:flex;align-items:center;gap:10px;margin:16px 0}.lg-div .l{flex:1;height:1px;background:var(--line2)}.lg-div span{font-size:11px;color:var(--muted)}
+.lg-toggle{text-align:center;margin-top:16px;font-size:12px;color:var(--sub)}.lg-toggle button{background:none;border:0;color:var(--purple2);font-weight:800;cursor:pointer;font-family:inherit}
+.lg-err{color:var(--danger);font-size:12px;min-height:16px;margin:4px 0 2px}
+.lg-close{float:right;background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
+</style>
+<div class="lg-modal" id="loginModal">
+  <div class="lg-box">
+    <button class="lg-close" id="lgClose" aria-label="닫기">×</button>
+    <h3 id="lgTitle">로그인</h3>
+    <div class="lg-sub">디자인공방에 로그인하고 더 많이 만들어보세요</div>
+    <input class="input" type="email" id="lgEmail" placeholder="이메일" autocomplete="email">
+    <input class="input" type="password" id="lgPw" placeholder="비밀번호 (6자 이상)" autocomplete="current-password">
+    <div class="lg-err" id="lgErr"></div>
+    <button class="lg-btn lg-primary" id="lgSubmit">로그인</button>
+    <div class="lg-div"><div class="l"></div><span>또는</span><div class="l"></div></div>
+    <button class="lg-btn lg-kakao" id="lgKakao">💬 카카오로 계속하기</button>
+    <button class="lg-btn lg-google" id="lgGoogle" style="margin-top:8px">🌐 Google로 계속하기</button>
+    <div class="lg-toggle" id="lgToggle">계정이 없으신가요? <button id="lgToggleBtn">회원가입</button></div>
+  </div>
 </div>
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
@@ -353,6 +382,42 @@ async function downloadPng(scope,btn){
 updateRemainingUI();
 
 renderMenuTemplates();renderMenuInputs();bannerRender();menuRender();couponRender();cardRender();
+
+/* ===== 로그인 (Firebase: 이메일 / 카카오 / 구글) ===== */
+let authMode="login";
+const lgModal=$("#loginModal");
+function openLogin(){lgModal.classList.add("open");$("#lgErr").textContent=""}
+function closeLogin(){lgModal.classList.remove("open");$("#lgEmail").value="";$("#lgPw").value=""}
+function setAuthMode(m){authMode=m;const login=m==="login";$("#lgTitle").textContent=login?"로그인":"회원가입";$("#lgSubmit").textContent=login?"로그인":"회원가입";$("#lgToggle").innerHTML=login?'계정이 없으신가요? <button id="lgToggleBtn">회원가입</button>':'이미 계정이 있으신가요? <button id="lgToggleBtn">로그인</button>';$("#lgToggleBtn").onclick=()=>setAuthMode(login?"signup":"login");$("#lgErr").textContent=""}
+function authErrMsg(code){return ({'auth/invalid-email':'이메일 형식이 올바르지 않아요.','auth/email-already-in-use':'이미 가입된 이메일이에요.','auth/weak-password':'비밀번호는 6자 이상이어야 해요.','auth/invalid-credential':'이메일 또는 비밀번호가 잘못됐어요.','auth/user-not-found':'이메일 또는 비밀번호가 잘못됐어요.','auth/wrong-password':'이메일 또는 비밀번호가 잘못됐어요.','auth/too-many-requests':'잠시 후 다시 시도해주세요.','auth/network-request-failed':'네트워크 연결을 확인해주세요.'})[code]||'처리에 실패했어요. 다시 시도해주세요.'}
+async function submitAuth(){const email=$("#lgEmail").value.trim(),pw=$("#lgPw").value;if(!email||!pw){$("#lgErr").textContent="이메일과 비밀번호를 입력해주세요.";return}if(pw.length<6){$("#lgErr").textContent="비밀번호는 6자 이상이어야 해요.";return}const btn=$("#lgSubmit"),label=btn.textContent;btn.disabled=true;btn.textContent="처리 중…";const fn=authMode==="login"?window._doEmailLogin:window._doEmailSignup;const r=fn?await fn(email,pw):{ok:false};btn.disabled=false;btn.textContent=label;if(r.ok){closeLogin()}else{$("#lgErr").textContent=authErrMsg(r.code)}}
+window.onAuthChanged=function(u){const area=$("#authArea");if(!area)return;if(u){const name=u.email||"사용자";area.innerHTML=`<span class="auth-chip"><span class="auth-email">${name}</span><button class="btn" id="logoutBtn">로그아웃</button></span>`;$("#logoutBtn").onclick=()=>window._authLogout&&window._authLogout()}else{area.innerHTML=`<button class="btn primary" id="loginBtn">로그인</button>`;$("#loginBtn").onclick=openLogin}};
+$("#loginBtn").onclick=openLogin;
+$("#lgClose").onclick=closeLogin;lgModal.onclick=e=>{if(e.target===lgModal)closeLogin()};
+$("#lgSubmit").onclick=submitAuth;
+$("#lgPw").addEventListener("keydown",e=>{if(e.key==="Enter")submitAuth()});
+$("#lgKakao").onclick=async()=>{$("#lgErr").textContent="";const r=window._doKakaoLogin?await window._doKakaoLogin():{ok:false};if(r.ok)closeLogin();else if(!r.cancelled)$("#lgErr").textContent=r.msg||"카카오 로그인에 실패했어요."};
+$("#lgGoogle").onclick=async()=>{$("#lgErr").textContent="";const r=window._doGoogleLogin?await window._doGoogleLogin():{ok:false};if(r.ok)closeLogin();else if(!r.cancelled)$("#lgErr").textContent=r.msg||"Google 로그인에 실패했어요."};
+setAuthMode("login");
+</script>
+<!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script>try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init('53803347469de213ee3074ad9d647f71')}catch(e){console.error('Kakao init 실패:',e)}</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithCustomToken, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-functions.js";
+const app = initializeApp({apiKey:"AIzaSyCmcsC_89TfZUIhgH6hKPaTKlXQn3rRzCo",authDomain:"card-store-finder.firebaseapp.com",projectId:"card-store-finder",storageBucket:"card-store-finder.firebasestorage.app",appId:"1:340038449458:web:14c3327a26d0d2892f3f2b"});
+const auth=getAuth(app), db=getFirestore(app), functions=getFunctions(app,'asia-northeast3');
+window._authUser=null;
+onAuthStateChanged(auth,u=>{window._authUser=u;if(window.onAuthChanged)window.onAuthChanged(u)});
+window._authLogout=()=>signOut(auth);
+window._doEmailSignup=async(email,pw)=>{try{const c=await createUserWithEmailAndPassword(auth,email,pw);try{await setDoc(doc(db,'users',c.user.uid),{uid:c.user.uid,email,provider:'password',app:'design-gongbang',createdAt:new Date().toISOString(),status:'active'})}catch(e){}return{ok:true}}catch(e){return{ok:false,code:e.code}}};
+window._doEmailLogin=async(email,pw)=>{try{await signInWithEmailAndPassword(auth,email,pw);return{ok:true}}catch(e){return{ok:false,code:e.code}}};
+window._doGoogleLogin=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());return{ok:true}}catch(e){if(e.code==='auth/popup-closed-by-user'||e.code==='auth/cancelled-popup-request')return{ok:false,cancelled:true};return{ok:false,msg:'Google 로그인 오류. 다시 시도해주세요.'}}};
+async function kakaoFallback(ku){const id=String(ku.id||'');const email=(ku.kakao_account&&ku.kakao_account.email)||(id+'@kakao.designgongbang.local');const nick=(ku.kakao_account&&ku.kakao_account.profile&&ku.kakao_account.profile.nickname)||'카카오유저';const pw='kakao_v1_'+id+'_dgacc';try{return await signInWithEmailAndPassword(auth,email,pw)}catch(inner){if(inner.code==='auth/user-not-found'||inner.code==='auth/invalid-credential'){const c=await createUserWithEmailAndPassword(auth,email,pw);try{await setDoc(doc(db,'users',c.user.uid),{uid:c.user.uid,email,nickname:nick,provider:'kakao',kakao_id:id,app:'design-gongbang',createdAt:new Date().toISOString(),status:'active'})}catch(e){}return c}throw inner}}
+window._doKakaoLogin=async()=>{if(!window.Kakao||!Kakao.isInitialized())return{ok:false,msg:'카카오 로그인 준비 중이에요. 잠시 후 다시 시도해주세요.'};try{const authObj=await new Promise((res,rej)=>Kakao.Auth.login({scope:'profile_nickname',success:res,fail:rej}));const tok=authObj&&authObj.access_token;if(!tok)throw new Error('no token');try{const fn=httpsCallable(functions,'kakaoSignIn');const resp=await fn({kakaoAccessToken:tok});const p=resp&&resp.data;if(!p||!p.customToken)throw new Error('no customToken');await signInWithCustomToken(auth,p.customToken)}catch(cf){const ku=await new Promise((res,rej)=>Kakao.API.request({url:'/v2/user/me',success:res,fail:rej}));await kakaoFallback(ku)}return{ok:true}}catch(e){if(e&&e.error==='access_denied')return{ok:false,cancelled:true};return{ok:false,msg:'카카오 로그인 오류. 잠시 후 다시 시도해주세요.'}}};
 </script>
 </body>
 </html>

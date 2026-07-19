@@ -12,18 +12,60 @@ const ALLOWED_ORIENTATION = ["horizontal", "vertical"];
 // 프론트가 보낸 값은 신뢰하지 않고 서버가 화이트리스트로만 통과. 미지정/이상값 -> low.
 const ALLOWED_QUALITY = ["low", "medium", "high"];
 
-// 테마별 실제 상업 포스터 수준 시각 요소
+// 테마별 "분위기/색톤"만 지정(특정 소품 하드코딩 금지).
+// 구체 요소는 사용자가 고른 장식(decorations) 또는 (랜덤) 시 모델이 다양하게 결정.
 const THEME_VISUALS = {
-  "여름": "a refreshing summer scene with cool ocean-blue tones, realistic rippling ocean waves, glistening water droplets, bright sparkling sunlight reflections, fresh juicy tropical fruits such as watermelon, pineapple and lemon, and lush green palm leaves",
-  "봄": "a bright cheerful spring scene with a clear blue sky, soft warm sunlight, delicate cherry blossoms and gently drifting flower petals",
-  "가을": "a warm cozy autumn scene with rich beige and brown tones, softly fallen maple leaves, roasted coffee beans and natural wood texture",
-  "겨울": "a cool elegant winter scene with soft fresh snow, delicate frost, cool blue lighting and tasteful Christmas ornaments",
-  "카페": "a cozy premium cafe scene with a beautifully styled coffee cup, roasted coffee beans, delicate desserts and stylish table props",
-  "음식점": "an appetizing restaurant scene with realistic photographic-quality fresh ingredients and elegantly plated gourmet food",
-  "뷰티": "an elegant beauty and hair salon scene with silky flowing hair texture, soft light reflections, refined cosmetics, fresh flowers and premium fabric",
-  "오픈행사": "a festive grand-opening celebration scene with colorful balloons, flowing ribbons, scattered confetti and party decorations",
-  "기본": "a clean, elegant, modern and premium decorative scene"
+  "여름": "a fresh, refreshing and cool summer atmosphere with bright sparkling sunlight and cool aqua, sky-blue and mint tones conveying coolness",
+  "봄": "a bright, cheerful spring atmosphere with soft warm light and gentle pastel tones",
+  "가을": "a warm, cozy autumn atmosphere with rich amber, beige and brown tones and soft natural light",
+  "겨울": "a cool, elegant winter atmosphere with crisp cool tones, soft clean light and a serene feeling",
+  "카페": "a cozy, premium cafe atmosphere with warm inviting light and stylish refined tones",
+  "음식점": "an appetizing, warm restaurant atmosphere with rich, inviting and vivid tones",
+  "뷰티": "an elegant, refined beauty and hair salon atmosphere with soft flattering light and premium tones",
+  "오픈행사": "a festive, celebratory grand-opening atmosphere with vivid, lively and cheerful tones",
+  "기본": "a clean, elegant, modern and premium atmosphere"
 };
+
+// 매 생성마다 구도/스타일을 바꿔 결과가 매번 다르게 나오도록 하는 변주 목록.
+const VARIATIONS = [
+  "Use an asymmetric composition with the main visual weight on the left side.",
+  "Use a composition with decorative elements flowing in from the top and upper corners.",
+  "Use a minimal, spacious composition with a few large soft focal elements.",
+  "Use a rich, layered composition with gentle depth and softly overlapping elements.",
+  "Use a balanced composition framed by tasteful decorations along the outer border.",
+  "Use a dynamic diagonal composition sweeping gently across the corners.",
+  "Use a composition with the main decorative accent gathered in the lower area.",
+  "Use an airy composition with scattered small decorative accents around wide empty space."
+];
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+// 같은 테마/장식이라도 매번 확연히 다른 결과가 나오도록 하는 랜덤 축들(화풍/조명/팔레트).
+const ART_STYLES = [
+  "as ultra-realistic product photography with shallow depth of field and soft bokeh",
+  "as a refined, dreamy digital illustration",
+  "as an elegant watercolor painting with soft bleeding edges",
+  "as a luxurious glossy 3D-rendered scene",
+  "as a soft gouache painting with gentle brush texture",
+  "as a clean, bright editorial magazine-style photograph",
+  "as a warm analog film photograph with subtle grain",
+  "as a delicate, finely detailed hand-drawn illustration"
+];
+const LIGHTING = [
+  "Use soft, diffused natural lighting.",
+  "Use warm golden-hour lighting with long gentle shadows.",
+  "Use bright, airy high-key lighting.",
+  "Use dramatic soft directional light with gentle contrast.",
+  "Use cool, crisp daylight.",
+  "Use a dreamy backlit glow with soft haze."
+];
+const PALETTE_MOODS = [
+  "Lean the palette toward soft pastel tones.",
+  "Lean the palette toward rich, saturated tones.",
+  "Lean the palette toward warm earthy tones.",
+  "Lean the palette toward cool, fresh tones.",
+  "Lean the palette toward clean minimal tones with lots of soft white space.",
+  "Lean the palette toward bold, vivid contrasting tones."
+];
 
 // 개별 장식 요소(테마별, 복수 선택) -> 고급 비주얼 묘사
 // "(랜덤)"은 특수값: 모델이 테마에 맞는 장식을 알아서 구성.
@@ -130,13 +172,19 @@ function buildPrompt(data) {
   const accent = isHex(data.accentColor) ? data.accentColor : "#7c5cff";
   const layoutPart = layoutSpaceInstruction(data.documentType, data.layoutType);
 
+  // 랜덤 4축 조합(화풍 8 × 조명 6 × 팔레트 6 × 구도 8)으로 매 생성마다 다른 느낌.
+  const style = pick(ART_STYLES), light = pick(LIGHTING), palette = pick(PALETTE_MOODS), comp = pick(VARIATIONS);
+
   return [
-    "Create " + themePart + ", in the style of a premium high-end commercial advertising poster with professional lighting, depth and texture.",
+    "Create " + themePart + ", designed as a premium high-end commercial advertising poster, rendered " + style + ".",
+    light,
+    palette,
     moodPart,
     "Use " + accent + " as the main accent color, woven tastefully into the palette.",
     decoPart,
     layoutPart,
-    "Render all fruits, food, flowers and props as realistic high-quality product photography or refined illustration - vivid, detailed and premium, absolutely not low-resolution icons or simple emoji.",
+    comp,
+    "Render every element in a rich, detailed and premium way - never as low-resolution icons or simple emoji.",
     "This image is ONLY a decorative background: there must be absolutely no text, no letters, no words, no numbers, no logos, no watermark, no signage, no menu, no captions of any language anywhere in the image.",
     "Keep the reserved text areas visually clean, softly lit and uncluttered so text can be cleanly overlaid on top later."
   ].filter(Boolean).join(" ");

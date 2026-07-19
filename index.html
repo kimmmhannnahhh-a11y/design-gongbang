@@ -6,6 +6,7 @@
 <title>디자인공방 - 우리 가게 홍보물 만들기</title>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 :root{--bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;--line:#252938;--line2:#34394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;--purple:#7c5cff;--purple2:#9a7cff;--danger:#ff6577;--shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),var(--bg);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
@@ -45,7 +46,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="editor-toolbar" id="bannerEditor"><div class="group mode-group"><button id="bModeOff" class="on">미리보기</button><button id="bModeMove">✥ 위치·크기 편집</button><button id="bModeText">🎨 텍스트 편집</button></div><div class="divider"></div><div class="group"><label>선택</label><span id="bSelName">없음</span></div>
 <div class="group" id="bMoveControls" style="display:none"><label>X</label><input type="number" id="bEditX" value="0"><label>Y</label><input type="number" id="bEditY" value="0"><label>크기%</label><input type="number" id="bEditSize" value="100"><button id="bAlignLeft">왼쪽</button><button id="bAlignCenter">가운데</button><button id="bAlignRight">오른쪽</button></div>
 <div class="group" id="bTextControls" style="display:none"><div class="chips" id="bTxtColors"></div><select id="bTxtFont"></select><button class="tog" id="bTxtBold" style="font-weight:900">굵게</button><button class="tog" id="bTxtItalic" style="font-style:italic">기울임</button></div></div>
-<div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge txt" id="bCat" data-tkey="cat">헤어샵</span><div><div class="headline txt" id="bHead" data-tkey="head">오픈 기념 30% 할인</div><div class="subline txt" id="bSub" data-tkey="sub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill txt" id="bTag" data-tkey="tag">선착순 50명</span><span class="txt" id="bInfo" data-tkey="info">010-1234-5678</span></div></div></div></div></div></div></section>
+<div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge txt" id="bCat" data-tkey="cat">헤어샵</span><div><div class="headline txt" id="bHead" data-tkey="head">오픈 기념 30% 할인</div><div class="subline txt" id="bSub" data-tkey="sub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill txt" id="bTag" data-tkey="tag">선착순 50명</span><span class="txt" id="bInfo" data-tkey="info">010-1234-5678</span></div></div></div></div><div class="actions"><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 
 <section class="view" id="view-menu"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">기본 정보</div></div></div>
@@ -316,7 +317,21 @@ async function aiGenerate(scope){
   finally{aiBusy=false;gen.textContent="AI 디자인 생성";document.querySelectorAll(".ai-regen").forEach(b=>b.disabled=false);updateRemainingUI()}
 }
 function aiRemove(scope){AI_BG[scope]=null;const el=aiEl(scope);el.style.backgroundImage="";el.style.backgroundSize="";el.style.backgroundPosition="";el.style.backgroundRepeat="";renderScope(scope);const p=panelOf(scope);p.querySelector(".ai-regen").style.display="none";p.querySelector(".ai-remove").style.display="none";p.querySelector(".ai-download").style.display="none";p.querySelector(".ai-status").textContent=""}
-function aiDownload(scope){const img=AI_BG[scope];if(!img)return;const a=document.createElement("a");a.href=img;a.download=`design-gongbang-${scope}.png`;document.body.appendChild(a);a.click();a.remove()}
+// 미리보기(AI배경 + 텍스트 + 레이아웃)를 통째로 캡처해 PNG 저장. 편집 핸들/선택테두리는 제외.
+async function downloadPng(scope,btn){
+  const board=aiEl(scope);
+  if(typeof html2canvas!=="function"){alert("이미지 저장 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
+  const savedCls=board.className,label=btn?btn.textContent:"";
+  if(btn){btn.disabled=true;btn.textContent="저장 중…"}
+  board.classList.remove("editing","mode-move","mode-text");
+  const handles=[...board.querySelectorAll(".txt-handle")];handles.forEach(h=>h.style.display="none");
+  const sels=[...board.querySelectorAll(".sel")];sels.forEach(s=>s.classList.remove("sel"));
+  try{
+    const canvas=await html2canvas(board,{backgroundColor:null,scale:2,useCORS:true,logging:false});
+    const a=document.createElement("a");a.href=canvas.toDataURL("image/png");a.download=`design-gongbang-${scope}.png`;document.body.appendChild(a);a.click();a.remove();
+  }catch(e){alert("이미지 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
+  finally{board.className=savedCls;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"));if(btn){btn.disabled=false;btn.textContent=label}}
+}
 
 ["banner","menu","coupon","card"].forEach(scope=>{
   const host=document.querySelector(`#view-${scope} .preview-panel`);
@@ -330,7 +345,9 @@ function aiDownload(scope){const img=AI_BG[scope];if(!img)return;const a=documen
   p.querySelector(".ai-gen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-regen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-remove").onclick=()=>aiRemove(scope);
-  p.querySelector(".ai-download").onclick=()=>aiDownload(scope);
+  p.querySelector(".ai-download").onclick=e=>downloadPng(scope,e.currentTarget);
+  const pngBtn=document.querySelector(`#view-${scope} .actions .btn.primary`);
+  if(pngBtn)pngBtn.onclick=e=>downloadPng(scope,e.currentTarget);
 });
 {const mp=panelOf("menu");if(mp){mp.querySelector(".ai-theme").value="카페";refreshDecos("menu");}}
 updateRemainingUI();

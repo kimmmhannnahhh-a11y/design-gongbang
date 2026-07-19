@@ -39,10 +39,9 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 </header>
 
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">
-<div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">업종 선택</div></div></div><select class="select" id="bizSelect"></select></div>
-<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">홍보 문구 입력</div></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">홍보 문구 입력</div></div></div>
 <div class="field"><div class="label">가게 이름</div><input class="input" id="shop" value="행복 헤어살롱"></div><div class="field"><div class="label">메인 문구</div><input class="input" id="headline" value="오픈 기념 30% 할인"></div><div class="field"><div class="label">보조 문구</div><input class="input" id="sub" value="지금 예약하면 사은품 증정!"></div><div class="row2"><div class="field"><div class="label">강조 문구</div><input class="input" id="tag" value="선착순 50명"></div><div class="field"><div class="label">연락처</div><input class="input" id="info" value="010-1234-5678"></div></div></div>
-</div><div class="preview-panel"><div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge" id="bCat">헤어샵</span><div><div class="headline" id="bHead">오픈 기념 30% 할인</div><div class="subline" id="bSub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill" id="bTag">선착순 50명</span><span id="bInfo">010-1234-5678</span></div></div></div></div></div></div></section>
+</div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="bannerChips"></div></div></div><div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge" id="bCat">헤어샵</span><div><div class="headline" id="bHead">오픈 기념 30% 할인</div><div class="subline" id="bSub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill" id="bTag">선착순 50명</span><span id="bInfo">010-1234-5678</span></div></div></div></div></div></div></section>
 
 <section class="view" id="view-menu"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">기본 정보</div></div></div>
@@ -83,10 +82,12 @@ const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const VIEWS={banner:"view-banner",menu:"view-menu",coupon:"view-coupon",card:"view-card"};
 $$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on")});
 const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f","#ffd43b","#ffffff"];
-const BIZ=[["학원",["#4656e7","#7b45e8"]],["헬스장",["#1a1d25","#d13a45"]],["헤어샵",["#d94f92","#8057e8"]],["카페",["#85562e","#cb7f32"]],["음식점",["#f39b2e","#eb4b43"]],["기타",["#4a5365","#737d90"]]];
-BIZ.forEach((x,i)=>$("#bizSelect").insertAdjacentHTML("beforeend",`<option value="${i}" ${i===2?"selected":""}>${x[0]}</option>`));
-function bannerRender(){const i=+$("#bizSelect").value,g=BIZ[i][1];$("#banner").style.background=`linear-gradient(135deg,${g[0]},${g[1]})`;$("#bCat").textContent=BIZ[i][0];$("#bHead").textContent=$("#headline").value;$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;applyBg("banner")}
-["bizSelect","headline","sub","tag","info"].forEach(id=>$("#"+id).addEventListener("input",bannerRender));
+let bannerState={accent:"#7657ff"};
+// hex -> 밝기 조절 rgb (p>0 밝게, p<0 어둡게). 배너 배경 그라데이션 생성용.
+function shade(hex,p){hex=(hex||"").replace("#","");if(hex.length!==6)return "#"+hex;const n=parseInt(hex,16),f=t=>Math.max(0,Math.min(255,Math.round(t+t*p/100)));return `rgb(${f((n>>16)&255)},${f((n>>8)&255)},${f(n&255)})`}
+function bannerRender(){const a=bannerState.accent;$("#banner").style.background=`linear-gradient(135deg,${shade(a,14)},${shade(a,-30)})`;$("#bCat").textContent=$("#shop").value;$("#bHead").textContent=$("#headline").value;$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;applyBg("banner")}
+["shop","headline","sub","tag","info"].forEach(id=>$("#"+id).addEventListener("input",bannerRender));
+SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=c;e.onclick=()=>{$$("#bannerChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");bannerState.accent=c;bannerRender()};$("#bannerChips").append(e)});
 
 const menuTemplates=[
 {id:"simple1",name:"1단 심플형",tag:"기본 메뉴",cols:1,category:false,theme:"cream"},
@@ -226,7 +227,7 @@ function aiPanelHtml(scope){return `<div class="ai-panel" data-scope="${scope}">
 function panelOf(scope){return document.querySelector(`.ai-panel[data-scope="${scope}"]`)}
 
 function collectPayload(scope){const p=panelOf(scope);const base={theme:p.querySelector(".ai-theme").value,mood:p.querySelector(".ai-mood").value,decorations:[...p.querySelectorAll(".ai-deco.on")].map(x=>x.dataset.v)};
-if(scope==="banner"){const i=+$("#bizSelect").value;return Object.assign(base,{documentType:"banner",businessType:BIZ[i][0],layoutType:"가로형 배너",accentColor:BIZ[i][1][0],title:$("#headline").value,subtitle:$("#sub").value})}
+if(scope==="banner"){return Object.assign(base,{documentType:"banner",businessType:$("#shop").value,layoutType:"가로형 배너",accentColor:bannerState.accent,title:$("#headline").value,subtitle:$("#sub").value})}
 if(scope==="menu"){const t=menuTemplates.find(x=>x.id===menuState.tpl);return Object.assign(base,{documentType:"menu",businessType:"카페",layoutType:t?t.name:"",templateStyle:t?t.theme:"",accentColor:menuState.accent,title:$("#menuShop").value,subtitle:$("#menuDesc").value,categories:menuState.sections.map(s=>({name:s.title,items:s.items.map(it=>({name:it[0],price:it[1],description:it[2]||""}))}))})}
 if(scope==="coupon"){return Object.assign(base,{documentType:"coupon",layoutType:cpState.type,accentColor:cpState.accent,title:$("#cpTitle").value,subtitle:$("#cpCond").value})}
 return Object.assign(base,{documentType:"businessCard",orientation:ncState.orientation,layoutType:ncState.orientation+"/"+ncState.kind,accentColor:ncState.accent,title:$("#ncCo").value,subtitle:$("#ncName").value})}

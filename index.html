@@ -82,7 +82,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const VIEWS={banner:"view-banner",menu:"view-menu",coupon:"view-coupon",card:"view-card"};
 $$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on")});
-const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f"];
+const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f","#ffd43b","#ffffff"];
 const BIZ=[["학원",["#4656e7","#7b45e8"]],["헬스장",["#1a1d25","#d13a45"]],["헤어샵",["#d94f92","#8057e8"]],["카페",["#85562e","#cb7f32"]],["음식점",["#f39b2e","#eb4b43"]],["기타",["#4a5365","#737d90"]]];
 BIZ.forEach((x,i)=>$("#bizSelect").insertAdjacentHTML("beforeend",`<option value="${i}" ${i===2?"selected":""}>${x[0]}</option>`));
 function bannerRender(){const i=+$("#bizSelect").value,g=BIZ[i][1];$("#banner").style.background=`linear-gradient(135deg,${g[0]},${g[1]})`;$("#bCat").textContent=BIZ[i][0];$("#bHead").textContent=$("#headline").value;$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;applyBg("banner")}

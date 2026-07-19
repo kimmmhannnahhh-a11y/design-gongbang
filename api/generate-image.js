@@ -8,6 +8,9 @@ const OPENAI_URL = "https://api.openai.com/v1/images/generations";
 // ---- 허용 값 검증용 화이트리스트 ----
 const ALLOWED_DOC = ["menu", "banner", "coupon", "businessCard"];
 const ALLOWED_ORIENTATION = ["horizontal", "vertical"];
+// 품질 tier: 무료/광고 = low(원가 최소), 프리미엄만 medium/high 허용.
+// 프론트가 보낸 값은 신뢰하지 않고 서버가 화이트리스트로만 통과. 미지정/이상값 -> low.
+const ALLOWED_QUALITY = ["low", "medium", "high"];
 
 // 테마별 실제 상업 포스터 수준 시각 요소
 const THEME_VISUALS = {
@@ -202,6 +205,11 @@ module.exports = async (req, res) => {
 
     const prompt = buildPrompt(data);
     const size = pickSize(documentType, orientation, data.layoutType);
+    // 프리미엄 tier 검증(로그인/결제)이 서버에 붙기 전까지는 무조건 low로 강제.
+    // (인증 없이 body.quality를 신뢰하면 누구나 quality:"high"를 직접 보내 공짜 고화질 남용 가능)
+    // 추후: const isPremium = await verifyPremium(req); quality = isPremium && ALLOWED_QUALITY.includes(body.quality) ? body.quality : "low";
+    const quality = "low";
+    void ALLOWED_QUALITY;
 
     const oaRes = await fetch(OPENAI_URL, {
       method: "POST",
@@ -209,7 +217,7 @@ module.exports = async (req, res) => {
         "Authorization": "Bearer " + apiKey,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ model: "gpt-image-1", prompt, n: 1, size })
+      body: JSON.stringify({ model: "gpt-image-1", prompt, n: 1, size, quality })
     });
 
     if (!oaRes.ok) {

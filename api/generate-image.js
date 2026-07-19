@@ -22,20 +22,46 @@ const THEME_VISUALS = {
   "기본": "a clean, elegant, modern and premium decorative scene"
 };
 
-// 개별 장식 요소(복수 선택) -> 고급 비주얼 묘사
+// 개별 장식 요소(테마별, 복수 선택) -> 고급 비주얼 묘사
+// "(랜덤)"은 특수값: 모델이 테마에 맞는 장식을 알아서 구성.
 const DECO_VISUALS = {
-  "파도": "realistic ocean waves",
-  "물방울": "glistening fresh water droplets",
-  "수박": "fresh juicy watermelon slices",
-  "파인애플": "ripe golden pineapple",
-  "레몬": "bright fresh lemons",
-  "야자수": "lush tropical palm leaves",
-  "꽃": "elegant fresh flowers",
-  "커피": "a premium coffee cup and roasted beans",
-  "디저트": "refined gourmet desserts",
-  "리본": "silky decorative ribbons",
-  "풍선": "festive colorful balloons",
-  "반짝임": "soft sparkling light and dreamy bokeh"
+  // 기본
+  "빛번짐": "soft glowing light bloom", "그라데이션": "smooth elegant color gradients",
+  "도형": "elegant geometric shapes", "라인패턴": "subtle refined line patterns",
+  "대리석": "luxurious marble texture", "반짝임": "soft sparkling light and dreamy bokeh",
+  // 여름
+  "파도": "realistic ocean waves", "물방울": "glistening fresh water droplets",
+  "수박": "fresh juicy watermelon slices", "파인애플": "ripe golden pineapple",
+  "레몬": "bright fresh lemons", "야자수": "lush tropical palm leaves",
+  "햇빛": "bright sparkling sunlight reflections",
+  // 봄
+  "벚꽃": "delicate cherry blossoms", "꽃잎": "gently drifting flower petals",
+  "나비": "graceful butterflies", "새싹": "fresh green sprouts",
+  "봄꽃": "colorful blooming spring flowers", "햇살": "warm soft sunbeams",
+  // 가을
+  "낙엽": "softly fallen autumn leaves", "단풍": "red and orange maple leaves",
+  "커피원두": "roasted coffee beans", "우드질감": "natural warm wood texture",
+  "도토리": "small acorns", "감성조명": "warm cozy ambient lighting",
+  // 겨울
+  "눈": "soft falling snow", "눈송이": "delicate snowflakes",
+  "서리": "fine frost crystals", "크리스마스장식": "tasteful Christmas ornaments",
+  "리스": "an elegant holiday wreath", "조명": "warm glowing string lights",
+  // 카페
+  "커피": "a premium styled coffee cup", "원두": "roasted coffee beans",
+  "디저트": "refined gourmet desserts", "케이크": "an elegant cake",
+  "라떼아트": "beautiful latte art", "식물": "fresh green plants",
+  // 음식점
+  "접시": "elegantly plated dishes", "신선채소": "fresh vegetables",
+  "고기": "premium grilled meat", "허브": "fresh aromatic herbs",
+  "김(스팀)": "warm rising steam", "과일": "fresh colorful fruit",
+  // 뷰티
+  "꽃": "elegant fresh flowers", "화장품": "refined cosmetics",
+  "머릿결": "silky flowing hair texture", "빛반사": "soft light reflections",
+  "패브릭": "premium draped fabric", "깃털": "delicate feathers",
+  // 오픈행사
+  "풍선": "festive colorful balloons", "리본": "silky decorative ribbons",
+  "색종이": "scattered confetti", "폭죽": "sparkling fireworks",
+  "꽃가루": "falling celebration petals", "가랜드": "a festive party garland"
 };
 
 // ---- 유틸 ----
@@ -87,12 +113,15 @@ function buildPrompt(data) {
   const theme = THEME_VISUALS[data.theme] ? data.theme : "기본";
   const themePart = THEME_VISUALS[theme];
 
-  const decos = Array.isArray(data.decorations)
-    ? data.decorations.filter(d => DECO_VISUALS[d]).slice(0, 12)
-    : [];
-  const decoPart = decos.length
+  const raw = Array.isArray(data.decorations) ? data.decorations : [];
+  const isRandom = raw.includes("(랜덤)") || raw.length === 0;
+  const decos = raw.filter(d => DECO_VISUALS[d]).slice(0, 12);
+  let decoPart = decos.length
     ? "Prominently feature these decorative elements rendered as rich, high-quality realistic product photography or refined premium illustration (never low-resolution icons or flat emoji): " + decos.map(d => DECO_VISUALS[d]).join(", ") + "."
     : "";
+  if (isRandom) {
+    decoPart += (decoPart ? " " : "") + "Creatively choose and compose a tasteful, varied set of premium decorative elements that best fit the theme, as realistic high-quality product photography or refined illustration.";
+  }
 
   const moodPart = data.mood ? "Overall mood: " + data.mood + "." : "";
   const accent = isHex(data.accentColor) ? data.accentColor : "#7c5cff";

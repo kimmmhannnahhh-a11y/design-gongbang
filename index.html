@@ -186,7 +186,21 @@ function renderScope(scope){({banner:bannerRender,menu:menuRender,coupon:couponR
 
 const AI_THEMES=["기본","여름","봄","가을","겨울","카페","음식점","뷰티","오픈행사"];
 const AI_MOODS=["따뜻하고 고급스러운","밝고 경쾌한","심플 미니멀","고급 럭셔리","아기자기 귀여운"];
-const AI_DECOS=["파도","물방울","수박","파인애플","레몬","야자수","꽃","커피","디저트","리본","풍선","반짝임"];
+/* 테마별 장식 요소. 각 테마 맨 앞에 "(랜덤)"이 자동으로 붙고(gpt가 알아서 구성),
+   테마를 바꾸면 아래 목록으로 칩이 새로 그려진다. */
+const DECOS_BY_THEME={
+"기본":["빛번짐","그라데이션","도형","라인패턴","대리석","반짝임"],
+"여름":["파도","물방울","수박","파인애플","레몬","야자수","햇빛"],
+"봄":["벚꽃","꽃잎","나비","새싹","봄꽃","햇살"],
+"가을":["낙엽","단풍","커피원두","우드질감","도토리","감성조명"],
+"겨울":["눈","눈송이","서리","크리스마스장식","리스","조명"],
+"카페":["커피","원두","디저트","케이크","라떼아트","식물"],
+"음식점":["접시","신선채소","고기","허브","김(스팀)","과일"],
+"뷰티":["꽃","화장품","머릿결","빛반사","패브릭","깃털"],
+"오픈행사":["풍선","리본","색종이","폭죽","꽃가루","가랜드"]
+};
+function themeDecos(theme){return DECOS_BY_THEME[theme]||DECOS_BY_THEME["기본"]}
+function refreshDecos(scope){const p=panelOf(scope);if(!p)return;const theme=p.querySelector(".ai-theme").value;const list=["(랜덤)"].concat(themeDecos(theme));p.querySelector(".ai-decos").innerHTML=list.map((d,i)=>`<button type="button" class="ai-deco${i===0?" on":""}" data-v="${d}">${d}</button>`).join("")}
 
 /* ===== 임시 무료 생성 제한: localStorage 하루 3회 =====
    NOTE: 임시 구현. 추후 로그인/DB 기반 제한으로 교체 예정.
@@ -199,7 +213,7 @@ function consumeFree(){try{localStorage.setItem(freeKey(),(+(localStorage.getIte
 function aiPanelHtml(scope){return `<div class="ai-panel" data-scope="${scope}">
 <div class="ai-top"><span class="ai-badge">🎨 AI 배경 디자인</span><span class="ai-remain"></span></div>
 <div class="ai-row"><label class="ai-lab">테마<select class="select ai-theme">${AI_THEMES.map(t=>`<option>${t}</option>`).join("")}</select></label><label class="ai-lab">분위기<select class="select ai-mood">${AI_MOODS.map(m=>`<option>${m}</option>`).join("")}</select></label></div>
-<div class="ai-lab2">장식 요소 (복수 선택)</div><div class="ai-decos">${AI_DECOS.map(d=>`<button type="button" class="ai-deco" data-v="${d}">${d}</button>`).join("")}</div>
+<div class="ai-lab2">장식 요소 (복수 선택 · 테마별)</div><div class="ai-decos"></div>
 <div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">이미지 다운로드</button></div>
 <div class="ai-status"></div></div>`}
 function panelOf(scope){return document.querySelector(`.ai-panel[data-scope="${scope}"]`)}
@@ -242,13 +256,16 @@ function aiDownload(scope){const img=AI_BG[scope];if(!img)return;const a=documen
   if(!host)return;
   host.insertAdjacentHTML("beforeend",aiPanelHtml(scope));
   const p=panelOf(scope);
-  p.querySelectorAll(".ai-deco").forEach(b=>b.onclick=()=>b.classList.toggle("on"));
+  refreshDecos(scope);
+  p.querySelector(".ai-theme").onchange=()=>refreshDecos(scope);
+  // 칩은 테마 변경 때마다 새로 그려지므로 컨테이너 위임 클릭으로 처리
+  p.querySelector(".ai-decos").addEventListener("click",e=>{const b=e.target.closest(".ai-deco");if(!b)return;const box=b.parentElement;if(b.dataset.v==="(랜덤)"){box.querySelectorAll(".ai-deco").forEach(x=>x.classList.remove("on"));b.classList.add("on")}else{b.classList.toggle("on");const rnd=box.querySelector('.ai-deco[data-v="(랜덤)"]');if(rnd)rnd.classList.remove("on");if(!box.querySelector(".ai-deco.on")&&rnd)rnd.classList.add("on")}});
   p.querySelector(".ai-gen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-regen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-remove").onclick=()=>aiRemove(scope);
   p.querySelector(".ai-download").onclick=()=>aiDownload(scope);
 });
-{const mp=panelOf("menu");if(mp)mp.querySelector(".ai-theme").value="카페";}
+{const mp=panelOf("menu");if(mp){mp.querySelector(".ai-theme").value="카페";refreshDecos("menu");}}
 updateRemainingUI();
 
 renderMenuTemplates();renderMenuInputs();bannerRender();menuRender();couponRender();cardRender();

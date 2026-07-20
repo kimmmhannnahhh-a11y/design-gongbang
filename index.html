@@ -8,6 +8,7 @@
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <style>
 :root{--bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;--line:#252938;--line2:#34394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;--purple:#7c5cff;--purple2:#9a7cff;--danger:#ff6577;--shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),var(--bg);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
@@ -37,7 +38,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <header class="topbar">
 <div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div></div>
 <nav class="nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
-<div class="top-action" id="authArea"><button class="btn" id="galBtn">내 디자인함</button><button class="btn primary" id="loginBtn">로그인</button></div>
+<div class="top-action" id="authArea"><button class="btn premium-btn" id="premiumBtn">✦ 프리미엄</button><button class="btn" id="galBtn">내 디자인함</button><button class="btn primary" id="loginBtn">로그인</button></div>
 </header>
 
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">
@@ -138,6 +139,13 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 /* 명함 커스텀 이미지 오버레이 */
 #ncFront{position:relative}
 .nc-custom-img{position:absolute;top:14px;left:14px;width:64px;height:auto;max-width:60%;z-index:6;border-radius:4px}
+/* 프리미엄 */
+.premium-btn{background:linear-gradient(135deg,#ffd43b,#f0a500);color:#3a2c00;border:0;font-weight:850}
+.pm-price{display:flex;align-items:baseline;gap:8px;margin:6px 0 14px}.pm-price b{font-size:26px;font-weight:900}.pm-price span{font-size:12px;color:var(--muted)}
+.pm-benefits{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:9px}
+.pm-benefits li{position:relative;padding-left:24px;font-size:13.5px;color:var(--text);font-weight:600}
+.pm-benefits li:before{content:"✓";position:absolute;left:0;top:0;color:var(--purple2);font-weight:900}
+.pm-note{text-align:center;font-size:11px;color:var(--muted);margin-top:12px}
 </style>
 <div class="lg-modal" id="loginModal">
   <div class="lg-box">
@@ -158,6 +166,23 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
   <div class="gal-box">
     <div class="gal-head"><h3>내 디자인함</h3><button class="lg-close" id="galClose" aria-label="닫기">×</button></div>
     <div class="gal-grid" id="galGrid"></div>
+  </div>
+</div>
+<div class="lg-modal" id="premiumModal">
+  <div class="lg-box">
+    <button class="lg-close" id="pmClose" aria-label="닫기">×</button>
+    <h3>디자인공방 프리미엄</h3>
+    <div class="lg-sub">더 예쁘게, 더 많이 · 광고 없이</div>
+    <div class="pm-price"><b>월 4,900원</b><span>부가세 포함</span></div>
+    <ul class="pm-benefits">
+      <li>고화질 AI 배경 생성</li>
+      <li>하루 생성 횟수 대폭 증가</li>
+      <li>광고 없이 바로 생성</li>
+      <li>내 디자인함 무제한 저장</li>
+    </ul>
+    <div class="lg-err" id="pmErr"></div>
+    <button class="lg-btn lg-primary" id="pmSubscribe">프리미엄 시작하기</button>
+    <div class="pm-note">언제든 해지할 수 있어요.</div>
   </div>
 </div>
 <script>
@@ -609,8 +634,8 @@ function closeLogin(){lgModal.classList.remove("open");$("#lgEmail").value="";$(
 function setAuthMode(m){authMode=m;const login=m==="login";$("#lgTitle").textContent=login?"로그인":"회원가입";$("#lgSubmit").textContent=login?"로그인":"회원가입";$("#lgToggle").innerHTML=login?'계정이 없으신가요? <button id="lgToggleBtn">회원가입</button>':'이미 계정이 있으신가요? <button id="lgToggleBtn">로그인</button>';$("#lgToggleBtn").onclick=()=>setAuthMode(login?"signup":"login");$("#lgErr").textContent=""}
 function authErrMsg(code){return ({'auth/invalid-email':'이메일 형식이 올바르지 않아요.','auth/email-already-in-use':'이미 가입된 이메일이에요.','auth/weak-password':'비밀번호는 6자 이상이어야 해요.','auth/invalid-credential':'이메일 또는 비밀번호가 잘못됐어요.','auth/user-not-found':'이메일 또는 비밀번호가 잘못됐어요.','auth/wrong-password':'이메일 또는 비밀번호가 잘못됐어요.','auth/too-many-requests':'잠시 후 다시 시도해주세요.','auth/network-request-failed':'네트워크 연결을 확인해주세요.'})[code]||'처리에 실패했어요. 다시 시도해주세요.'}
 async function submitAuth(){const email=$("#lgEmail").value.trim(),pw=$("#lgPw").value;if(!email||!pw){$("#lgErr").textContent="이메일과 비밀번호를 입력해주세요.";return}if(pw.length<6){$("#lgErr").textContent="비밀번호는 6자 이상이어야 해요.";return}const btn=$("#lgSubmit"),label=btn.textContent;btn.disabled=true;btn.textContent="처리 중…";const fn=authMode==="login"?window._doEmailLogin:window._doEmailSignup;const r=fn?await fn(email,pw):{ok:false};btn.disabled=false;btn.textContent=label;if(r.ok){closeLogin()}else{$("#lgErr").textContent=authErrMsg(r.code)}}
-window.onAuthChanged=function(u){const area=$("#authArea");if(!area)return;const gal='<button class="btn" id="galBtn">내 디자인함</button>';if(u){const name=u.email||"사용자";area.innerHTML=`<span class="auth-chip">${gal}<span class="auth-email">${name}</span><button class="btn" id="logoutBtn">로그아웃</button></span>`;$("#logoutBtn").onclick=()=>window._authLogout&&window._authLogout()}else{area.innerHTML=gal+'<button class="btn primary" id="loginBtn">로그인</button>';$("#loginBtn").onclick=openLogin}$("#galBtn").onclick=openGallery};
-$("#loginBtn").onclick=openLogin;$("#galBtn").onclick=openGallery;
+window.onAuthChanged=function(u){const area=$("#authArea");if(!area)return;const pm='<button class="btn premium-btn" id="premiumBtn">✦ 프리미엄</button>',gal='<button class="btn" id="galBtn">내 디자인함</button>';if(u){const name=u.email||"사용자";area.innerHTML=`<span class="auth-chip">${pm}${gal}<span class="auth-email">${name}</span><button class="btn" id="logoutBtn">로그아웃</button></span>`;$("#logoutBtn").onclick=()=>window._authLogout&&window._authLogout()}else{area.innerHTML=pm+gal+'<button class="btn primary" id="loginBtn">로그인</button>';$("#loginBtn").onclick=openLogin}$("#galBtn").onclick=openGallery;$("#premiumBtn").onclick=openPremium};
+$("#loginBtn").onclick=openLogin;$("#galBtn").onclick=openGallery;$("#premiumBtn").onclick=openPremium;
 $("#lgClose").onclick=closeLogin;lgModal.onclick=e=>{if(e.target===lgModal)closeLogin()};
 $("#lgSubmit").onclick=submitAuth;
 $("#lgPw").addEventListener("keydown",e=>{if(e.key==="Enter")submitAuth()});
@@ -625,13 +650,34 @@ function closeGallery(){galModal.classList.remove("open")}
 async function loadGallery(){const box=$("#galGrid");box.innerHTML='<div class="gal-empty">불러오는 중…</div>';const r=window._listDesigns?await window._listDesigns():{ok:false,items:[]};if(!r.items||!r.items.length){box.innerHTML='<div class="gal-empty">저장된 디자인이 없어요.<br>디자인을 만들고 “보관함에 저장”을 눌러보세요.</div>';return}box.innerHTML=r.items.map(it=>`<div class="gal-card"><img src="${it.url}" alt="${(it.title||"").replace(/"/g,"")}"><div class="gal-row"><a class="btn" href="${it.url}" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a><button class="btn danger" data-del="${it.id}">삭제</button></div></div>`).join("")}
 $("#galClose").onclick=closeGallery;galModal.onclick=e=>{if(e.target===galModal)closeGallery()};
 $("#galGrid").addEventListener("click",async e=>{const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("이 디자인을 삭제할까요?"))return;b.disabled=true;const r=window._deleteDesign?await window._deleteDesign(b.dataset.del):{ok:false};if(r&&r.ok)loadGallery();else{b.disabled=false;alert("삭제에 실패했어요.")}});
+
+/* ===== 프리미엄 결제 (포트원 V2) ===== */
+/* 포트원 가입 후 발급받은 값을 넣으면 실제 결제창이 열림. 비어있으면 준비중 안내. */
+const PORTONE_STORE_ID="", PORTONE_CHANNEL_KEY="";
+const pmModal=$("#premiumModal");
+function openPremium(){if(!window._authUser){openLogin();return}pmModal.classList.add("open");$("#pmErr").textContent=""}
+function closePremium(){pmModal.classList.remove("open")}
+$("#pmClose").onclick=closePremium;pmModal.onclick=e=>{if(e.target===pmModal)closePremium()};
+async function subscribePremium(){
+  const btn=$("#pmSubscribe");
+  if(!window.PortOne||!PORTONE_STORE_ID||!PORTONE_CHANNEL_KEY){$("#pmErr").textContent="결제 준비 중이에요. 곧 오픈합니다! (포트원 설정 필요)";return}
+  btn.disabled=true;btn.textContent="결제 진행 중…";
+  try{
+    const paymentId="dg_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
+    const res=await window.PortOne.requestPayment({storeId:PORTONE_STORE_ID,channelKey:PORTONE_CHANNEL_KEY,paymentId,orderName:"디자인공방 프리미엄 (월)",totalAmount:4900,currency:"KRW",payMethod:"CARD",customer:{email:(window._authUser&&window._authUser.email)||""}});
+    if(res&&res.code!=null){$("#pmErr").textContent=res.message||"결제가 취소됐어요.";}
+    else{const r=window._setPremium?await window._setPremium(paymentId):{ok:false};if(r&&r.ok){closePremium();alert("프리미엄이 활성화됐어요! 감사합니다 🎉")}else{$("#pmErr").textContent="결제는 완료됐지만 활성화에 실패했어요. 문의해주세요.";}}
+  }catch(e){$("#pmErr").textContent="결제 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";}
+  finally{btn.disabled=false;btn.textContent="프리미엄 시작하기";}
+}
+$("#pmSubscribe").onclick=subscribePremium;
 </script>
 <!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script>try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init('53803347469de213ee3074ad9d647f71')}catch(e){console.error('Kakao init 실패:',e)}</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithCustomToken, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-functions.js";
 import { getStorage, ref as sref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-storage.js";
@@ -650,6 +696,9 @@ window._doKakaoLogin=async()=>{if(!window.Kakao||!Kakao.isInitialized())return{o
 window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);const r=sref(storage,`designs/${u.uid}/${id}.png`);await uploadString(r,dataUrl,'data_url');const url=await getDownloadURL(r);await setDoc(doc(db,'users',u.uid,'designs',id),{id,url,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});return{ok:true}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
 window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{const snap=await getDocs(collection(db,'users',u.uid,'designs'));const items=snap.docs.map(d=>d.data());items.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));return{ok:true,items}}catch(e){console.error('listDesigns',e);return{ok:false,items:[],code:e.code}}};
 window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await deleteDoc(doc(db,'users',u.uid,'designs',id));try{await deleteObject(sref(storage,`designs/${u.uid}/${id}.png`))}catch(e){}return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
+// 프리미엄 상태 저장/조회 (결제 성공 시 활성화). 실제 검증은 추후 서버 웹훅으로 강화 예정.
+window._setPremium=async(paymentId)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await setDoc(doc(db,'users',u.uid),{premium:true,premiumPlan:'monthly',premiumSince:new Date().toISOString(),lastPaymentId:paymentId||'',app:'design-gongbang'},{merge:true});return{ok:true}}catch(e){console.error('setPremium',e);return{ok:false}}};
+window._getPremium=async()=>{const u=auth.currentUser;if(!u)return{premium:false};try{const d=await getDoc(doc(db,'users',u.uid));return{premium:!!(d.exists()&&d.data().premium)}}catch(e){return{premium:false}}};
 </script>
 </body>
 </html>

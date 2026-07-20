@@ -7,6 +7,7 @@
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
 :root{--bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;--line:#252938;--line2:#34394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;--purple:#7c5cff;--purple2:#9a7cff;--danger:#ff6577;--shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),var(--bg);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
@@ -46,7 +47,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="editor-toolbar" id="bannerEditor"><div class="group mode-group"><button id="bModeOff" class="on">미리보기</button><button id="bModeMove">✥ 위치·크기 편집</button><button id="bModeText">🎨 텍스트 편집</button></div><div class="divider"></div><div class="group"><label>선택</label><span id="bSelName">없음</span></div>
 <div class="group" id="bMoveControls" style="display:none"><label>X</label><input type="number" id="bEditX" value="0"><label>Y</label><input type="number" id="bEditY" value="0"><label>크기%</label><input type="number" id="bEditSize" value="100"><button id="bAlignLeft">왼쪽</button><button id="bAlignCenter">가운데</button><button id="bAlignRight">오른쪽</button></div>
 <div class="group" id="bTextControls" style="display:none"><div class="chips" id="bTxtColors"></div><select id="bTxtFont"></select><button class="tog" id="bTxtBold" style="font-weight:900">굵게</button><button class="tog" id="bTxtItalic" style="font-style:italic">기울임</button></div></div>
-<div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge txt" id="bCat" data-tkey="cat">헤어샵</span><div><div class="headline txt" id="bHead" data-tkey="head">오픈 기념 30% 할인</div><div class="subline txt" id="bSub" data-tkey="sub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill txt" id="bTag" data-tkey="tag">선착순 50명</span><span class="txt" id="bInfo" data-tkey="info">010-1234-5678</span></div></div></div></div><div class="actions"><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
+<div class="preview-head"><div class="preview-name">홍보 배너 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div><div class="stage"><div class="banner" id="banner"><div class="banner-inner"><span class="badge txt" id="bCat" data-tkey="cat">헤어샵</span><div><div class="headline txt" id="bHead" data-tkey="head">오픈 기념 30% 할인</div><div class="subline txt" id="bSub" data-tkey="sub">지금 예약하면 사은품 증정!</div></div><div class="banner-bottom"><span class="pill txt" id="bTag" data-tkey="tag">선착순 50명</span><span class="txt" id="bInfo" data-tkey="info">010-1234-5678</span></div></div></div></div><div class="actions"><button class="btn pdf-btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 
 <section class="view" id="view-menu"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">기본 정보</div></div></div>
@@ -63,14 +64,14 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="group" id="textControls" style="display:none"><div class="chips" id="txtColors"></div><select id="txtFont"></select><button class="tog" id="txtBold" style="font-weight:900">굵게</button><button class="tog" id="txtItalic" style="font-style:italic">기울임</button></div></div>
 <div class="preview-head"><div class="preview-name">메뉴판 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div>
 <div class="stage"><div class="menu-board" id="menuBoard"><div class="menu-top"><div class="menu-kicker txt" data-tkey="hd-kicker" id="mvKicker">MENU & PRICE</div><h2 class="txt" data-tkey="hd-shop" id="mvShop">오늘의 카페</h2><p class="txt" data-tkey="hd-desc" id="mvDesc"></p></div><div class="menu-columns c1" id="menuList"></div><div class="menu-foot txt" data-tkey="ft" id="mvPhone"></div></div></div>
-<div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
+<div class="actions"><button class="btn pdf-btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 
 <section class="view" id="view-coupon"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">쿠폰 종류</div></div></div><div class="segment wrap" id="cpType"><button class="on" data-type="discount">할인 쿠폰</button><button data-type="amount">금액 쿠폰</button><button data-type="visit">방문 쿠폰</button><button data-type="stamp">스탬프</button><button data-type="free">무료 증정</button></div></div>
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">쿠폰 내용</div></div></div>
 <div class="field"><div class="label">상호명</div><input class="input" id="cpShop" value="디자인공방"></div><div class="field"><div class="label">쿠폰 제목</div><textarea class="textarea" id="cpTitle">오픈 기념
 감사 쿠폰</textarea></div><div class="field"><div class="label">혜택 내용</div><input class="input" id="cpDiscount" value="10%"></div><div class="field"><div class="label">사용 조건</div><input class="input" id="cpCond" value="20,000원 이상 구매 시"></div><div class="row2"><div class="field"><div class="label">시작일</div><input class="input" type="date" id="cpFrom" value="2026-07-01"></div><div class="field"><div class="label">종료일</div><input class="input" type="date" id="cpTo" value="2026-08-31"></div></div><div class="field"><div class="label">QR 링크</div><input class="input" id="cpUrl" value="https://designgongbang.com"></div></div>
-</div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="cpChips"></div></div></div><div class="preview-head"><div class="preview-name">쿠폰 미리보기</div><div class="preview-note">종류별 전용 디자인</div></div><div class="stage"><div class="coupon discount" id="coupon"></div></div><div class="actions"><button class="btn">인쇄용 PDF</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
+</div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="cpChips"></div></div></div><div class="preview-head"><div class="preview-name">쿠폰 미리보기</div><div class="preview-note">종류별 전용 디자인</div></div><div class="stage"><div class="coupon discount" id="coupon"></div></div><div class="actions"><button class="btn pdf-btn">인쇄용 PDF</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 
 <section class="view" id="view-card"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 형태</div></div></div>
@@ -84,7 +85,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="editor-toolbar" id="cardEditor"><div class="group mode-group"><button id="cModeOff" class="on">미리보기</button><button id="cModeMove">✥ 위치·크기 편집</button><button id="cModeText">🎨 텍스트 편집</button></div><div class="divider"></div><div class="group"><label>선택</label><span id="cSelName">없음</span></div>
 <div class="group" id="cMoveControls" style="display:none"><label>X</label><input type="number" id="cEditX" value="0"><label>Y</label><input type="number" id="cEditY" value="0"><label>크기%</label><input type="number" id="cEditSize" value="100"><button id="cAlignLeft">왼쪽</button><button id="cAlignCenter">가운데</button><button id="cAlignRight">오른쪽</button></div>
 <div class="group" id="cTextControls" style="display:none"><div class="chips" id="cTxtColors"></div><select id="cTxtFont"></select><button class="tog" id="cTxtBold" style="font-weight:900">굵게</button><button class="tog" id="cTxtItalic" style="font-style:italic">기울임</button></div></div>
-<div class="preview-head"><div class="preview-name">명함 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div><div class="stage"><div class="card-preview horizontal nc-front" id="ncFront"></div></div><div class="actions"><button class="btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
+<div class="preview-head"><div class="preview-name">명함 미리보기</div><div class="preview-note">편집모드 선택 후 텍스트 클릭</div></div><div class="stage"><div class="card-preview horizontal nc-front" id="ncFront"></div></div><div class="actions"><button class="btn pdf-btn">PDF 저장</button><button class="btn primary">이미지 저장 PNG</button></div></div></div></section>
 </div>
 <style>
 .top-action .auth-chip{display:flex;align-items:center;gap:10px}.auth-email{font-size:12.5px;color:var(--sub);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
@@ -535,6 +536,21 @@ async function downloadPng(scope,btn){
   catch(e){alert("이미지 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
   finally{if(btn){btn.disabled=false;btn.textContent=label}}
 }
+// PDF 저장: 미리보기를 캡처해 실제 크기의 1페이지 PDF로.
+async function downloadPdf(scope,btn){
+  if(typeof html2canvas!=="function"||!window.jspdf){alert("PDF 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
+  const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
+  try{
+    const url=await captureBoard(scope);
+    const img=new Image();await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});
+    const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+    const jsPDF=window.jspdf.jsPDF;
+    const pdf=new jsPDF({orientation:w>=h?"landscape":"portrait",unit:"px",format:[w,h]});
+    pdf.addImage(url,"PNG",0,0,w,h);
+    pdf.save(`design-gongbang-${scope}.pdf`);
+  }catch(e){alert("PDF 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
+  finally{if(btn){btn.disabled=false;btn.textContent=label}}
+}
 // 내 디자인함에 저장 (로그인 필요)
 async function saveDesign(scope,btn){
   if(!window._authUser){openLogin();return}
@@ -580,7 +596,7 @@ async function saveDesign(scope,btn){
   if(pngBtn)pngBtn.onclick=e=>downloadPng(scope,e.currentTarget);
   addSaveBtn(scope);
 });
-function addSaveBtn(scope){const acts=document.querySelector(`#view-${scope} .actions`);if(!acts||acts.querySelector(".save-design"))return;const b=document.createElement("button");b.className="btn save-design";b.textContent="보관함에 저장";b.onclick=()=>saveDesign(scope,b);acts.appendChild(b)}
+function addSaveBtn(scope){const acts=document.querySelector(`#view-${scope} .actions`);if(!acts)return;const pb=acts.querySelector(".pdf-btn");if(pb)pb.onclick=e=>downloadPdf(scope,e.currentTarget);if(acts.querySelector(".save-design"))return;const b=document.createElement("button");b.className="btn save-design";b.textContent="보관함에 저장";b.onclick=()=>saveDesign(scope,b);acts.appendChild(b)}
 updateRemainingUI();
 
 renderMenuTemplates();renderMenuInputs();bannerRender();menuRender();couponRender();cardRender();

@@ -153,38 +153,50 @@ function layoutSpaceInstruction(documentType, layoutType) {
   return "";
 }
 
+function shuffle(arr) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
 // ---- 서버측 프롬프트 자동 작성 (사용자 입력을 명령이 아닌 데이터로만 사용) ----
 function buildPrompt(data) {
-  const theme = THEME_VISUALS[data.theme] ? data.theme : "기본";
-  const themePart = THEME_VISUALS[theme];
+  // 계절 -> THEME_VISUALS(분위기/색톤). season 우선, 없으면 theme, 없으면 기본.
+  const themeKey = THEME_VISUALS[data.season] ? data.season : (THEME_VISUALS[data.theme] ? data.theme : "기본");
+  const themePart = THEME_VISUALS[themeKey];
 
+  const industry = clampStr(data.industry || data.businessType || "", 40);
+
+  // 장식: (랜덤) 제외. 알려진 것은 영어 비주얼로, 모르는 한글은 그대로. 6개 이상이면 서버가 어울리게 3~5개 선별.
   const raw = Array.isArray(data.decorations) ? data.decorations : [];
-  const isRandom = raw.includes("(랜덤)") || raw.length === 0;
-  const decos = raw.filter(d => DECO_VISUALS[d]).slice(0, 12);
-  let decoPart = decos.length
-    ? "Prominently feature these decorative elements rendered as rich, high-quality realistic product photography or refined premium illustration (never low-resolution icons or flat emoji): " + decos.map(d => DECO_VISUALS[d]).join(", ") + "."
-    : "";
-  if (isRandom) {
-    decoPart += (decoPart ? " " : "") + "Creatively choose and compose a tasteful, varied set of premium decorative elements that best fit the theme, as realistic high-quality product photography or refined illustration.";
-  }
+  const isRandom = raw.includes("(랜덤)");
+  let picked = raw.filter(d => d !== "(랜덤)").map(d => clampStr(d, 40)).filter(Boolean);
+  if (picked.length > 5) picked = shuffle(picked).slice(0, 5);
+  const known = picked.filter(d => DECO_VISUALS[d]);
+  const unknown = picked.filter(d => !DECO_VISUALS[d]);
+  let decoPart = "";
+  if (known.length) decoPart += "Feature these decorative elements as rich, high-quality realistic product photography or refined premium illustration (never low-resolution icons or flat emoji): " + known.map(d => DECO_VISUALS[d]).join(", ") + ".";
+  if (unknown.length) decoPart += (decoPart ? " " : "") + "Also elegantly incorporate, in a premium way: " + unknown.join(", ") + ".";
+  const custom = clampStr(data.customDeco || "", 100);
+  if (custom) decoPart += (decoPart ? " " : "") + "Design reference from the shop owner (interpret tastefully as visuals, never render as literal text): " + custom + ".";
+  if (isRandom || (!picked.length && !custom)) decoPart += (decoPart ? " " : "") + "Creatively choose and compose a tasteful, varied set of premium decorative elements that best fit the theme.";
 
-  const moodPart = data.mood ? "Overall mood: " + data.mood + "." : "";
   const accent = isHex(data.accentColor) ? data.accentColor : "#7c5cff";
   const layoutPart = layoutSpaceInstruction(data.documentType, data.layoutType);
+  const mood = clampStr(data.mood, 30), color = clampStr(data.color, 30), material = clampStr(data.material, 30), space = clampStr(data.space, 30);
 
-  // 랜덤 4축 조합(화풍 8 × 조명 6 × 팔레트 6 × 구도 8)으로 매 생성마다 다른 느낌.
+  // 랜덤 4축 조합(화풍 × 조명 × 팔레트 × 구도)으로 매 생성마다 다른 느낌.
   const style = pick(ART_STYLES), light = pick(LIGHTING), palette = pick(PALETTE_MOODS), comp = pick(VARIATIONS);
 
   return [
-    "Create " + themePart + ", designed as a premium high-end commercial advertising poster, rendered " + style + ".",
+    "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", designed like a professional advertising poster, rendered " + style + ".",
     light,
     palette,
-    moodPart,
+    mood ? ("Overall mood/feeling: " + mood + ".") : "",
+    color ? ("Lean the color palette toward: " + color + ".") : "",
+    material ? ("Incorporate a subtle " + material + " material texture.") : "",
+    space ? ("Style/space reference: " + space + ".") : "",
     "Use " + accent + " as the main accent color, woven tastefully into the palette.",
     decoPart,
     layoutPart,
     comp,
-    "Render every element in a rich, detailed and premium way - never as low-resolution icons or simple emoji.",
+    "Render every element in a rich, detailed and premium way - never as low-resolution icons or simple emoji. Prioritize tasteful balance and generous whitespace over clutter.",
     "This image is ONLY a decorative background: there must be absolutely no text, no letters, no words, no numbers, no logos, no watermark, no signage, no menu, no captions of any language anywhere in the image.",
     "Keep the reserved text areas visually clean, softly lit and uncluttered so text can be cleanly overlaid on top later."
   ].filter(Boolean).join(" ");
@@ -235,14 +247,25 @@ module.exports = async (req, res) => {
     }
     const orientation = ALLOWED_ORIENTATION.includes(body.orientation) ? body.orientation : "horizontal";
 
+    // 직접입력(장식) 안전 필터: 데이터로만 사용. URL/꺾쇠 제거 후 길이 제한.
+    const safeCustom = clampStr(String(body.customDeco || "").replace(/https?:\/\/\S+/gi, " ").replace(/[<>]/g, " "), 100);
+
     const data = {
       documentType,
       orientation,
-      businessType: clampStr(body.businessType, 30),
+      businessType: clampStr(body.businessType, 40),
+      industry: clampStr(body.industry, 40),
       layoutType: clampStr(body.layoutType, 40),
       templateStyle: clampStr(body.templateStyle, 40),
       theme: clampStr(body.theme, 20),
-      mood: clampStr(body.mood, 40),
+      mood: clampStr(body.mood, 30),
+      color: clampStr(body.color, 30),
+      season: clampStr(body.season, 30),
+      material: clampStr(body.material, 30),
+      space: clampStr(body.space, 30),
+      customDeco: safeCustom,
+      categoriesCount: Math.max(0, Math.min(50, parseInt(body.categoriesCount, 10) || 0)),
+      menuCount: Math.max(0, Math.min(500, parseInt(body.menuCount, 10) || 0)),
       accentColor: isHex(body.accentColor) ? body.accentColor : "#7c5cff",
       title: clampStr(body.title, 80),
       subtitle: clampStr(body.subtitle, 80),

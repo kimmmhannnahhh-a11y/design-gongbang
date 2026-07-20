@@ -36,7 +36,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <header class="topbar">
 <div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div></div>
 <nav class="nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
-<div class="top-action" id="authArea"><button class="btn primary" id="loginBtn">로그인</button></div>
+<div class="top-action" id="authArea"><button class="btn" id="galBtn">내 디자인함</button><button class="btn primary" id="loginBtn">로그인</button></div>
 </header>
 
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">
@@ -95,6 +95,41 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .lg-toggle{text-align:center;margin-top:16px;font-size:12px;color:var(--sub)}.lg-toggle button{background:none;border:0;color:var(--purple2);font-weight:800;cursor:pointer;font-family:inherit}
 .lg-err{color:var(--danger);font-size:12px;min-height:16px;margin:4px 0 2px}
 .lg-close{float:right;background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
+/* 메뉴판 확장 선택기 */
+.mp-search{margin:6px 0 4px}
+.mp-sec{margin-top:14px}
+.mp-h{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:800;color:#b8bfd0;margin-bottom:8px}
+.mp-subh{font-size:11px;color:var(--muted);margin:8px 0 6px}
+.mp-more{background:none;border:1px solid var(--line2);color:var(--purple2);font-size:11px;font-weight:800;border-radius:8px;padding:5px 10px;cursor:pointer;white-space:nowrap}
+.mp-custom{margin-top:8px}
+.pick-cat{font-size:11px;font-weight:800;color:var(--muted);margin:10px 0 6px}
+.pick-empty{font-size:12px;color:var(--muted);padding:6px 2px}
+.pick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+@media(min-width:560px){.pick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.pick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.pick-row{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px}
+.pick-chip{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:11px;border:1.5px solid var(--line2);background:#0d1017;color:var(--text);font-size:12px;font-weight:700;cursor:pointer;position:relative;text-align:left;transition:.12s;min-width:0}
+.pick-row .pick-chip{flex:0 0 auto}
+.pick-grid .pick-chip{width:100%}
+.pick-chip:hover{border-color:var(--purple2)}
+.pick-chip.on{border-color:var(--purple);background:rgba(124,92,255,.15);box-shadow:0 0 0 2px rgba(124,92,255,.2)}
+.pick-th{width:22px;height:22px;flex:0 0 auto;border-radius:6px;background:#20242f;display:grid;place-items:center;font-size:10px;font-weight:800;color:var(--sub)}
+.pick-chip.on .pick-th{background:var(--purple);color:#fff}
+.pick-lb{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pick-ck{display:none;margin-left:auto;color:var(--purple2);font-weight:900;flex:0 0 auto}
+.pick-chip.on .pick-ck{display:inline}
+/* 내 디자인함 갤러리 */
+.gal-box{width:100%;max-width:860px;max-height:86vh;background:linear-gradient(180deg,#151822,#0f1118);border:1px solid var(--line2);border-radius:22px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.gal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.gal-head h3{font-size:19px;font-weight:850}
+.gal-grid{overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-right:4px}
+@media(min-width:640px){.gal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.gal-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.gal-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;line-height:1.8;padding:40px 0}
+.gal-card{background:#0d1017;border:1px solid var(--line2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.gal-card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#0b0d13;display:block}
+.gal-row{display:flex;gap:6px;padding:8px}
+.gal-row .btn{flex:1;height:36px;font-size:12px;text-align:center;line-height:36px;padding:0;text-decoration:none}
 </style>
 <div class="lg-modal" id="loginModal">
   <div class="lg-box">
@@ -109,6 +144,12 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
     <button class="lg-btn lg-kakao" id="lgKakao">💬 카카오로 계속하기</button>
     <button class="lg-btn lg-google" id="lgGoogle" style="margin-top:8px">🌐 Google로 계속하기</button>
     <div class="lg-toggle" id="lgToggle">계정이 없으신가요? <button id="lgToggleBtn">회원가입</button></div>
+  </div>
+</div>
+<div class="lg-modal" id="galleryModal">
+  <div class="gal-box">
+    <div class="gal-head"><h3>내 디자인함</h3><button class="lg-close" id="galClose" aria-label="닫기">×</button></div>
+    <div class="gal-grid" id="galGrid"></div>
   </div>
 </div>
 <script>
@@ -260,7 +301,101 @@ const DECOS_BY_THEME={
 "오픈행사":["풍선","리본","색종이","폭죽","꽃가루","가랜드"]
 };
 function themeDecos(theme){return DECOS_BY_THEME[theme]||DECOS_BY_THEME["기본"]}
-function refreshDecos(scope){const p=panelOf(scope);if(!p)return;const theme=p.querySelector(".ai-theme").value;const list=["(랜덤)"].concat(themeDecos(theme));p.querySelector(".ai-decos").innerHTML=list.map((d,i)=>`<button type="button" class="ai-deco${i===0?" on":""}" data-v="${d}">${d}</button>`).join("")}
+function refreshDecos(scope){const p=panelOf(scope);if(!p)return;const sel=p.querySelector(".ai-theme");if(!sel)return;const theme=sel.value;const list=["(랜덤)"].concat(themeDecos(theme));p.querySelector(".ai-decos").innerHTML=list.map((d,i)=>`<button type="button" class="ai-deco${i===0?" on":""}" data-v="${d}">${d}</button>`).join("")}
+
+/* ========== 메뉴판 확장: 업종 / 테마 / 장식 선택 (메뉴 스코프 전용) ========== */
+const MENU_IND_QUICK=["카페","음식점","미용실","네일","병원","헬스장","학원","기타"];
+const MENU_IND_GROUPS={
+"카페·디저트":["카페","베이커리","디저트 카페","케이크 전문점","도넛 전문점","아이스크림","빙수","브런치 카페","샌드위치","샐러드","주스","스무디","버블티","전통찻집","무인카페"],
+"한식":["한식당","고깃집","삼겹살","갈비","국밥","해장국","찌개","백반","분식","김밥","떡볶이","치킨","족발","보쌈","찜닭","닭갈비","곱창","막창","냉면","칼국수","국수","죽","도시락","반찬가게"],
+"아시아 음식":["일식","초밥","라멘","돈카츠","이자카야","중식","마라탕","양꼬치","베트남 음식","쌀국수","태국 음식","인도 음식","아시아 퓨전"],
+"양식·패스트푸드":["양식","파스타","피자","스테이크","햄버거","핫도그","타코","멕시칸","펍","와인바","칵테일바","호프집","포장마차"],
+"해산물":["횟집","해산물","조개구이","장어","생선구이","수산시장","포케"],
+"뷰티":["미용실","바버샵","네일숍","피부관리","피부과","성형외과","왁싱","속눈썹","눈썹","메이크업","마사지","스파","두피관리","체형관리","태닝"],
+"의료·건강":["병원","치과","한의원","약국","안과","이비인후과","정형외과","재활의학과","산부인과","소아과","동물병원","건강검진센터","심리상담센터"],
+"운동":["헬스장","필라테스","요가","크로스핏","복싱","태권도","주짓수","골프","테니스","수영","발레","댄스","스피닝","개인 PT"],
+"교육":["영어학원","수학학원","입시학원","공부방","독서실","스터디카페","음악학원","미술학원","코딩학원","중국어학원","일본어학원","요리학원","운전학원"],
+"생활 서비스":["세탁소","꽃집","사진관","안경점","휴대폰 매장","컴퓨터 수리","자동차 정비","세차장","반려동물 미용","펫숍","부동산","인테리어","청소업체","이사업체","열쇠집","공방","문구점","서점","편의점","마트"],
+"행사·대여":["웨딩","돌잔치","파티룸","렌탈스튜디오","키즈카페","보드게임카페","PC방","노래방","숙박","펜션","캠핑장","여행사","렌터카"]
+};
+const MENU_THEME_GROUPS={
+"분위기":["미니멀","모던","깔끔한","감성적인","따뜻한","고급스러운","럭셔리","귀여운","밝고 경쾌한","차분한","내추럴","빈티지","레트로","클래식","캐주얼","트렌디","힙한","프리미엄","전문적인","건강한","신선한","전통적인","이국적인","미래적인"],
+"색감":["화이트","블랙","베이지","크림","브라운","우드","파스텔","핑크","코랄","레드","오렌지","옐로","그린","민트","스카이블루","바다색","네이비","퍼플","골드","실버","모노톤","비비드","뉴트럴"],
+"계절·시즌":["봄","여름","가을","겨울","벚꽃 시즌","장마 시즌","휴가 시즌","할로윈","크리스마스","연말","신년","밸런타인데이","화이트데이","어린이날","어버이날","추석","설날","수능 시즌","졸업 시즌","입학 시즌"],
+"공간·스타일":["북유럽","프렌치","유럽 카페","일본 감성","한국 전통","동양화","지중해","하와이","열대 휴양지","해변","숲","정원","도시 야경","호텔","갤러리","스튜디오","인더스트리얼","아르데코","바우하우스","팝아트","수채화","손그림","종이 콜라주","잡지 화보","영화 포스터","광고 포스터"],
+"재질":["우드","대리석","콘크리트","금속","유리","아크릴","종이","크라프트지","린넨","패브릭","가죽","타일","칠판","금박","은박","엠보싱","홀로그램"]
+};
+const MENU_DECO_GROUPS={
+"자연":["꽃","꽃잎","벚꽃","장미","튤립","해바라기","들꽃","허브","나뭇잎","야자수 잎","몬스테라","덩굴","잔디","나무","숲","산","구름","하늘","햇빛","노을","달","별","눈","서리","빗방울","물방울","파도","모래","조개","산호"],
+"과일":["수박","파인애플","레몬","라임","오렌지","자몽","딸기","체리","복숭아","포도","사과","배","바나나","망고","블루베리","키위","코코넛","무화과","멜론","유자"],
+"카페·디저트":["커피잔","아이스커피","라테아트","커피 원두","커피머신","티포트","찻잔","크루아상","식빵","바게트","케이크","컵케이크","마카롱","도넛","쿠키","와플","팬케이크","아이스크림","빙수","초콜릿","생크림","시럽","빨대"],
+"음식 재료":["고기","소고기","돼지고기","닭고기","생선","새우","문어","오징어","조개","게","달걀","치즈","버터","토마토","양파","마늘","고추","버섯","감자","옥수수","쌀","면","빵","올리브","허브","향신료"],
+"한식":["한식 접시","뚝배기","놋그릇","수저","젓가락","한지","보자기","전통 문양","기와","한옥 창살","매듭","도자기","붓터치","먹 번짐"],
+"일식·아시아":["초밥","사시미","라멘 그릇","젓가락","부채","일본 등불","벚꽃","파도 문양","대나무","중국 등","구름 문양","용 문양","연꽃","향신료","라탄"],
+"뷰티":["가위","빗","드라이어","머리카락 곡선","네일 컬러","매니큐어","립스틱","브러시","거울","향수병","화장품 용기","물결 라인","실크","진주","반짝임","꽃","리본"],
+"의료":["십자 표시","심장 박동선","청진기","치아","알약","캡슐","의료 차트","깨끗한 그리드","곡선 라인","물방울","잎","건강 아이콘","반려동물 발바닥"],
+"운동":["덤벨","바벨","케틀벨","러닝화","요가매트","필라테스 링","골프공","테니스공","복싱 글러브","운동 실루엣","속도선","에너지 파동","그라데이션","메시 패턴"],
+"교육":["연필","펜","노트","책","칠판","종이","자","컴퍼스","알파벳","숫자","음표","물감","팔레트","전구","말풍선","체크 표시","격자무늬"],
+"행사":["풍선","리본","선물상자","색종이 조각","폭죽","케이크","촛불","파티 모자","꽃가루","별","하트","왕관","프레임","포토존 커튼","조명 전구"],
+"그래픽":["원","반원","사각형","삼각형","아치","물결선","직선","점선","격자","체크 패턴","스트라이프","도트","추상 도형","유기적인 곡선","그라데이션 블롭","그림자","테두리","프레임","스티커","라벨","배지","테이프","종이 찢김","브러시 터치","잉크 번짐","노이즈","필름 그레인","빛 번짐","반짝임","홀로그램"]
+};
+const MENU_RECO={
+"여름":["파도","물방울","수박","파인애플","레몬","야자수 잎","햇빛"],"봄":["꽃","꽃잎","벚꽃","나뭇잎","햇빛"],
+"가을":["나뭇잎","커피 원두","우드","노을","향신료"],"겨울":["눈","서리","별","조명 전구","반짝임"],
+"카페":["커피잔","커피 원두","라테아트","빵","케이크"],"베이커리":["크루아상","바게트","식빵","버터","쿠키"],
+"디저트 카페":["케이크","마카롱","컵케이크","초콜릿","생크림"],"횟집":["파도","생선","조개","물방울","붓터치"],
+"고깃집":["고기","향신료","숯","연기","허브"],"삼겹살":["돼지고기","향신료","숯","연기"],"치킨":["닭고기","맥주","불꽃","허브"],
+"미용실":["가위","빗","머리카락 곡선","거울","실크"],"바버샵":["가위","빗","머리카락 곡선","가죽"],
+"네일숍":["네일 컬러","매니큐어","진주","반짝임","꽃"],"네일":["네일 컬러","매니큐어","진주","반짝임","꽃"],
+"피부관리":["물방울","꽃","진주","실크","반짝임"],"병원":["깨끗한 그리드","곡선 라인","물방울","잎"],
+"치과":["치아","깨끗한 그리드","곡선 라인","반짝임"],"약국":["십자 표시","알약","캡슐","잎"],
+"동물병원":["반려동물 발바닥","잎","곡선 라인","물방울"],"헬스장":["덤벨","속도선","에너지 파동","메시 패턴"],
+"필라테스":["필라테스 링","곡선 라인","에너지 파동","그라데이션"],"요가":["잎","곡선 라인","달","별"],
+"영어학원":["책","펜","칠판","격자","체크 표시"],"수학학원":["숫자","펜","격자","체크 표시"],"학원":["책","펜","칠판","격자","체크 표시"],
+"미술학원":["물감","팔레트","브러시 터치","종이"],"음악학원":["음표","전구","곡선 라인"],
+"키즈카페":["풍선","별","구름","추상 도형","하트"],"꽃집":["꽃","꽃잎","장미","튤립","잎"],
+"웨딩":["꽃","리본","진주","반짝임","프레임"],"돌잔치":["풍선","별","왕관","꽃가루","하트"],
+"음식점":["접시","고기","향신료","허브","과일"],"한식당":["한지","도자기","붓터치","전통 문양","기와"],
+"일식":["초밥","젓가락","파도 문양","대나무","부채"],"중식":["중국 등","구름 문양","용 문양","향신료"],
+"피자":["토마토","치즈","허브","밀"],"파스타":["토마토","허브","치즈","올리브"],"버거":["고기","치즈","토마토"],
+"펍":["맥주","향신료","우드","조명 전구"],"와인바":["포도","유리","조명 전구","우드"],
+"럭셔리":["금박","대리석","직선","그림자","엠보싱"],"고급스러운":["금박","대리석","직선","그림자","엠보싱"],"프리미엄":["금박","대리석","직선","그림자"],
+"미니멀":["직선","테두리","추상 도형","그림자"],"모던":["추상 도형","직선","그라데이션 블롭","그림자"],
+"레트로":["체크 패턴","필름 그레인","스티커","도트"],"빈티지":["필름 그레인","종이 찢김","우드","스티커"],
+"감성적인":["종이 찢김","꽃","햇빛","그림자"],"내추럴":["잎","나뭇잎","우드","햇빛"],"귀여운":["하트","별","도트","구름"]
+};
+const menuAI={ind:"카페",indCustom:"",mood:"",color:"",season:"",space:"",material:"",decos:new Set(),customDeco:"",indAll:false,decoAll:false,q:"",_touchedDeco:false};
+function mpEsc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+function mpChip(label,sel,kind){const th=String(label).replace(/\s/g,"").slice(0,2);const e=mpEsc(label);return `<button type="button" class="pick-chip${sel?" on":""}" data-kind="${kind}" data-v="${e}"><span class="pick-th">${th}</span><span class="pick-lb">${e}</span><span class="pick-ck">✓</span></button>`}
+function mpMatch(x){return !menuAI.q||x.toLowerCase().includes(menuAI.q)}
+function currentIndName(){return menuAI.indCustom.trim()||menuAI.ind}
+function menuRecoList(){const keys=[currentIndName(),menuAI.season,menuAI.mood];const out=[];keys.forEach(k=>{(MENU_RECO[k]||[]).forEach(d=>{if(out.indexOf(d)<0)out.push(d)})});if(!out.length)MENU_RECO["카페"].forEach(d=>out.push(d));return out.slice(0,12)}
+function autoReco(){if(menuAI._touchedDeco)return;menuAI.decos=new Set(menuRecoList())}
+function mpGrid(arr,kind,selFn){return `<div class="pick-grid">${arr.map(x=>mpChip(x,selFn(x),kind)).join("")}</div>`}
+function renderMenuInd(){const box=document.getElementById("mpIndBox");if(!box)return;const isSel=x=>menuAI.ind===x&&!menuAI.indCustom.trim();if(menuAI.q){const list=[];Object.values(MENU_IND_GROUPS).forEach(a=>a.forEach(x=>{if(mpMatch(x)&&list.indexOf(x)<0)list.push(x)}));box.innerHTML=list.length?mpGrid(list,"ind",isSel):'<div class="pick-empty">검색 결과 없음</div>'}else if(menuAI.indAll){box.innerHTML=Object.entries(MENU_IND_GROUPS).map(([g,arr])=>`<div class="pick-cat">${g}</div>${mpGrid(arr,"ind",isSel)}`).join("")}else{box.innerHTML=mpGrid(MENU_IND_QUICK,"ind",isSel)}}
+function renderMenuThemes(){const box=document.getElementById("mpThemeBox");if(!box)return;const map={"분위기":"mood","색감":"color","계절·시즌":"season","공간·스타일":"space","재질":"material"};box.innerHTML=Object.entries(MENU_THEME_GROUPS).map(([g,arr])=>{const key=map[g];const items=arr.filter(mpMatch);if(!items.length)return"";return `<div class="pick-cat">${g}</div><div class="pick-row">${items.map(x=>mpChip(x,menuAI[key]===x,"theme:"+key)).join("")}</div>`}).join("")}
+function renderMenuDecos(){const reco=document.getElementById("mpDecoReco"),all=document.getElementById("mpDecoAll");if(!reco)return;const has=x=>menuAI.decos.has(x);const rl=menuRecoList().filter(mpMatch);reco.innerHTML=rl.length?mpGrid(rl,"deco",has):'<div class="pick-empty">추천 없음</div>';if(menuAI.decoAll||menuAI.q){all.innerHTML=Object.entries(MENU_DECO_GROUPS).map(([g,arr])=>{const items=arr.filter(mpMatch);if(!items.length)return"";return `<div class="pick-cat">${g}</div>${mpGrid(items,"deco",has)}`}).join("")}else{all.innerHTML=""}}
+function renderMenuPickers(){renderMenuInd();renderMenuThemes();renderMenuDecos()}
+function menuAiPanelHtml(){return `<div class="ai-panel" data-scope="menu">
+<div class="ai-top"><span class="ai-badge">AI 배경 디자인</span><span class="ai-remain"></span></div>
+<div class="mp-search"><input id="mpSearch" class="input" placeholder="업종·장식 검색"></div>
+<div class="mp-sec"><div class="mp-h"><span>업종</span><button type="button" class="mp-more" id="mpIndMore">업종 더보기</button></div><div id="mpIndBox"></div><div class="mp-custom"><input id="mpIndCustom" class="input" maxlength="30" placeholder="업종 직접 입력"></div></div>
+<div class="mp-sec"><div class="mp-h"><span>테마 (분위기·색감·계절·스타일·재질)</span></div><div id="mpThemeBox"></div></div>
+<div class="mp-sec"><div class="mp-h"><span>장식 요소 (복수 선택)</span><button type="button" class="mp-more" id="mpDecoMore">전체 장식 보기</button></div><div class="mp-subh">추천</div><div id="mpDecoReco"></div><div id="mpDecoAll"></div><div class="mp-custom"><input id="mpDecoCustom" class="input" maxlength="100" placeholder="원하는 장식을 직접 입력 (예: 체리와 빨간 리본)"></div></div>
+<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">이미지 다운로드</button></div>
+<div class="ai-status"></div></div>`}
+function wireMenuPicker(p){
+  p.querySelector("#mpSearch").addEventListener("input",e=>{menuAI.q=e.target.value.trim().toLowerCase();renderMenuPickers()});
+  p.querySelector("#mpIndCustom").addEventListener("input",e=>{menuAI.indCustom=e.target.value;autoReco();renderMenuInd();renderMenuDecos()});
+  p.querySelector("#mpDecoCustom").addEventListener("input",e=>{menuAI.customDeco=e.target.value});
+  p.querySelector("#mpIndMore").onclick=()=>{menuAI.indAll=!menuAI.indAll;p.querySelector("#mpIndMore").textContent=menuAI.indAll?"접기":"업종 더보기";renderMenuInd()};
+  p.querySelector("#mpDecoMore").onclick=()=>{menuAI.decoAll=!menuAI.decoAll;p.querySelector("#mpDecoMore").textContent=menuAI.decoAll?"접기":"전체 장식 보기";renderMenuDecos()};
+  p.addEventListener("click",e=>{const c=e.target.closest(".pick-chip");if(!c)return;const kind=c.dataset.kind,v=c.dataset.v;
+    if(kind==="ind"){menuAI.ind=v;menuAI.indCustom="";const ic=p.querySelector("#mpIndCustom");if(ic)ic.value="";autoReco();renderMenuInd();renderMenuDecos()}
+    else if(kind&&kind.indexOf("theme:")===0){const key=kind.split(":")[1];menuAI[key]=menuAI[key]===v?"":v;autoReco();renderMenuThemes();renderMenuDecos()}
+    else if(kind==="deco"){menuAI._touchedDeco=true;if(menuAI.decos.has(v))menuAI.decos.delete(v);else menuAI.decos.add(v);renderMenuDecos()}
+  });
+}
 
 /* ===== 무료 생성 제한: 하루 3회 무료 + 광고로 최대 2회 추가 =====
    NOTE: 임시 localStorage 구현(우회 가능). 추후 로그인/DB 기반 서버 제한으로 교체 예정.
@@ -285,9 +420,10 @@ function aiPanelHtml(scope){return `<div class="ai-panel" data-scope="${scope}">
 <div class="ai-status"></div></div>`}
 function panelOf(scope){return document.querySelector(`.ai-panel[data-scope="${scope}"]`)}
 
-function collectPayload(scope){const p=panelOf(scope);const base={theme:p.querySelector(".ai-theme").value,mood:p.querySelector(".ai-mood").value,decorations:[...p.querySelectorAll(".ai-deco.on")].map(x=>x.dataset.v)};
+function collectPayload(scope){
+if(scope==="menu"){const t=menuTemplates.find(x=>x.id===menuState.tpl);const cats=menuState.sections;const menuCount=cats.reduce((n,s)=>n+s.items.length,0);const ind=currentIndName();return {documentType:"menu",industry:ind,businessType:ind,mood:menuAI.mood,color:menuAI.color,season:menuAI.season,space:menuAI.space,material:menuAI.material,theme:menuAI.season||menuAI.mood||"기본",decorations:[...menuAI.decos],customDeco:(menuAI.customDeco||"").slice(0,100),layoutType:t?t.name:"",templateStyle:t?t.theme:"",categoriesCount:cats.length,menuCount:menuCount,accentColor:menuState.accent,title:$("#menuShop").value,subtitle:$("#menuDesc").value,categories:cats.map(s=>({name:s.title,items:s.items.map(it=>({name:it[0],price:it[1],description:it[2]||""}))}))}}
+const p=panelOf(scope);const base={theme:p.querySelector(".ai-theme").value,mood:p.querySelector(".ai-mood").value,decorations:[...p.querySelectorAll(".ai-deco.on")].map(x=>x.dataset.v)};
 if(scope==="banner"){return Object.assign(base,{documentType:"banner",businessType:$("#shop").value,layoutType:"가로형 배너",accentColor:bannerState.accent,title:$("#headline").value,subtitle:$("#sub").value})}
-if(scope==="menu"){const t=menuTemplates.find(x=>x.id===menuState.tpl);return Object.assign(base,{documentType:"menu",businessType:"카페",layoutType:t?t.name:"",templateStyle:t?t.theme:"",accentColor:menuState.accent,title:$("#menuShop").value,subtitle:$("#menuDesc").value,categories:menuState.sections.map(s=>({name:s.title,items:s.items.map(it=>({name:it[0],price:it[1],description:it[2]||""}))}))})}
 if(scope==="coupon"){return Object.assign(base,{documentType:"coupon",layoutType:cpState.type,accentColor:cpState.accent,title:$("#cpTitle").value,subtitle:$("#cpCond").value})}
 return Object.assign(base,{documentType:"businessCard",orientation:ncState.orientation,layoutType:ncState.orientation+"/"+ncState.kind,accentColor:ncState.accent,title:$("#ncCo").value,subtitle:$("#ncName").value})}
 
@@ -346,25 +482,56 @@ async function aiGenerate(scope){
   finally{aiBusy=false;gen.textContent="AI 디자인 생성";document.querySelectorAll(".ai-regen").forEach(b=>b.disabled=false);updateRemainingUI()}
 }
 function aiRemove(scope){AI_BG[scope]=null;const el=aiEl(scope);el.style.backgroundImage="";el.style.backgroundSize="";el.style.backgroundPosition="";el.style.backgroundRepeat="";renderScope(scope);const p=panelOf(scope);p.querySelector(".ai-regen").style.display="none";p.querySelector(".ai-remove").style.display="none";p.querySelector(".ai-download").style.display="none";p.querySelector(".ai-status").textContent=""}
-// 미리보기(AI배경 + 텍스트 + 레이아웃)를 통째로 캡처해 PNG 저장. 편집 핸들/선택테두리는 제외.
-async function downloadPng(scope,btn){
+// 미리보기(AI배경 + 텍스트 + 레이아웃)를 통째로 캡처해 dataURL 반환. 편집 핸들/선택테두리는 제외.
+async function captureBoard(scope){
   const board=aiEl(scope);
-  if(typeof html2canvas!=="function"){alert("이미지 저장 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
-  const savedCls=board.className,label=btn?btn.textContent:"";
-  if(btn){btn.disabled=true;btn.textContent="저장 중…"}
+  const savedCls=board.className;
   board.classList.remove("editing","mode-move","mode-text");
   const handles=[...board.querySelectorAll(".txt-handle")];handles.forEach(h=>h.style.display="none");
   const sels=[...board.querySelectorAll(".sel")];sels.forEach(s=>s.classList.remove("sel"));
   try{
     const canvas=await html2canvas(board,{backgroundColor:null,scale:2,useCORS:true,logging:false});
-    const a=document.createElement("a");a.href=canvas.toDataURL("image/png");a.download=`design-gongbang-${scope}.png`;document.body.appendChild(a);a.click();a.remove();
-  }catch(e){alert("이미지 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
-  finally{board.className=savedCls;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"));if(btn){btn.disabled=false;btn.textContent=label}}
+    return canvas.toDataURL("image/png");
+  }finally{board.className=savedCls;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"))}
+}
+async function downloadPng(scope,btn){
+  if(typeof html2canvas!=="function"){alert("이미지 저장 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
+  const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
+  try{const url=await captureBoard(scope);const a=document.createElement("a");a.href=url;a.download=`design-gongbang-${scope}.png`;document.body.appendChild(a);a.click();a.remove()}
+  catch(e){alert("이미지 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
+  finally{if(btn){btn.disabled=false;btn.textContent=label}}
+}
+// 내 디자인함에 저장 (로그인 필요)
+async function saveDesign(scope,btn){
+  if(!window._authUser){openLogin();return}
+  if(typeof html2canvas!=="function"){alert("잠시 후 다시 시도해 주세요.");return}
+  const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
+  try{
+    const url=await captureBoard(scope);
+    const title=(scope==="menu"?($("#menuShop").value):scope==="banner"?$("#shop").value:scope==="coupon"?$("#cpShop").value:$("#ncCo").value)||"디자인";
+    const r=window._saveDesign?await window._saveDesign(url,{scope,title}):{ok:false};
+    if(r&&r.ok){if(btn){btn.textContent="저장됨 ✓";setTimeout(()=>{btn.textContent=label},1500)}}
+    else{alert("보관함 저장에 실패했어요. 다시 시도해 주세요.")}
+  }catch(e){alert("보관함 저장에 실패했어요. 다시 시도해 주세요.")}
+  finally{if(btn){btn.disabled=false;if(btn.textContent==="저장 중…")btn.textContent=label}}
 }
 
 ["banner","menu","coupon","card"].forEach(scope=>{
   const host=document.querySelector(`#view-${scope} .preview-panel`);
   if(!host)return;
+  if(scope==="menu"){
+    host.insertAdjacentHTML("beforeend",menuAiPanelHtml());
+    const p=panelOf("menu");
+    autoReco();renderMenuPickers();wireMenuPicker(p);
+    p.querySelector(".ai-gen").onclick=()=>aiGenerate("menu");
+    p.querySelector(".ai-regen").onclick=()=>aiGenerate("menu");
+    p.querySelector(".ai-remove").onclick=()=>aiRemove("menu");
+    p.querySelector(".ai-download").onclick=e=>downloadPng("menu",e.currentTarget);
+    const mpng=document.querySelector('#view-menu .actions .btn.primary');
+    if(mpng)mpng.onclick=e=>downloadPng("menu",e.currentTarget);
+    addSaveBtn("menu");
+    return;
+  }
   host.insertAdjacentHTML("beforeend",aiPanelHtml(scope));
   const p=panelOf(scope);
   refreshDecos(scope);
@@ -377,8 +544,9 @@ async function downloadPng(scope,btn){
   p.querySelector(".ai-download").onclick=e=>downloadPng(scope,e.currentTarget);
   const pngBtn=document.querySelector(`#view-${scope} .actions .btn.primary`);
   if(pngBtn)pngBtn.onclick=e=>downloadPng(scope,e.currentTarget);
+  addSaveBtn(scope);
 });
-{const mp=panelOf("menu");if(mp){mp.querySelector(".ai-theme").value="카페";refreshDecos("menu");}}
+function addSaveBtn(scope){const acts=document.querySelector(`#view-${scope} .actions`);if(!acts||acts.querySelector(".save-design"))return;const b=document.createElement("button");b.className="btn save-design";b.textContent="보관함에 저장";b.onclick=()=>saveDesign(scope,b);acts.appendChild(b)}
 updateRemainingUI();
 
 renderMenuTemplates();renderMenuInputs();bannerRender();menuRender();couponRender();cardRender();
@@ -391,25 +559,34 @@ function closeLogin(){lgModal.classList.remove("open");$("#lgEmail").value="";$(
 function setAuthMode(m){authMode=m;const login=m==="login";$("#lgTitle").textContent=login?"로그인":"회원가입";$("#lgSubmit").textContent=login?"로그인":"회원가입";$("#lgToggle").innerHTML=login?'계정이 없으신가요? <button id="lgToggleBtn">회원가입</button>':'이미 계정이 있으신가요? <button id="lgToggleBtn">로그인</button>';$("#lgToggleBtn").onclick=()=>setAuthMode(login?"signup":"login");$("#lgErr").textContent=""}
 function authErrMsg(code){return ({'auth/invalid-email':'이메일 형식이 올바르지 않아요.','auth/email-already-in-use':'이미 가입된 이메일이에요.','auth/weak-password':'비밀번호는 6자 이상이어야 해요.','auth/invalid-credential':'이메일 또는 비밀번호가 잘못됐어요.','auth/user-not-found':'이메일 또는 비밀번호가 잘못됐어요.','auth/wrong-password':'이메일 또는 비밀번호가 잘못됐어요.','auth/too-many-requests':'잠시 후 다시 시도해주세요.','auth/network-request-failed':'네트워크 연결을 확인해주세요.'})[code]||'처리에 실패했어요. 다시 시도해주세요.'}
 async function submitAuth(){const email=$("#lgEmail").value.trim(),pw=$("#lgPw").value;if(!email||!pw){$("#lgErr").textContent="이메일과 비밀번호를 입력해주세요.";return}if(pw.length<6){$("#lgErr").textContent="비밀번호는 6자 이상이어야 해요.";return}const btn=$("#lgSubmit"),label=btn.textContent;btn.disabled=true;btn.textContent="처리 중…";const fn=authMode==="login"?window._doEmailLogin:window._doEmailSignup;const r=fn?await fn(email,pw):{ok:false};btn.disabled=false;btn.textContent=label;if(r.ok){closeLogin()}else{$("#lgErr").textContent=authErrMsg(r.code)}}
-window.onAuthChanged=function(u){const area=$("#authArea");if(!area)return;if(u){const name=u.email||"사용자";area.innerHTML=`<span class="auth-chip"><span class="auth-email">${name}</span><button class="btn" id="logoutBtn">로그아웃</button></span>`;$("#logoutBtn").onclick=()=>window._authLogout&&window._authLogout()}else{area.innerHTML=`<button class="btn primary" id="loginBtn">로그인</button>`;$("#loginBtn").onclick=openLogin}};
-$("#loginBtn").onclick=openLogin;
+window.onAuthChanged=function(u){const area=$("#authArea");if(!area)return;const gal='<button class="btn" id="galBtn">내 디자인함</button>';if(u){const name=u.email||"사용자";area.innerHTML=`<span class="auth-chip">${gal}<span class="auth-email">${name}</span><button class="btn" id="logoutBtn">로그아웃</button></span>`;$("#logoutBtn").onclick=()=>window._authLogout&&window._authLogout()}else{area.innerHTML=gal+'<button class="btn primary" id="loginBtn">로그인</button>';$("#loginBtn").onclick=openLogin}$("#galBtn").onclick=openGallery};
+$("#loginBtn").onclick=openLogin;$("#galBtn").onclick=openGallery;
 $("#lgClose").onclick=closeLogin;lgModal.onclick=e=>{if(e.target===lgModal)closeLogin()};
 $("#lgSubmit").onclick=submitAuth;
 $("#lgPw").addEventListener("keydown",e=>{if(e.key==="Enter")submitAuth()});
 $("#lgKakao").onclick=async()=>{$("#lgErr").textContent="";const r=window._doKakaoLogin?await window._doKakaoLogin():{ok:false};if(r.ok)closeLogin();else if(!r.cancelled)$("#lgErr").textContent=r.msg||"카카오 로그인에 실패했어요."};
 $("#lgGoogle").onclick=async()=>{$("#lgErr").textContent="";const r=window._doGoogleLogin?await window._doGoogleLogin():{ok:false};if(r.ok)closeLogin();else if(!r.cancelled)$("#lgErr").textContent=r.msg||"Google 로그인에 실패했어요."};
 setAuthMode("login");
+
+/* ===== 내 디자인함 (로그인 필요) ===== */
+const galModal=$("#galleryModal");
+function openGallery(){if(!window._authUser){openLogin();return}galModal.classList.add("open");loadGallery()}
+function closeGallery(){galModal.classList.remove("open")}
+async function loadGallery(){const box=$("#galGrid");box.innerHTML='<div class="gal-empty">불러오는 중…</div>';const r=window._listDesigns?await window._listDesigns():{ok:false,items:[]};if(!r.items||!r.items.length){box.innerHTML='<div class="gal-empty">저장된 디자인이 없어요.<br>디자인을 만들고 “보관함에 저장”을 눌러보세요.</div>';return}box.innerHTML=r.items.map(it=>`<div class="gal-card"><img src="${it.url}" alt="${(it.title||"").replace(/"/g,"")}"><div class="gal-row"><a class="btn" href="${it.url}" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a><button class="btn danger" data-del="${it.id}">삭제</button></div></div>`).join("")}
+$("#galClose").onclick=closeGallery;galModal.onclick=e=>{if(e.target===galModal)closeGallery()};
+$("#galGrid").addEventListener("click",async e=>{const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("이 디자인을 삭제할까요?"))return;b.disabled=true;const r=window._deleteDesign?await window._deleteDesign(b.dataset.del):{ok:false};if(r&&r.ok)loadGallery();else{b.disabled=false;alert("삭제에 실패했어요.")}});
 </script>
 <!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script>try{if(window.Kakao&&!Kakao.isInitialized())Kakao.init('53803347469de213ee3074ad9d647f71')}catch(e){console.error('Kakao init 실패:',e)}</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithCustomToken, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-functions.js";
+import { getStorage, ref as sref, uploadString, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-storage.js";
 const app = initializeApp({apiKey:"AIzaSyCmcsC_89TfZUIhgH6hKPaTKlXQn3rRzCo",authDomain:"card-store-finder.firebaseapp.com",projectId:"card-store-finder",storageBucket:"card-store-finder.firebasestorage.app",appId:"1:340038449458:web:14c3327a26d0d2892f3f2b"});
-const auth=getAuth(app), db=getFirestore(app), functions=getFunctions(app,'asia-northeast3');
+const auth=getAuth(app), db=getFirestore(app), functions=getFunctions(app,'asia-northeast3'), storage=getStorage(app);
 window._authUser=null;
 onAuthStateChanged(auth,u=>{window._authUser=u;if(window.onAuthChanged)window.onAuthChanged(u)});
 window._authLogout=()=>signOut(auth);
@@ -418,6 +595,11 @@ window._doEmailLogin=async(email,pw)=>{try{await signInWithEmailAndPassword(auth
 window._doGoogleLogin=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider());return{ok:true}}catch(e){if(e.code==='auth/popup-closed-by-user'||e.code==='auth/cancelled-popup-request')return{ok:false,cancelled:true};return{ok:false,msg:'Google 로그인 오류. 다시 시도해주세요.'}}};
 async function kakaoFallback(ku){const id=String(ku.id||'');const email=(ku.kakao_account&&ku.kakao_account.email)||(id+'@kakao.designgongbang.local');const nick=(ku.kakao_account&&ku.kakao_account.profile&&ku.kakao_account.profile.nickname)||'카카오유저';const pw='kakao_v1_'+id+'_dgacc';try{return await signInWithEmailAndPassword(auth,email,pw)}catch(inner){if(inner.code==='auth/user-not-found'||inner.code==='auth/invalid-credential'){const c=await createUserWithEmailAndPassword(auth,email,pw);try{await setDoc(doc(db,'users',c.user.uid),{uid:c.user.uid,email,nickname:nick,provider:'kakao',kakao_id:id,app:'design-gongbang',createdAt:new Date().toISOString(),status:'active'})}catch(e){}return c}throw inner}}
 window._doKakaoLogin=async()=>{if(!window.Kakao||!Kakao.isInitialized())return{ok:false,msg:'카카오 로그인 준비 중이에요. 잠시 후 다시 시도해주세요.'};try{const authObj=await new Promise((res,rej)=>Kakao.Auth.login({scope:'profile_nickname',success:res,fail:rej}));const tok=authObj&&authObj.access_token;if(!tok)throw new Error('no token');try{const fn=httpsCallable(functions,'kakaoSignIn');const resp=await fn({kakaoAccessToken:tok});const p=resp&&resp.data;if(!p||!p.customToken)throw new Error('no customToken');await signInWithCustomToken(auth,p.customToken)}catch(cf){const ku=await new Promise((res,rej)=>Kakao.API.request({url:'/v2/user/me',success:res,fail:rej}));await kakaoFallback(ku)}return{ok:true}}catch(e){if(e&&e.error==='access_denied')return{ok:false,cancelled:true};return{ok:false,msg:'카카오 로그인 오류. 잠시 후 다시 시도해주세요.'}}};
+
+// ===== 내 디자인함 저장/조회/삭제 (Firebase Storage + Firestore) =====
+window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);const r=sref(storage,`designs/${u.uid}/${id}.png`);await uploadString(r,dataUrl,'data_url');const url=await getDownloadURL(r);await setDoc(doc(db,'users',u.uid,'designs',id),{id,url,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});return{ok:true}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
+window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{const snap=await getDocs(collection(db,'users',u.uid,'designs'));const items=snap.docs.map(d=>d.data());items.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));return{ok:true,items}}catch(e){console.error('listDesigns',e);return{ok:false,items:[],code:e.code}}};
+window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await deleteDoc(doc(db,'users',u.uid,'designs',id));try{await deleteObject(sref(storage,`designs/${u.uid}/${id}.png`))}catch(e){}return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
 </script>
 </body>
 </html>

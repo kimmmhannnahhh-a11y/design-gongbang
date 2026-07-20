@@ -142,7 +142,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 #ncFront{position:relative}
 .nc-custom-img{position:absolute;top:14px;left:14px;width:64px;height:auto;max-width:60%;z-index:6;border-radius:4px}
 /* 프리미엄 */
-.premium-btn{background:linear-gradient(135deg,#ffd43b,#f0a500);color:#3a2c00;border:0;font-weight:850}
+.premium-btn,#premiumBtn{background:linear-gradient(135deg,#ffd43b,#f0a500)!important;color:#3a2c00!important;border:0!important;font-weight:850;box-shadow:0 2px 12px rgba(240,165,0,.5)}
 .pm-price{display:flex;align-items:baseline;gap:8px;margin:6px 0 14px}.pm-price b{font-size:26px;font-weight:900}.pm-price span{font-size:12px;color:var(--muted)}
 .pm-benefits{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:9px}
 .pm-benefits li{position:relative;padding-left:24px;font-size:13.5px;color:var(--text);font-weight:600}
@@ -213,7 +213,7 @@ const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3
 let bannerState={accent:"#7657ff",textStyles:{}};
 // hex -> 밝기 조절 rgb (p>0 밝게, p<0 어둡게). 배너 배경 그라데이션 생성용.
 function shade(hex,p){hex=(hex||"").replace("#","");if(hex.length!==6)return "#"+hex;const n=parseInt(hex,16),f=t=>Math.max(0,Math.min(255,Math.round(t+t*p/100)));return `rgb(${f((n>>16)&255)},${f((n>>8)&255)},${f(n&255)})`}
-function bannerRender(){const a=bannerState.accent;$("#banner").style.background=`linear-gradient(135deg,${shade(a,14)},${shade(a,-30)})`;$("#bCat").textContent=$("#shop").value;$("#bHead").textContent=$("#headline").value;$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;bApplyAll();bBind();applyBg("banner")}
+function bannerRender(){const a=bannerState.accent;const _bd=$("#banner");_bd.style.background=`linear-gradient(135deg,${shade(a,14)},${shade(a,-30)})`;if(!AI_BG["banner"]){_bd.style.backgroundImage='url("/banner-default.jpg")';_bd.style.backgroundSize='cover';_bd.style.backgroundPosition='center';_bd.style.backgroundRepeat='no-repeat'}$("#bCat").textContent=$("#shop").value;$("#bHead").textContent=$("#headline").value;$("#bSub").textContent=$("#sub").value;$("#bTag").textContent=$("#tag").value;$("#bInfo").textContent=$("#info").value;bApplyAll();bBind();applyBg("banner")}
 ["shop","headline","sub","tag","info"].forEach(id=>$("#"+id).addEventListener("input",bannerRender));
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=c;e.onclick=()=>{$$("#bannerChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");bannerState.accent=c;bannerRender()};$("#bannerChips").append(e)});
 

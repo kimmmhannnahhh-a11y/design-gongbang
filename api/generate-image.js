@@ -81,6 +81,15 @@ const COLOR_SCHEMES = [
   "olive green, cream and camel",
   "powder blue, white and rose gold"
 ];
+// 매 생성마다 "그림의 종류/구도" 자체를 바꿔 매번 똑같은 실내 풍경만 나오지 않게 함.
+const BG_ARCHETYPES = [
+  "an abstract, minimal decorative background made only of soft shapes, gentle gradients, light and color - with no rooms, furniture or literal scenery",
+  "a clean background featuring just a few tasteful themed objects grouped to one side, on a simple uncluttered surface",
+  "a soft, airy atmospheric background with only a faint hint of setting, mostly open and uncrowded",
+  "an elegant pattern- and texture-based background with tasteful repeating motifs and soft depth, and no scenery",
+  "an overhead flat-lay arrangement of a few themed items on a clean surface with generous empty space",
+  "a dreamy close-up of a single hero element with heavy soft blur around it and lots of clean empty space"
+];
 
 // 개별 장식 요소(테마별, 복수 선택) -> 고급 비주얼 묘사
 // "(랜덤)"은 특수값: 모델이 테마에 맞는 장식을 알아서 구성.
@@ -198,12 +207,13 @@ function buildPrompt(data) {
 
   // 랜덤 4축 조합(화풍 × 조명 × 팔레트 × 구도)으로 매 생성마다 다른 느낌.
   const style = pick(ART_STYLES), light = pick(LIGHTING), palette = pick(PALETTE_MOODS), comp = pick(VARIATIONS);
-  const scheme = pick(COLOR_SCHEMES);
+  const scheme = pick(COLOR_SCHEMES), archetype = pick(BG_ARCHETYPES);
   // 기본 보라색 강조를 매번 강제하면 결과가 죄다 보라톤으로 비슷해짐 → 기본색일 땐 랜덤 팔레트가 주도.
   const isDefaultAccent = (data.accentColor === "#7657ff" || data.accentColor === "#7c5cff" || !isHex(data.accentColor));
 
   return [
-    "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", designed like a professional advertising poster, rendered " + style + ".",
+    "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", rendered " + style + ".",
+    "VERY IMPORTANT for variety: compose THIS version specifically as " + archetype + ". Do not default to a literal interior room scene.",
     light,
     palette,
     mood ? ("Overall mood/feeling: " + mood + ".") : "",

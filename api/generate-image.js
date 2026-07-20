@@ -66,6 +66,21 @@ const PALETTE_MOODS = [
   "Lean the palette toward clean minimal tones with lots of soft white space.",
   "Lean the palette toward bold, vivid contrasting tones."
 ];
+// 매 생성마다 전체 색조합을 확 바꿔 결과가 뚜렷이 달라지게 하는 구체 팔레트.
+const COLOR_SCHEMES = [
+  "blush pink, cream and soft gold",
+  "sage green, ivory and warm beige",
+  "lavender, lilac and pale silver",
+  "terracotta, peach and warm sand",
+  "dusty blue, misty grey and clean white",
+  "champagne, warm taupe and soft brown",
+  "coral, apricot and cream",
+  "mint, aqua and crisp white",
+  "burgundy, mauve and antique gold",
+  "charcoal, slate and muted teal",
+  "olive green, cream and camel",
+  "powder blue, white and rose gold"
+];
 
 // 개별 장식 요소(테마별, 복수 선택) -> 고급 비주얼 묘사
 // "(랜덤)"은 특수값: 모델이 테마에 맞는 장식을 알아서 구성.
@@ -183,6 +198,9 @@ function buildPrompt(data) {
 
   // 랜덤 4축 조합(화풍 × 조명 × 팔레트 × 구도)으로 매 생성마다 다른 느낌.
   const style = pick(ART_STYLES), light = pick(LIGHTING), palette = pick(PALETTE_MOODS), comp = pick(VARIATIONS);
+  const scheme = pick(COLOR_SCHEMES);
+  // 기본 보라색 강조를 매번 강제하면 결과가 죄다 보라톤으로 비슷해짐 → 기본색일 땐 랜덤 팔레트가 주도.
+  const isDefaultAccent = (data.accentColor === "#7657ff" || data.accentColor === "#7c5cff" || !isHex(data.accentColor));
 
   return [
     "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", designed like a professional advertising poster, rendered " + style + ".",
@@ -192,7 +210,9 @@ function buildPrompt(data) {
     color ? ("Lean the color palette toward: " + color + ".") : "",
     material ? ("Incorporate a subtle " + material + " material texture.") : "",
     space ? ("Style/space reference: " + space + ".") : "",
-    "Use " + accent + " as the main accent color, woven tastefully into the palette.",
+    (isDefaultAccent ? "" : "Use " + accent + " as the main accent color, woven tastefully into the palette."),
+    ((isDefaultAccent && !color) ? ("Strongly lean the entire color palette toward " + scheme + ".") : ""),
+    "Make this variation clearly distinct in color palette, lighting and composition from other versions.",
     decoPart,
     layoutPart,
     comp,

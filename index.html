@@ -19,7 +19,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .template-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.template-card{position:relative;min-height:118px;border:2px solid var(--line2);border-radius:14px;background:#0d1017;padding:10px;cursor:pointer;overflow:hidden}.template-card.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.12)}.template-card.on:after{content:"✓";position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--purple);font-size:12px;font-weight:900}.tpl-mini{height:70px;border-radius:9px;margin-bottom:8px;background:#eee;overflow:hidden;position:relative}.tpl-name{font-size:12px;font-weight:800}.tpl-tag{font-size:10px;color:var(--muted);margin-top:3px}.more-btn{width:100%;margin-top:10px}
 .editor-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#0d1017;margin-bottom:14px}.editor-toolbar .group{display:flex;align-items:center;gap:7px}.editor-toolbar label{font-size:11px;color:var(--sub);font-weight:700}.editor-toolbar input[type=number]{width:72px;height:36px;border:1px solid var(--line2);border-radius:9px;background:#131722;color:#fff;padding:0 9px}.editor-toolbar button{height:36px;padding:0 11px;border:1px solid var(--line2);border-radius:9px;background:#171b26;font-size:12px;font-weight:750}.edit-element{position:relative;cursor:move}.edit-element.selected{outline:2px dashed var(--purple);outline-offset:4px}
 .editor-toolbar .mode-group{gap:6px}.editor-toolbar .mode-group button{font-weight:800}.editor-toolbar .mode-group button.on{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 6px 16px rgba(124,92,255,.3)}.editor-toolbar select{height:36px;border:1px solid var(--line2);border-radius:9px;background:#131722;color:#fff;padding:0 8px;font-size:12px;font-weight:700}.editor-toolbar .chip{width:22px;height:22px;border-radius:6px}.editor-toolbar button.tog.on{background:var(--purple);border-color:var(--purple);color:#fff}.editor-toolbar .divider{width:1px;height:26px;background:var(--line2);margin:0 3px}
-.menu-board.editing .txt{cursor:pointer;transition:outline .1s;touch-action:none;-webkit-user-select:none;user-select:none}.menu-board.editing .txt:hover{outline:1px dashed rgba(124,92,255,.6);outline-offset:2px}.menu-board .txt.sel{outline:2px solid var(--purple)!important;outline-offset:2px}.menu-board.mode-move .txt.sel{cursor:move}.txt-handle{position:absolute;right:-8px;bottom:-8px;width:20px;height:20px;background:var(--purple);border:2px solid #fff;border-radius:50%;cursor:nwse-resize;z-index:9;box-shadow:0 2px 6px rgba(0,0,0,.4);touch-action:none}
+.menu-board.editing .txt,.banner.editing .txt{cursor:pointer;transition:outline .1s;touch-action:none;-webkit-user-select:none;user-select:none}.menu-board.editing .txt:hover,.banner.editing .txt:hover{outline:1px dashed rgba(124,92,255,.6);outline-offset:2px}.menu-board .txt.sel,.banner .txt.sel{outline:2px solid var(--purple)!important;outline-offset:2px}.menu-board.mode-move .txt.sel,.banner.mode-move .txt.sel{cursor:move}.txt-handle{position:absolute;right:-8px;bottom:-8px;width:20px;height:20px;background:var(--purple);border:2px solid #fff;border-radius:50%;cursor:nwse-resize;z-index:9;box-shadow:0 2px 6px rgba(0,0,0,.4);touch-action:none}
 .snap-guide{position:absolute;z-index:8;pointer-events:none;background:#ff3b7b;box-shadow:0 0 4px rgba(255,59,123,.8)}.snap-guide.v{top:0;bottom:0;width:1px}.snap-guide.h{left:0;right:0;height:1px}
 .section-box{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px;background:#0d1017}.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.section-title{font-size:13px;font-weight:850}.section-actions{display:flex;gap:6px}.section-actions button{height:31px;padding:0 9px;border-radius:8px;border:1px solid var(--line2);background:#161a24;font-size:11px}.item-row{display:grid;grid-template-columns:1fr 120px 34px;gap:7px;margin-bottom:7px}.item-row.desc{grid-template-columns:1fr 120px 34px}.item-row input{height:42px}.remove-x{border:1px solid #4b2830;background:#241318;border-radius:9px;color:#ff8b98}.add-row{width:100%;height:38px;border:1px dashed #434a60;border-radius:10px;background:#11151e;color:#bbb;font-size:12px;font-weight:750}
 .right-controls{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:0 2px 14px}.color-wrap{display:flex;align-items:center;gap:10px}.color-wrap strong{font-size:12px}.color-wrap .chips{gap:8px}.color-wrap .chip{width:24px;height:24px;border-radius:7px}
@@ -442,7 +442,7 @@ function menuAiPanelHtml(){return `<div class="ai-panel" data-scope="menu">
 <div class="mp-sec"><div class="mp-h"><span>업종</span><button type="button" class="mp-more" id="mpIndMore">업종 더보기</button></div><div id="mpIndBox"></div><div class="mp-custom"><input id="mpIndCustom" class="input" maxlength="30" placeholder="업종 직접 입력"></div></div>
 <div class="mp-sec"><div class="mp-h"><span>테마 (분위기·색감·계절·스타일·재질)</span></div><div id="mpThemeBox"></div></div>
 <div class="mp-sec"><div class="mp-h"><span>장식 요소 (복수 선택)</span><button type="button" class="mp-more" id="mpDecoMore">전체 장식 보기</button></div><div class="mp-subh">추천</div><div id="mpDecoReco"></div><div id="mpDecoAll"></div><div class="mp-custom"><input id="mpDecoCustom" class="input" maxlength="100" placeholder="원하는 장식을 직접 입력 (예: 체리와 빨간 리본)"></div></div>
-<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">이미지 다운로드</button></div>
+<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">배경 원본 저장</button></div>
 <div class="ai-status"></div></div>`}
 function wireMenuPicker(p){
   p.querySelector("#mpSearch").addEventListener("input",e=>{menuAI.q=e.target.value.trim().toLowerCase();renderMenuPickers()});
@@ -476,7 +476,7 @@ function aiPanelHtml(scope){return `<div class="ai-panel" data-scope="${scope}">
 <div class="ai-top"><span class="ai-badge">🎨 AI 배경 디자인</span><span class="ai-remain"></span></div>
 <div class="ai-row"><label class="ai-lab">테마<select class="select ai-theme">${AI_THEMES.map(t=>`<option>${t}</option>`).join("")}</select></label><label class="ai-lab">분위기<select class="select ai-mood">${AI_MOODS.map(m=>`<option>${m}</option>`).join("")}</select></label></div>
 <div class="ai-lab2">장식 요소 (복수 선택 · 테마별)</div><div class="ai-decos"></div>
-<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">이미지 다운로드</button></div>
+<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">배경 원본 저장</button></div>
 <div class="ai-status"></div></div>`}
 function panelOf(scope){return document.querySelector(`.ai-panel[data-scope="${scope}"]`)}
 
@@ -561,6 +561,12 @@ async function downloadPng(scope,btn){
   catch(e){alert("이미지 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
   finally{if(btn){btn.disabled=false;btn.textContent=label}}
 }
+// AI 배경 "원본"만 저장 (글자/레이아웃 제외한 깨끗한 배경 이미지).
+function downloadBg(scope){
+  const img=AI_BG[scope];
+  if(!img){alert("먼저 AI 배경을 생성해 주세요.");return}
+  const a=document.createElement("a");a.href=img;a.download=`design-gongbang-${scope}-bg.png`;document.body.appendChild(a);a.click();a.remove();
+}
 // PDF 저장: 미리보기를 캡처해 실제 크기의 1페이지 PDF로.
 async function downloadPdf(scope,btn){
   if(typeof html2canvas!=="function"||!window.jspdf){alert("PDF 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
@@ -586,8 +592,8 @@ async function saveDesign(scope,btn){
     const title=(scope==="menu"?($("#menuShop").value):scope==="banner"?$("#shop").value:scope==="coupon"?$("#cpShop").value:$("#ncCo").value)||"디자인";
     const r=window._saveDesign?await window._saveDesign(url,{scope,title}):{ok:false};
     if(r&&r.ok){if(btn){btn.textContent="저장됨 ✓";setTimeout(()=>{btn.textContent=label},1500)}}
-    else{alert("보관함 저장에 실패했어요. 다시 시도해 주세요.")}
-  }catch(e){alert("보관함 저장에 실패했어요. 다시 시도해 주세요.")}
+    else{alert("보관함 저장에 실패했어요. 다시 시도해 주세요.\n\n[오류코드] "+((r&&r.code)||"unknown"))}
+  }catch(e){alert("보관함 저장에 실패했어요. 다시 시도해 주세요.\n\n[오류] "+((e&&(e.code||e.message))||"unknown"))}
   finally{if(btn){btn.disabled=false;if(btn.textContent==="저장 중…")btn.textContent=label}}
 }
 
@@ -601,7 +607,7 @@ async function saveDesign(scope,btn){
     p.querySelector(".ai-gen").onclick=()=>aiGenerate("menu");
     p.querySelector(".ai-regen").onclick=()=>aiGenerate("menu");
     p.querySelector(".ai-remove").onclick=()=>aiRemove("menu");
-    p.querySelector(".ai-download").onclick=e=>downloadPng("menu",e.currentTarget);
+    p.querySelector(".ai-download").onclick=()=>downloadBg("menu");
     const mpng=document.querySelector('#view-menu .actions .btn.primary');
     if(mpng)mpng.onclick=e=>downloadPng("menu",e.currentTarget);
     addSaveBtn("menu");
@@ -616,7 +622,7 @@ async function saveDesign(scope,btn){
   p.querySelector(".ai-gen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-regen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-remove").onclick=()=>aiRemove(scope);
-  p.querySelector(".ai-download").onclick=e=>downloadPng(scope,e.currentTarget);
+  p.querySelector(".ai-download").onclick=()=>downloadBg(scope);
   const pngBtn=document.querySelector(`#view-${scope} .actions .btn.primary`);
   if(pngBtn)pngBtn.onclick=e=>downloadPng(scope,e.currentTarget);
   addSaveBtn(scope);

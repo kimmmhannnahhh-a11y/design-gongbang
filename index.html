@@ -125,17 +125,19 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .pick-ck{display:none;margin-left:auto;color:var(--purple2);font-weight:900;flex:0 0 auto}
 .pick-chip.on .pick-ck{display:inline}
 /* 내 디자인함 갤러리 */
-.gal-box{width:100%;max-width:860px;max-height:86vh;background:linear-gradient(180deg,#151822,#0f1118);border:1px solid var(--line2);border-radius:22px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.gal-box{width:100%;max-width:1040px;max-height:88vh;min-height:60vh;background:linear-gradient(180deg,#151822,#0f1118);border:1px solid var(--line2);border-radius:22px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column}
 .gal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .gal-head h3{font-size:19px;font-weight:850}
 .gal-grid{overflow-y:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding-right:4px}
 @media(min-width:640px){.gal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(min-width:900px){.gal-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:900px){.gal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .gal-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;line-height:1.8;padding:40px 0}
 .gal-card{background:#0d1017;border:1px solid var(--line2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.gal-card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:#0b0d13;display:block}
+.gal-card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#0b0d13;display:block;padding:6px}
 .gal-row{display:flex;gap:6px;padding:8px}
 .gal-row .btn{flex:1;height:36px;font-size:12px;text-align:center;line-height:36px;padding:0;text-decoration:none}
+.gal-row a.btn{background:var(--purple);color:#fff;border:1px solid var(--purple);font-weight:700}
+.gal-row a.btn:hover{filter:brightness(1.08)}
 /* 명함 커스텀 이미지 오버레이 */
 #ncFront{position:relative}
 .nc-custom-img{position:absolute;top:14px;left:14px;width:64px;height:auto;max-width:60%;z-index:6;border-radius:4px}

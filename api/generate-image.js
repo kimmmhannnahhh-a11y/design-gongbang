@@ -23,7 +23,22 @@ const THEME_VISUALS = {
   "음식점": "an appetizing, warm restaurant atmosphere with rich, inviting and vivid tones",
   "뷰티": "an elegant, refined beauty and hair salon atmosphere with soft flattering light and premium tones",
   "오픈행사": "a festive, celebratory grand-opening atmosphere with vivid, lively and cheerful tones",
-  "기본": "a clean, elegant, modern and premium atmosphere"
+  "기본": "a clean, elegant, modern and premium atmosphere",
+  "모던": "a sleek, modern and contemporary atmosphere with clean lines, bold minimal shapes and a sophisticated urban feel",
+  "미니멀": "an ultra-minimal, clean and calm atmosphere with vast serene empty space, subtle tones and refined simplicity",
+  "빈티지": "a warm vintage, retro atmosphere with nostalgic aged tones, classic textures and a timeless feel",
+  "내추럴": "a fresh, natural and organic atmosphere with earthy greenery, natural materials and soft daylight",
+  "럭셔리": "an opulent, luxurious atmosphere with rich gold accents, deep elegant tones and premium glossy materials",
+  "클래식": "a refined, classic and elegant atmosphere with timeless ornamentation, soft neutral tones and graceful balance",
+  "전통": "an elegant Korean traditional atmosphere (hanok and hanji inspired) with refined oriental patterns, calm natural tones and graceful craftsmanship",
+  "키즈": "a playful, cheerful and friendly kids atmosphere with bright happy colors, soft rounded shapes and a fun feel",
+  "크리스마스": "a festive, cozy Christmas atmosphere with warm glowing lights, rich seasonal tones and tasteful holiday charm",
+  "로맨틱": "a soft, romantic and dreamy atmosphere with tender warm light, delicate details and a loving feel",
+  "파스텔": "a soft pastel, dreamy atmosphere with gentle candy tones, airy light and a sweet cheerful feel",
+  "트로피컬": "a vibrant tropical atmosphere with lush exotic greenery, bright fresh tones and a sunny resort feel",
+  "할로윈": "a playful yet tasteful Halloween atmosphere with cozy dark tones, warm candlelight and charming spooky accents",
+  "발렌타인": "a sweet, romantic Valentine atmosphere with soft blush and red tones, tender light and a loving feel",
+  "새해": "a festive Korean New Year atmosphere with elegant traditional accents, warm gold tones and a hopeful celebratory feel"
 };
 
 // 매 생성마다 구도/스타일을 바꿔 결과가 매번 다르게 나오도록 하는 변주 목록.
@@ -130,7 +145,44 @@ const DECO_VISUALS = {
   // 오픈행사
   "풍선": "festive colorful balloons", "리본": "silky decorative ribbons",
   "색종이": "scattered confetti", "폭죽": "sparkling fireworks",
-  "꽃가루": "falling celebration petals", "가랜드": "a festive party garland"
+  "꽃가루": "falling celebration petals", "가랜드": "a festive party garland",
+  // 모던
+  "기하도형": "bold clean geometric shapes", "그리드": "a subtle modern grid", "메탈릭": "sleek metallic sheen",
+  "컬러블록": "clean color-block panels", "얇은라인": "fine modern lines", "무광": "smooth matte surfaces",
+  // 미니멀
+  "여백": "vast calm empty negative space", "단색면": "a clean solid color field", "얇은선": "thin delicate lines",
+  "심플도형": "a few simple minimal shapes", "그림자": "soft minimal shadows", "점": "subtle scattered dots",
+  // 빈티지
+  "오래된종이": "aged vintage paper texture", "레트로패턴": "retro geometric patterns", "필름그레인": "warm analog film grain",
+  "세피아": "nostalgic sepia tones", "빈티지꽃": "vintage floral illustration", "우표": "old postage-stamp style accents",
+  // 내추럴
+  "나뭇잎": "fresh green leaves", "원목": "warm natural wood texture", "린넨": "soft linen fabric",
+  "마른꽃": "delicate dried flowers", "돌": "smooth natural stones", "유칼립투스": "eucalyptus branches",
+  // 럭셔리
+  "골드": "elegant gold accents", "벨벳": "rich velvet fabric", "크리스탈": "sparkling crystal",
+  "실크": "flowing silk", "보석": "refined jewels",
+  // 클래식
+  "아라베스크": "elegant arabesque ornament", "금테": "fine gold trim", "다마스크": "a refined damask pattern",
+  "액자": "classic ornate frames", "진주": "lustrous pearls",
+  // 전통
+  "한지": "traditional hanji paper texture", "단청": "colorful Korean dancheong patterns", "매듭": "traditional Korean decorative knots",
+  "먹": "elegant ink-wash strokes", "소나무": "graceful pine branches", "한국문양": "refined traditional Korean motifs",
+  // 키즈
+  "별": "cute twinkling stars", "구름": "soft fluffy clouds", "무지개": "a cheerful rainbow",
+  "동물": "cute friendly animal characters", "크레용": "playful crayon doodles",
+  // 크리스마스
+  "트리": "a beautifully decorated Christmas tree", "오너먼트": "tasteful Christmas ornaments", "선물": "elegantly wrapped gift boxes",
+  // 로맨틱·발렌타인
+  "하트": "soft romantic hearts", "빛망울": "dreamy light bokeh", "레이스": "delicate lace", "장미": "elegant roses", "초콜릿": "luxurious chocolates",
+  // 파스텔
+  "파스텔구름": "soft pastel clouds", "몽글몽글": "soft dreamy blurred shapes", "마카롱": "pastel macarons",
+  // 트로피컬
+  "몬스테라": "large tropical monstera leaves", "히비스커스": "bright hibiscus flowers", "플라밍고": "a stylish flamingo",
+  // 할로윈
+  "호박": "carved Halloween jack-o-lantern pumpkins", "박쥐": "flying bats", "거미줄": "delicate spider webs",
+  "유령": "cute friendly ghosts", "마녀모자": "a witch hat", "촛불": "flickering candles",
+  // 새해
+  "복주머니": "a traditional Korean lucky pouch", "매화": "elegant plum blossoms", "금빛장식": "festive gold decorations"
 };
 
 // ---- 유틸 ----

@@ -363,7 +363,7 @@ function aiEl(scope){return scope==="banner"?$("#banner"):scope==="menu"?$("#men
 function applyBg(scope){const el=aiEl(scope),img=AI_BG[scope];if(!el||!img)return;el.style.backgroundImage=`url("${img}")`;el.style.backgroundSize="cover";el.style.backgroundPosition="center";el.style.backgroundRepeat="no-repeat"}
 function renderScope(scope){({banner:bannerRender,menu:menuRender,coupon:couponRender,card:cardRender})[scope]()}
 
-const AI_THEMES=["기본","여름","봄","가을","겨울","카페","음식점","뷰티","오픈행사","모던","미니멀","빈티지","내추럴","럭셔리","클래식","전통","키즈","크리스마스"];
+const AI_THEMES=["기본","여름","봄","가을","겨울","카페","음식점","뷰티","오픈행사","모던","미니멀","빈티지","내추럴","럭셔리","클래식","전통","키즈","크리스마스","로맨틱","파스텔","트로피컬","할로윈","발렌타인","새해"];
 const AI_MOODS=["따뜻하고 고급스러운","밝고 경쾌한","심플 미니멀","고급 럭셔리","아기자기 귀여운","모던 시크","내추럴 편안","프리미엄 전문적","트렌디 힙한","차분하고 깔끔한"];
 /* 테마별 장식 요소. 각 테마 맨 앞에 "(랜덤)"이 자동으로 붙고(gpt가 알아서 구성),
    테마를 바꾸면 아래 목록으로 칩이 새로 그려진다. */
@@ -376,7 +376,22 @@ const DECOS_BY_THEME={
 "카페":["커피","원두","디저트","케이크","라떼아트","식물"],
 "음식점":["접시","신선채소","고기","허브","김(스팀)","과일"],
 "뷰티":["꽃","화장품","머릿결","빛반사","패브릭","깃털"],
-"오픈행사":["풍선","리본","색종이","폭죽","꽃가루","가랜드"]
+"오픈행사":["풍선","리본","색종이","폭죽","꽃가루","가랜드"],
+"모던":["기하도형","그리드","메탈릭","컬러블록","얇은라인","무광"],
+"미니멀":["여백","단색면","얇은선","심플도형","그림자","점"],
+"빈티지":["오래된종이","레트로패턴","필름그레인","세피아","빈티지꽃","우표"],
+"내추럴":["나뭇잎","원목","린넨","마른꽃","돌","유칼립투스"],
+"럭셔리":["골드","대리석","벨벳","크리스탈","실크","보석"],
+"클래식":["아라베스크","금테","다마스크","액자","진주","리본"],
+"전통":["한지","단청","매듭","먹","소나무","한국문양"],
+"키즈":["별","구름","무지개","동물","크레용","풍선"],
+"크리스마스":["눈송이","트리","오너먼트","리스","조명","선물"],
+"로맨틱":["하트","장미","꽃잎","리본","빛망울","레이스"],
+"파스텔":["파스텔구름","그라데이션","몽글몽글","별","물방울","마카롱"],
+"트로피컬":["야자수","몬스테라","히비스커스","파인애플","파도","플라밍고"],
+"할로윈":["호박","박쥐","거미줄","유령","마녀모자","촛불"],
+"발렌타인":["하트","초콜릿","장미","리본","선물","빛망울"],
+"새해":["복주머니","매화","금빛장식","폭죽","한국문양","소나무"]
 };
 function themeDecos(theme){return DECOS_BY_THEME[theme]||DECOS_BY_THEME["기본"]}
 function refreshDecos(scope){const p=panelOf(scope);if(!p)return;const sel=p.querySelector(".ai-theme");if(!sel)return;const theme=sel.value;const list=["(랜덤)"].concat(themeDecos(theme));p.querySelector(".ai-decos").innerHTML=list.map((d,i)=>`<button type="button" class="ai-deco${i===0?" on":""}" data-v="${d}">${d}</button>`).join("")}
@@ -732,9 +747,10 @@ async function kakaoFallback(ku){const id=String(ku.id||'');const email=(ku.kaka
 window._doKakaoLogin=async()=>{if(!window.Kakao||!Kakao.isInitialized())return{ok:false,msg:'카카오 로그인 준비 중이에요. 잠시 후 다시 시도해주세요.'};try{const authObj=await new Promise((res,rej)=>Kakao.Auth.login({scope:'profile_nickname',success:res,fail:rej}));const tok=authObj&&authObj.access_token;if(!tok)throw new Error('no token');try{const fn=httpsCallable(functions,'kakaoSignIn');const resp=await fn({kakaoAccessToken:tok});const p=resp&&resp.data;if(!p||!p.customToken)throw new Error('no customToken');await signInWithCustomToken(auth,p.customToken)}catch(cf){const ku=await new Promise((res,rej)=>Kakao.API.request({url:'/v2/user/me',success:res,fail:rej}));await kakaoFallback(ku)}return{ok:true}}catch(e){if(e&&e.error==='access_denied')return{ok:false,cancelled:true};return{ok:false,msg:'카카오 로그인 오류. 잠시 후 다시 시도해주세요.'}}};
 
 // ===== 내 디자인함 저장/조회/삭제 (Firebase Storage + Firestore) =====
-window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);await setDoc(doc(db,'users',u.uid,'designs',id),{id,url:dataUrl,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});return{ok:true}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
-window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{const snap=await getDocs(collection(db,'users',u.uid,'designs'));const items=snap.docs.map(d=>d.data());items.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));return{ok:true,items}}catch(e){console.error('listDesigns',e);return{ok:false,items:[],code:e.code}}};
-window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await deleteDoc(doc(db,'users',u.uid,'designs',id));try{await deleteObject(sref(storage,`designs/${u.uid}/${id}.png`))}catch(e){}return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
+// 보관함 저장: Firebase 규칙(콘솔) 설정 없이 되도록 이 브라우저(localStorage)에 저장.
+window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const key='dg_designs_'+u.uid;let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){arr=[]}const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);arr.unshift({id,url:dataUrl,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});while(arr.length){try{localStorage.setItem(key,JSON.stringify(arr));return{ok:true}}catch(e){if(arr.length<=1)return{ok:false,code:'storage-full'};arr.pop()}}return{ok:false,code:'storage-full'}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
+window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{let arr=[];try{arr=JSON.parse(localStorage.getItem('dg_designs_'+u.uid)||'[]')}catch(e){arr=[]}return{ok:true,items:arr}}catch(e){console.error('listDesigns',e);return{ok:false,items:[]}}};
+window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{const key='dg_designs_'+u.uid;let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){arr=[]}arr=arr.filter(d=>d.id!==id);localStorage.setItem(key,JSON.stringify(arr));return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
 // 프리미엄 상태 저장/조회 (결제 성공 시 활성화). 실제 검증은 추후 서버 웹훅으로 강화 예정.
 window._setPremium=async(paymentId)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await setDoc(doc(db,'users',u.uid),{premium:true,premiumPlan:'monthly',premiumSince:new Date().toISOString(),lastPaymentId:paymentId||'',app:'design-gongbang'},{merge:true});return{ok:true}}catch(e){console.error('setPremium',e);return{ok:false}}};
 window._getPremium=async()=>{const u=auth.currentUser;if(!u)return{premium:false};try{const d=await getDoc(doc(db,'users',u.uid));return{premium:!!(d.exists()&&d.data().premium)}}catch(e){return{premium:false}}};

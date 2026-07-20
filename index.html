@@ -554,6 +554,20 @@ async function captureBoard(scope){
     return canvas.toDataURL("image/png");
   }finally{board.className=savedCls;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"))}
 }
+// 보관함 저장용: 캡처 이미지를 적당히 줄이고 JPEG로 압축해 dataURL 반환(Firestore 1MB 한도 대비).
+function compressForSave(dataUrl){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const maxDim=1280;let w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+      const sc=Math.min(1,maxDim/Math.max(w,h));w=Math.max(1,Math.round(w*sc));h=Math.max(1,Math.round(h*sc));
+      const c=document.createElement("canvas");c.width=w;c.height=h;
+      const ctx=c.getContext("2d");ctx.fillStyle="#ffffff";ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+      try{resolve(c.toDataURL("image/jpeg",0.7))}catch(e){resolve(dataUrl)}
+    };
+    img.onerror=reject;img.src=dataUrl;
+  });
+}
 async function downloadPng(scope,btn){
   if(typeof html2canvas!=="function"){alert("이미지 저장 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
   const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
@@ -588,7 +602,8 @@ async function saveDesign(scope,btn){
   if(typeof html2canvas!=="function"){alert("잠시 후 다시 시도해 주세요.");return}
   const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
   try{
-    const url=await captureBoard(scope);
+    const raw=await captureBoard(scope);
+    const url=await compressForSave(raw);
     const title=(scope==="menu"?($("#menuShop").value):scope==="banner"?$("#shop").value:scope==="coupon"?$("#cpShop").value:$("#ncCo").value)||"디자인";
     const r=window._saveDesign?await window._saveDesign(url,{scope,title}):{ok:false};
     if(r&&r.ok){if(btn){btn.textContent="저장됨 ✓";setTimeout(()=>{btn.textContent=label},1500)}}
@@ -699,7 +714,7 @@ async function kakaoFallback(ku){const id=String(ku.id||'');const email=(ku.kaka
 window._doKakaoLogin=async()=>{if(!window.Kakao||!Kakao.isInitialized())return{ok:false,msg:'카카오 로그인 준비 중이에요. 잠시 후 다시 시도해주세요.'};try{const authObj=await new Promise((res,rej)=>Kakao.Auth.login({scope:'profile_nickname',success:res,fail:rej}));const tok=authObj&&authObj.access_token;if(!tok)throw new Error('no token');try{const fn=httpsCallable(functions,'kakaoSignIn');const resp=await fn({kakaoAccessToken:tok});const p=resp&&resp.data;if(!p||!p.customToken)throw new Error('no customToken');await signInWithCustomToken(auth,p.customToken)}catch(cf){const ku=await new Promise((res,rej)=>Kakao.API.request({url:'/v2/user/me',success:res,fail:rej}));await kakaoFallback(ku)}return{ok:true}}catch(e){if(e&&e.error==='access_denied')return{ok:false,cancelled:true};return{ok:false,msg:'카카오 로그인 오류. 잠시 후 다시 시도해주세요.'}}};
 
 // ===== 내 디자인함 저장/조회/삭제 (Firebase Storage + Firestore) =====
-window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);const r=sref(storage,`designs/${u.uid}/${id}.png`);await uploadString(r,dataUrl,'data_url');const url=await getDownloadURL(r);await setDoc(doc(db,'users',u.uid,'designs',id),{id,url,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});return{ok:true}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
+window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);await setDoc(doc(db,'users',u.uid,'designs',id),{id,url:dataUrl,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});return{ok:true}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
 window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{const snap=await getDocs(collection(db,'users',u.uid,'designs'));const items=snap.docs.map(d=>d.data());items.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));return{ok:true,items}}catch(e){console.error('listDesigns',e);return{ok:false,items:[],code:e.code}}};
 window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await deleteDoc(doc(db,'users',u.uid,'designs',id));try{await deleteObject(sref(storage,`designs/${u.uid}/${id}.png`))}catch(e){}return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
 // 프리미엄 상태 저장/조회 (결제 성공 시 활성화). 실제 검증은 추후 서버 웹훅으로 강화 예정.

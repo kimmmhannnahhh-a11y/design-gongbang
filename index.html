@@ -248,7 +248,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const VIEWS={banner:"view-banner",menu:"view-menu",coupon:"view-coupon",card:"view-card"};
-$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on");requestAnimationFrame(fitBoards)});
+$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on")});
 const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f","#ffd43b","#ffffff"];
 // 홍보배너 기본 배치(파인애플 기본배경에 맞춘 오른쪽정렬·어두운 글자). AI 배경 새로 만들면 {}로 초기화됨.
 const BANNER_DEFAULT_STYLES={cat:{x:9,y:-18,size:140,align:"",color:""},head:{x:178,y:5,size:100,align:"",color:"#25211d"},sub:{x:402,y:8,size:136,align:"",color:"#25211d"},tag:{x:396,y:-46,size:129,align:"",color:""},info:{x:5,y:35,size:100,align:"",color:"#25211d"}};
@@ -405,13 +405,7 @@ el.className=`card-preview ${o} nc-front`;let bg="#fff",color="#151923";if(ncSta
 const AI_BG={banner:null,menu:null,coupon:null,card:null};
 function aiEl(scope){return scope==="banner"?$("#banner"):scope==="menu"?$("#menuBoard"):scope==="coupon"?$("#coupon"):$("#ncFront")}
 function applyBg(scope){const el=aiEl(scope),img=AI_BG[scope];if(!el||!img)return;el.style.backgroundImage=`url("${img}")`;el.style.backgroundSize="cover";el.style.backgroundPosition="center";el.style.backgroundRepeat="no-repeat"}
-function renderScope(scope){({banner:bannerRender,menu:menuRender,coupon:couponRender,card:cardRender})[scope]();requestAnimationFrame(fitBoards)}
-// 미리보기 보드(고정 디자인 크기)를 화면 폭에 맞게 통째로 축소 — 디자인/비율 그대로, 모바일서 잘림 방지.
-const BOARD_DW={banner:720,menu:620,coupon:760,card:610};
-function fitOne(wrap){const el=wrap.firstElementChild;if(!el)return;const avail=wrap.clientWidth;if(!avail)return;if(wrap._lw===avail&&!wrap._force)return;wrap._lw=avail;wrap._force=false;const dw=+el.dataset.dw||720;if(avail<dw-1){wrap.style.display="block";const s=avail/dw;el.style.width=dw+"px";el.style.maxWidth="none";el.style.transformOrigin="top left";el.style.transform="scale("+s+")";wrap.style.height=(el.offsetHeight*s)+"px"}else{wrap.style.display="flex";wrap.style.justifyContent="center";el.style.width="";el.style.maxWidth="";el.style.transform="";el.style.transformOrigin="";wrap.style.height=""}}
-function fitBoards(){document.querySelectorAll(".board-fit").forEach(w=>{w._force=true;fitOne(w)})}
-function setupBoardFit(){Object.keys(BOARD_DW).forEach(scope=>{const el=aiEl(scope);if(!el)return;let wrap=el.parentElement;if(!wrap||!wrap.classList.contains("board-fit")){wrap=document.createElement("div");wrap.className="board-fit";wrap.style.width="100%";wrap.style.maxWidth="100%";wrap.style.overflow="hidden";wrap.style.display="flex";wrap.style.justifyContent="center";el.parentNode.insertBefore(wrap,el);wrap.appendChild(el)}el.dataset.dw=BOARD_DW[scope];if(window.ResizeObserver&&!wrap._ro){wrap._ro=new ResizeObserver(()=>fitOne(wrap));wrap._ro.observe(wrap)}})}
-setupBoardFit();window.addEventListener("resize",fitBoards);window.addEventListener("load",fitBoards);setTimeout(fitBoards,400);setTimeout(fitBoards,1200);
+function renderScope(scope){({banner:bannerRender,menu:menuRender,coupon:couponRender,card:cardRender})[scope]()}
 
 const AI_THEMES=["기본","여름","봄","가을","겨울","카페","음식점","뷰티","오픈행사","모던","미니멀","빈티지","내추럴","럭셔리","클래식","전통","키즈","크리스마스","로맨틱","파스텔","트로피컬","할로윈","발렌타인","새해"];
 const AI_MOODS=["따뜻하고 고급스러운","밝고 경쾌한","심플 미니멀","고급 럭셔리","아기자기 귀여운","모던 시크","내추럴 편안","프리미엄 전문적","트렌디 힙한","차분하고 깔끔한"];
@@ -628,14 +622,14 @@ function aiRemove(scope){AI_BG[scope]=null;if(scope==="banner"){bannerState.text
 // 미리보기(AI배경 + 텍스트 + 레이아웃)를 통째로 캡처해 dataURL 반환. 편집 핸들/선택테두리는 제외.
 async function captureBoard(scope){
   const board=aiEl(scope);
-  const savedCls=board.className,savedTf=board.style.transform;board.style.transform="";
+  const savedCls=board.className;
   board.classList.remove("editing","mode-move","mode-text");
   const handles=[...board.querySelectorAll(".txt-handle")];handles.forEach(h=>h.style.display="none");
   const sels=[...board.querySelectorAll(".sel")];sels.forEach(s=>s.classList.remove("sel"));
   try{
     const canvas=await html2canvas(board,{backgroundColor:null,scale:2,useCORS:true,logging:false});
     return canvas.toDataURL("image/png");
-  }finally{board.className=savedCls;board.style.transform=savedTf;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"));requestAnimationFrame(fitBoards)}
+  }finally{board.className=savedCls;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"))}
 }
 // 보관함 저장용: 캡처 이미지를 적당히 줄이고 JPEG로 압축해 dataURL 반환(Firestore 1MB 한도 대비).
 function compressForSave(dataUrl){

@@ -591,8 +591,8 @@ function showAdModal(scope){
   const btn=m.querySelector("button"),cnt=m.querySelector(".ad-count");
   const timer=setInterval(()=>{
     left--;if(cnt)cnt.textContent=Math.max(0,left);
-    if(left<=0){clearInterval(timer);grantAd();updateRemainingUI();btn.disabled=false;btn.textContent="✓ 1회 추가됐어요! 닫기";
-      btn.onclick=()=>{m.remove();adBusy=false;updateRemainingUI()};
+    if(left<=0){clearInterval(timer);grantAd();btn.disabled=false;btn.textContent="✓ 시청 완료! 생성 시작…";
+      setTimeout(()=>{m.remove();adBusy=false;updateRemainingUI();aiGenerate(scope);},700);
     }else{btn.textContent=`잠시만요… ${left}초`}
   },1000);
   m.onclick=e=>{if(e.target===m){clearInterval(timer);m.remove();adBusy=false}}; // 중간에 닫으면 보상 없음

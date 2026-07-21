@@ -174,18 +174,46 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="lg-modal" id="premiumModal">
   <div class="lg-box">
     <button class="lg-close" id="pmClose" aria-label="닫기">×</button>
-    <h3>디자인공방 프리미엄</h3>
-    <div class="lg-sub">더 예쁘게, 더 많이 · 광고 없이</div>
-    <div class="pm-price"><b>월 4,900원</b><span>부가세 포함</span></div>
-    <ul class="pm-benefits">
-      <li>고화질 AI 배경 생성</li>
-      <li>하루 생성 횟수 대폭 증가</li>
-      <li>광고 없이 바로 생성</li>
-      <li>내 디자인함 무제한 저장</li>
-    </ul>
+    <style>
+    .pm-plans{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+    .pm-plan{border:1px solid var(--line2);border-radius:14px;padding:13px 15px;position:relative}
+    .pm-plan-pro{border-color:var(--purple);background:rgba(124,92,255,.07)}
+    .pm-plan-name{font-size:14px;font-weight:850}
+    .pm-plan-price{font-size:12.5px;color:var(--sub);margin:1px 0 8px}
+    .pm-plan-price b{font-size:21px;color:#fff}
+    .pm-plan ul{list-style:none;padding:0;margin:0 0 11px;font-size:12px;color:var(--sub);line-height:1.75}
+    .pm-plan ul li:before{content:"✓ ";color:var(--purple);font-weight:800}
+    .pm-badge{position:absolute;top:-9px;right:14px;background:var(--purple);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px}
+    .pm-plan .lg-btn{width:100%}
+    </style>
+    <h3>프리미엄</h3>
+    <div class="lg-sub">광고 없이 · 더 많이 · 더 예쁘게</div>
+    <div class="pm-plans">
+      <div class="pm-plan">
+        <div class="pm-plan-name">라이트</div>
+        <div class="pm-plan-price"><b>4,900</b>원 / 월</div>
+        <ul>
+          <li>AI 배경 월 80장 (중화질)</li>
+          <li>광고 제거</li>
+          <li>내 디자인함 무제한 저장</li>
+        </ul>
+        <button class="lg-btn pm-sub">라이트 시작하기</button>
+      </div>
+      <div class="pm-plan pm-plan-pro">
+        <span class="pm-badge">추천</span>
+        <div class="pm-plan-name">프로</div>
+        <div class="pm-plan-price"><b>9,900</b>원 / 월</div>
+        <ul>
+          <li>AI 배경 월 200장</li>
+          <li>고화질 30장 포함</li>
+          <li>우선 생성 (더 빠름)</li>
+          <li>광고 제거 · 무제한 저장</li>
+        </ul>
+        <button class="lg-btn lg-primary pm-sub" id="pmSubscribe">프로 시작하기</button>
+      </div>
+    </div>
     <div class="lg-err" id="pmErr"></div>
-    <button class="lg-btn lg-primary" id="pmSubscribe">프리미엄 시작하기</button>
-    <div class="pm-note">언제든 해지할 수 있어요.</div>
+    <div class="pm-note">언제든 해지할 수 있어요 · 부가세 포함</div>
   </div>
 </div>
 <style>
@@ -738,7 +766,7 @@ async function subscribePremium(){
   }catch(e){$("#pmErr").textContent="결제 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";}
   finally{btn.disabled=false;btn.textContent="프리미엄 시작하기";}
 }
-$("#pmSubscribe").onclick=subscribePremium;
+$$(".pm-sub").forEach(function(b){b.onclick=subscribePremium});
 </script>
 <!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>

@@ -635,7 +635,7 @@ async function aiGenerate(scope){
     const r=await fetch("/api/generate-image",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(collectPayload(scope))});
     const j=await r.json().catch(()=>({ok:false,error:"응답을 처리하지 못했어요."}));
     if(!r.ok||!j.ok||!j.image)throw new Error(j&&j.error?j.error:"이미지 생성에 실패했어요. 잠시 후 다시 시도해 주세요.");
-    AI_BG[scope]=j.image;if(scope==="banner"){bannerState.textStyles={}}renderScope(scope);
+    AI_BG[scope]=j.image;reeditActive=false;if(scope==="banner"){bannerState.textStyles={}}renderScope(scope);
     consumeFree();
     status.className="ai-status ok";status.textContent="완성! 미리보기 배경에 적용했어요.";
     p.querySelector(".ai-regen").style.display="";p.querySelector(".ai-remove").style.display="";p.querySelector(".ai-download").style.display="";
@@ -701,18 +701,49 @@ async function downloadPdf(scope,btn){
 async function saveDesign(scope,btn){
   if(!window._authUser){openLogin();return}
   if(typeof html2canvas!=="function"){alert("잠시 후 다시 시도해 주세요.");return}
+  if(reeditActive&&getFreeRemaining()<=0){showLimitModal();return}
   const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
   try{
     const raw=await captureBoard(scope);
     const url=await compressForSave(raw);
     const title=(scope==="menu"?($("#menuShop").value):scope==="banner"?$("#shop").value:scope==="coupon"?$("#cpShop").value:$("#ncCo").value)||"디자인";
-    const r=window._saveDesign?await window._saveDesign(url,{scope,title}):{ok:false};
-    if(r&&r.ok){if(btn){btn.textContent="저장됨 ✓";setTimeout(()=>{btn.textContent=label},1500)}}
+    const edit=await captureEditState(scope);
+    const r=window._saveDesign?await window._saveDesign(url,{scope,title,edit}):{ok:false};
+    if(r&&r.ok){if(reeditActive){consumeFree();updateRemainingUI()}if(btn){btn.textContent="저장됨 ✓";setTimeout(()=>{btn.textContent=label},1500)}}
     else{alert("보관함 저장에 실패했어요. 다시 시도해 주세요.\n\n[오류코드] "+((r&&r.code)||"unknown"))}
   }catch(e){alert("보관함 저장에 실패했어요. 다시 시도해 주세요.\n\n[오류] "+((e&&(e.code||e.message))||"unknown"))}
   finally{if(btn){btn.disabled=false;if(btn.textContent==="저장 중…")btn.textContent=label}}
 }
 
+let reeditActive=false,galItems=[];
+async function captureEditState(scope){
+  const view=document.getElementById("view-"+scope),inputs={};
+  if(view)view.querySelectorAll("input[id],textarea[id],select[id]").forEach(el=>{inputs[el.id]=el.value});
+  const stMap={banner:bannerState,menu:menuState,coupon:cpState,card:ncState};
+  let aiBg=AI_BG[scope]||"";
+  if(aiBg){try{aiBg=await compressForSave(aiBg)}catch(e){}}
+  let state={};try{state=JSON.parse(JSON.stringify(stMap[scope]||{}))}catch(e){}
+  return {v:1,scope,inputs,state,aiBg};
+}
+function restoreEditState(es){
+  if(!es||!es.scope)return false;
+  const scope=es.scope,stMap={banner:bannerState,menu:menuState,coupon:cpState,card:ncState},st=stMap[scope];
+  if(!st)return false;
+  try{const ns=JSON.parse(JSON.stringify(es.state||{}));Object.keys(st).forEach(k=>delete st[k]);Object.assign(st,ns)}catch(e){}
+  AI_BG[scope]=es.aiBg||null;
+  Object.entries(es.inputs||{}).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&val!=null)el.value=val});
+  try{
+    if(scope==="menu"){if(typeof renderMenuInputs==="function")renderMenuInputs();document.querySelectorAll("#menuTemplates .template-card").forEach(c=>c.classList.toggle("on",c.dataset.id===menuState.tpl))}
+    if(scope==="coupon")document.querySelectorAll("#cpType button").forEach(b=>b.classList.toggle("on",b.dataset.type===cpState.type));
+  }catch(e){}
+  const nav=document.querySelector('.nav button[data-tab="'+scope+'"]');if(nav)nav.click();
+  try{renderScope(scope)}catch(e){}
+  try{const p=panelOf(scope);if(p){const disp=AI_BG[scope]?"":"none";[".ai-regen",".ai-remove",".ai-download"].forEach(sel=>{const el=p.querySelector(sel);if(el)el.style.display=disp})}}catch(e){}
+  reeditActive=true;
+  try{window.scrollTo({top:0,behavior:"smooth"})}catch(e){}
+  return true;
+}
+$$(".nav button").forEach(function(b){b.addEventListener("click",function(){reeditActive=false})});
 ["banner","menu","coupon","card"].forEach(scope=>{
   const host=document.querySelector(`#view-${scope} .preview-panel`);
   if(!host)return;
@@ -770,9 +801,9 @@ const galModal=$("#galleryModal");
 function openGallery(){if(!window._authUser){openLogin();return}galModal.classList.add("open");loadGallery()}
 function closeGallery(){galModal.classList.remove("open")}
 function openDesignView(url){let lb=document.getElementById("galLightbox");if(!lb){lb=document.createElement("div");lb.id="galLightbox";lb.className="gal-lightbox";lb.innerHTML='<button class="gl-x" aria-label="닫기">×</button><div class="gl-inner"><img alt="디자인 크게 보기"><a class="btn primary gl-dl" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a></div>';document.body.appendChild(lb);lb.addEventListener("click",ev=>{if(ev.target===lb||ev.target.closest(".gl-x"))lb.classList.remove("open")})}lb.querySelector("img").src=url;lb.querySelector(".gl-dl").href=url;lb.classList.add("open")}
-async function loadGallery(){const box=$("#galGrid");box.innerHTML='<div class="gal-empty">불러오는 중…</div>';const r=window._listDesigns?await window._listDesigns():{ok:false,items:[]};if(!r.items||!r.items.length){box.innerHTML='<div class="gal-empty">저장된 디자인이 없어요.<br>디자인을 만들고 “보관함에 저장”을 눌러보세요.</div>';return}box.innerHTML=r.items.map(it=>`<div class="gal-card"><img src="${it.url}" alt="${(it.title||"").replace(/"/g,"")}"><div class="gal-row"><a class="btn" href="${it.url}" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a><button class="btn danger" data-del="${it.id}">삭제</button></div></div>`).join("")}
+async function loadGallery(){const box=$("#galGrid");box.innerHTML='<div class="gal-empty">불러오는 중…</div>';const r=window._listDesigns?await window._listDesigns():{ok:false,items:[]};if(!r.items||!r.items.length){box.innerHTML='<div class="gal-empty">저장된 디자인이 없어요.<br>디자인을 만들고 “보관함에 저장”을 눌러보세요.</div>';return}galItems=r.items;box.innerHTML=r.items.map(it=>`<div class="gal-card" data-id="${it.id}"><img src="${it.url}" title="${it.edit?'클릭 → 편집화면으로 불러오기':'클릭 → 크게 보기'}" alt="${(it.title||"").replace(/"/g,"")}"><div class="gal-row"><a class="btn" href="${it.url}" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a><button class="btn danger" data-del="${it.id}">삭제</button></div></div>`).join("")}
 $("#galClose").onclick=closeGallery;galModal.onclick=e=>{if(e.target===galModal)closeGallery()};
-$("#galGrid").addEventListener("click",async e=>{const v=e.target.closest(".gal-card img");if(v){openDesignView(v.getAttribute("src"));return}const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("이 디자인을 삭제할까요?"))return;b.disabled=true;const r=window._deleteDesign?await window._deleteDesign(b.dataset.del):{ok:false};if(r&&r.ok)loadGallery();else{b.disabled=false;alert("삭제에 실패했어요.")}});
+$("#galGrid").addEventListener("click",async e=>{const v=e.target.closest(".gal-card img");if(v){const card=v.closest(".gal-card");const it=(galItems||[]).find(x=>x.id===(card&&card.dataset.id));if(it&&it.edit){if(restoreEditState(it.edit))closeGallery()}else{openDesignView(v.getAttribute("src"))}return}const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("이 디자인을 삭제할까요?"))return;b.disabled=true;const r=window._deleteDesign?await window._deleteDesign(b.dataset.del):{ok:false};if(r&&r.ok)loadGallery();else{b.disabled=false;alert("삭제에 실패했어요.")}});
 
 /* ===== 프리미엄 결제 (포트원 V2) ===== */
 /* 포트원 가입 후 발급받은 값을 넣으면 실제 결제창이 열림. 비어있으면 준비중 안내. */
@@ -817,7 +848,7 @@ window._doKakaoLogin=async()=>{if(!window.Kakao||!Kakao.isInitialized())return{o
 
 // ===== 내 디자인함 저장/조회/삭제 (Firebase Storage + Firestore) =====
 // 보관함 저장: Firebase 규칙(콘솔) 설정 없이 되도록 이 브라우저(localStorage)에 저장.
-window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const key='dg_designs_'+u.uid;let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){arr=[]}const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);arr.unshift({id,url:dataUrl,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',app:'design-gongbang',createdAt:new Date().toISOString()});while(arr.length){try{localStorage.setItem(key,JSON.stringify(arr));return{ok:true}}catch(e){if(arr.length<=1)return{ok:false,code:'storage-full'};arr.pop()}}return{ok:false,code:'storage-full'}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
+window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{ok:false,code:'no-auth'};try{const key='dg_designs_'+u.uid;let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){arr=[]}const id=String(Date.now())+'_'+Math.random().toString(36).slice(2,8);arr.unshift({id,url:dataUrl,scope:(meta&&meta.scope)||'',title:(meta&&meta.title)||'',edit:(meta&&meta.edit)||null,app:'design-gongbang',createdAt:new Date().toISOString()});while(arr.length){try{localStorage.setItem(key,JSON.stringify(arr));return{ok:true}}catch(e){if(arr.length<=1)return{ok:false,code:'storage-full'};arr.pop()}}return{ok:false,code:'storage-full'}}catch(e){console.error('saveDesign',e);return{ok:false,code:e.code||e.message}}};
 window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{let arr=[];try{arr=JSON.parse(localStorage.getItem('dg_designs_'+u.uid)||'[]')}catch(e){arr=[]}return{ok:true,items:arr}}catch(e){console.error('listDesigns',e);return{ok:false,items:[]}}};
 window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{const key='dg_designs_'+u.uid;let arr=[];try{arr=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){arr=[]}arr=arr.filter(d=>d.id!==id);localStorage.setItem(key,JSON.stringify(arr));return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
 // 프리미엄 상태 저장/조회 (결제 성공 시 활성화). 실제 검증은 추후 서버 웹훅으로 강화 예정.

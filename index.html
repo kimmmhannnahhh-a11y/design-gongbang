@@ -152,7 +152,13 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 @media(min-width:900px){.gal-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .gal-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:13px;line-height:1.8;padding:40px 0}
 .gal-card{background:#0d1017;border:1px solid var(--line2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-.gal-card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#0b0d13;display:block;padding:6px}
+.gal-card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#0b0d13;display:block;padding:6px;cursor:zoom-in;transition:.15s}.gal-card img:hover{opacity:.86}
+.gal-lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:30px}
+.gal-lightbox.open{display:flex}
+.gal-lightbox .gl-inner{display:flex;flex-direction:column;align-items:center;gap:16px}
+.gal-lightbox img{max-width:92vw;max-height:80vh;object-fit:contain;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.gal-lightbox .gl-x{position:fixed;top:20px;right:26px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.13);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+.gal-lightbox .gl-dl{min-width:170px;text-align:center}
 .gal-row{display:flex;gap:6px;padding:8px}
 .gal-row .btn{flex:1;height:36px;font-size:12px;text-align:center;line-height:36px;padding:0;text-decoration:none}
 .gal-row a.btn{background:var(--purple);color:#fff;border:1px solid var(--purple);font-weight:700}
@@ -763,9 +769,10 @@ setAuthMode("login");
 const galModal=$("#galleryModal");
 function openGallery(){if(!window._authUser){openLogin();return}galModal.classList.add("open");loadGallery()}
 function closeGallery(){galModal.classList.remove("open")}
+function openDesignView(url){let lb=document.getElementById("galLightbox");if(!lb){lb=document.createElement("div");lb.id="galLightbox";lb.className="gal-lightbox";lb.innerHTML='<button class="gl-x" aria-label="닫기">×</button><div class="gl-inner"><img alt="디자인 크게 보기"><a class="btn primary gl-dl" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a></div>';document.body.appendChild(lb);lb.addEventListener("click",ev=>{if(ev.target===lb||ev.target.closest(".gl-x"))lb.classList.remove("open")})}lb.querySelector("img").src=url;lb.querySelector(".gl-dl").href=url;lb.classList.add("open")}
 async function loadGallery(){const box=$("#galGrid");box.innerHTML='<div class="gal-empty">불러오는 중…</div>';const r=window._listDesigns?await window._listDesigns():{ok:false,items:[]};if(!r.items||!r.items.length){box.innerHTML='<div class="gal-empty">저장된 디자인이 없어요.<br>디자인을 만들고 “보관함에 저장”을 눌러보세요.</div>';return}box.innerHTML=r.items.map(it=>`<div class="gal-card"><img src="${it.url}" alt="${(it.title||"").replace(/"/g,"")}"><div class="gal-row"><a class="btn" href="${it.url}" download="design-gongbang.png" target="_blank" rel="noopener">다운로드</a><button class="btn danger" data-del="${it.id}">삭제</button></div></div>`).join("")}
 $("#galClose").onclick=closeGallery;galModal.onclick=e=>{if(e.target===galModal)closeGallery()};
-$("#galGrid").addEventListener("click",async e=>{const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("이 디자인을 삭제할까요?"))return;b.disabled=true;const r=window._deleteDesign?await window._deleteDesign(b.dataset.del):{ok:false};if(r&&r.ok)loadGallery();else{b.disabled=false;alert("삭제에 실패했어요.")}});
+$("#galGrid").addEventListener("click",async e=>{const v=e.target.closest(".gal-card img");if(v){openDesignView(v.getAttribute("src"));return}const b=e.target.closest("[data-del]");if(!b)return;if(!confirm("이 디자인을 삭제할까요?"))return;b.disabled=true;const r=window._deleteDesign?await window._deleteDesign(b.dataset.del):{ok:false};if(r&&r.ok)loadGallery();else{b.disabled=false;alert("삭제에 실패했어요.")}});
 
 /* ===== 프리미엄 결제 (포트원 V2) ===== */
 /* 포트원 가입 후 발급받은 값을 넣으면 실제 결제창이 열림. 비어있으면 준비중 안내. */

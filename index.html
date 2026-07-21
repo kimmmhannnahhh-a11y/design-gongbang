@@ -42,12 +42,12 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 </header>
 
 <style>
-.hero-intro{text-align:center;padding:8px 6px 24px}
-.hi-title{font-size:clamp(28px,3.6vw,44px);font-weight:900;line-height:1.15;letter-spacing:-.03em;margin:0;color:var(--text)}
-.hi-title .hi-accent{color:var(--purple2)}
-.hi-sub{font-size:17px;font-weight:700;color:var(--text);margin-top:8px;letter-spacing:-.01em}
-.hi-desc{font-size:15px;color:var(--sub);margin-top:5px;line-height:1.5}
-@media(max-width:650px){.hero-intro{padding:6px 4px 18px}.hi-title{font-size:23px}.hi-sub{font-size:14px}}
+.hero-intro{text-align:center;padding:10px 6px 20px}
+.hi-one{display:flex;align-items:baseline;justify-content:center;gap:6px 14px;flex-wrap:wrap;margin:0}
+.hi-one .hi-main{font-size:clamp(21px,2.7vw,30px);font-weight:900;letter-spacing:-.03em;color:var(--text)}
+.hi-one .hi-accent{color:var(--purple2)}
+.hi-one .hi-rest{font-size:14px;color:var(--sub);font-weight:600}
+@media(max-width:650px){.hero-intro{padding:8px 4px 16px}.hi-one .hi-main{font-size:19px}.hi-one .hi-rest{font-size:12.5px}}
 .topbar{justify-content:space-between}
 .cat-nav{margin:0 auto 28px;justify-content:center;flex-wrap:wrap;gap:12px;padding:0;background:none;border:0;box-shadow:none;max-width:100%}
 .cat-nav button{height:46px;padding:0 22px;border:1px solid var(--line2);background:#12151e;border-radius:13px;font-size:14px}
@@ -55,9 +55,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 @media(max-width:650px){.cat-nav{gap:8px}.cat-nav button{height:42px;padding:0 15px;font-size:13px}}
 </style>
 <section class="hero-intro">
-<h1 class="hi-title">10초 만에 만드는 <span class="hi-accent">AI 홍보물</span></h1>
-<div class="hi-sub">전단지 · 메뉴판 · 명함 · 쿠폰</div>
-<div class="hi-desc">AI가 디자인부터 배치까지 자동으로 제작합니다.</div>
+<h1 class="hi-one"><span class="hi-main">10초 만에 만드는 <span class="hi-accent">AI 홍보물</span></span><span class="hi-rest">전단지 · 메뉴판 · 명함 · 쿠폰 · AI가 디자인부터 배치까지 자동으로 제작합니다.</span></h1>
 </section>
 <nav class="nav cat-nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">

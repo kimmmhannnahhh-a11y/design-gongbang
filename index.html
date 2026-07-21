@@ -409,7 +409,7 @@ function renderScope(scope){({banner:bannerRender,menu:menuRender,coupon:couponR
 // 미리보기 보드(고정 디자인 크기)를 화면 폭에 맞게 통째로 축소 — 디자인/비율 그대로, 모바일서 잘림 방지.
 const BOARD_DW={banner:720,menu:620,coupon:760,card:610};
 function setupBoardFit(){Object.keys(BOARD_DW).forEach(scope=>{const el=aiEl(scope);if(!el)return;let wrap=el.parentElement;if(!wrap||!wrap.classList.contains("board-fit")){wrap=document.createElement("div");wrap.className="board-fit";wrap.style.width="100%";wrap.style.overflow="hidden";el.parentNode.insertBefore(wrap,el);wrap.appendChild(el)}el.dataset.dw=BOARD_DW[scope]})}
-function fitBoards(){document.querySelectorAll(".board-fit").forEach(wrap=>{const el=wrap.firstElementChild;if(!el)return;const dw=+el.dataset.dw||720;el.style.width=dw+"px";el.style.maxWidth="none";el.style.transformOrigin="top left";const avail=wrap.clientWidth;if(!avail)return;const s=Math.min(1,avail/dw);el.style.transform=s<1?"scale("+s+")":"";wrap.style.height=(el.offsetHeight*s)+"px"})}
+function fitBoards(){document.querySelectorAll(".board-fit").forEach(wrap=>{const el=wrap.firstElementChild;if(!el)return;const dw=+el.dataset.dw||720;el.style.transform="";el.style.width="";wrap.style.maxWidth="100%";wrap.style.overflow="hidden";const avail=wrap.clientWidth;if(!avail)return;el.style.width=dw+"px";el.style.maxWidth="none";el.style.transformOrigin="top left";const s=Math.min(1,avail/dw);el.style.transform=s<1?"scale("+s+")":"";wrap.style.height=(el.offsetHeight*s)+"px"})}
 setupBoardFit();window.addEventListener("resize",fitBoards);window.addEventListener("load",fitBoards);setTimeout(fitBoards,400);
 
 const AI_THEMES=["기본","여름","봄","가을","겨울","카페","음식점","뷰티","오픈행사","모던","미니멀","빈티지","내추럴","럭셔리","클래식","전통","키즈","크리스마스","로맨틱","파스텔","트로피컬","할로윈","발렌타인","새해"];

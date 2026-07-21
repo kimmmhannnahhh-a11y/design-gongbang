@@ -38,25 +38,22 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="app">
 <header class="topbar">
 <div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div></div></div>
+<h1 class="hi-one"><span class="hi-main">10초 만에 만드는 <span class="hi-accent">AI 홍보물</span></span><span class="hi-rest">전단지 · 메뉴판 · 명함 · 쿠폰</span></h1>
 <div class="top-action" id="authArea"><button class="btn premium-btn" id="premiumBtn">✦ 업그레이드</button><button class="btn" id="galBtn">내 디자인함</button><button class="btn primary" id="loginBtn">로그인</button></div>
 </header>
 
 <style>
-.hero-intro{text-align:center;padding:10px 6px 20px}
-.hi-one{display:flex;align-items:baseline;justify-content:center;gap:6px 14px;flex-wrap:wrap;margin:0}
-.hi-one .hi-main{font-size:clamp(21px,2.7vw,30px);font-weight:900;letter-spacing:-.03em;color:var(--text)}
+.topbar .hi-one{flex:1;min-width:0;display:flex;align-items:baseline;justify-content:center;gap:10px;flex-wrap:wrap;margin:0;padding:0 12px}
+.hi-one .hi-main{font-size:clamp(17px,1.9vw,23px);font-weight:900;letter-spacing:-.03em;color:var(--text);white-space:nowrap}
 .hi-one .hi-accent{color:var(--purple2)}
-.hi-one .hi-rest{font-size:14px;color:var(--sub);font-weight:600}
-@media(max-width:650px){.hero-intro{padding:8px 4px 16px}.hi-one .hi-main{font-size:19px}.hi-one .hi-rest{font-size:12.5px}}
-.topbar{justify-content:space-between}
+.hi-one .hi-rest{font-size:13px;color:var(--sub);font-weight:600;white-space:nowrap}
+@media(max-width:900px){.topbar .hi-one{order:3;width:100%;flex-basis:100%;padding:6px 0 0}}
+@media(max-width:650px){.hi-one .hi-main{font-size:18px}.hi-one .hi-rest{font-size:12px}}
 .cat-nav{margin:0 auto 28px;justify-content:center;flex-wrap:wrap;gap:12px;padding:0;background:none;border:0;box-shadow:none;max-width:100%}
 .cat-nav button{height:46px;padding:0 22px;border:1px solid var(--line2);background:#12151e;border-radius:13px;font-size:14px}
 .cat-nav button.on{color:#fff;background:var(--surface3);box-shadow:inset 0 0 0 1.5px var(--purple)}
 @media(max-width:650px){.cat-nav{gap:8px}.cat-nav button{height:42px;padding:0 15px;font-size:13px}}
 </style>
-<section class="hero-intro">
-<h1 class="hi-one"><span class="hi-main">10초 만에 만드는 <span class="hi-accent">AI 홍보물</span></span><span class="hi-rest">전단지 · 메뉴판 · 명함 · 쿠폰 · AI가 디자인부터 배치까지 자동으로 제작합니다.</span></h1>
-</section>
 <nav class="nav cat-nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">홍보 문구 입력</div></div></div>

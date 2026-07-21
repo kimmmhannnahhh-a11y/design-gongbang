@@ -38,7 +38,6 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="app">
 <header class="topbar">
 <div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div></div></div>
-<nav class="nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
 <div class="top-action" id="authArea"><button class="btn premium-btn" id="premiumBtn">✦ 업그레이드</button><button class="btn" id="galBtn">내 디자인함</button><button class="btn primary" id="loginBtn">로그인</button></div>
 </header>
 
@@ -49,12 +48,18 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .hi-sub{font-size:17px;font-weight:700;color:var(--text);margin-top:8px;letter-spacing:-.01em}
 .hi-desc{font-size:15px;color:var(--sub);margin-top:5px;line-height:1.5}
 @media(max-width:650px){.hero-intro{padding:6px 4px 18px}.hi-title{font-size:23px}.hi-sub{font-size:14px}}
+.topbar{justify-content:space-between}
+.cat-nav{margin:0 auto 28px;justify-content:center;flex-wrap:wrap;gap:12px;padding:0;background:none;border:0;box-shadow:none;max-width:100%}
+.cat-nav button{height:46px;padding:0 22px;border:1px solid var(--line2);background:#12151e;border-radius:13px;font-size:14px}
+.cat-nav button.on{color:#fff;background:var(--surface3);box-shadow:inset 0 0 0 1.5px var(--purple)}
+@media(max-width:650px){.cat-nav{gap:8px}.cat-nav button{height:42px;padding:0 15px;font-size:13px}}
 </style>
 <section class="hero-intro">
 <h1 class="hi-title">10초 만에 만드는 <span class="hi-accent">AI 홍보물</span></h1>
 <div class="hi-sub">전단지 · 메뉴판 · 명함 · 쿠폰</div>
 <div class="hi-desc">AI가 디자인부터 배치까지 자동으로 제작합니다.</div>
 </section>
+<nav class="nav cat-nav"><button class="on" data-tab="banner">홍보 배너</button><button data-tab="menu">메뉴판·가격표</button><button data-tab="coupon">쿠폰</button><button data-tab="card">명함</button></nav>
 <section class="view on" id="view-banner"><div class="workspace"><div class="left">
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">홍보 문구 입력</div></div></div>
 <div class="field"><div class="label">가게 이름</div><input class="input" id="shop" value="행복 헤어살롱"></div><div class="field"><div class="label">메인 문구</div><input class="input" id="headline" value="오픈 기념 30% 할인"></div><div class="field"><div class="label">보조 문구</div><input class="input" id="sub" value="지금 예약하면 사은품 증정!"></div><div class="row2"><div class="field"><div class="label">강조 문구</div><input class="input" id="tag" value="선착순 50명"></div><div class="field"><div class="label">연락처</div><input class="input" id="info" value="010-1234-5678"></div></div></div>

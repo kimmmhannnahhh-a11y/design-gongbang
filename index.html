@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1440">
 <title>디자인공방 - 우리 가게 홍보물 만들기</title>
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256185497932248" crossorigin="anonymous"></script>
@@ -35,6 +35,142 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 </style>
 </head>
 <body>
+<style>
+#landing{position:fixed;inset:0;z-index:900;overflow-y:auto;background:#fff;color:#14151a;font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+body.entered #landing{display:none}
+#landing *{box-sizing:border-box}
+#landing .lp-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+#landing .lp-nav{display:flex;align-items:center;justify-content:space-between;height:70px;max-width:1160px;margin:0 auto;padding:0 24px}
+#landing .lp-brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;color:#14151a;letter-spacing:-.03em}
+#landing .lp-mark{width:33px;height:33px;border-radius:10px;background:#7c5cff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(124,92,255,.32)}
+#landing .lp-brand small{display:block;font-size:11.5px;font-weight:600;color:#9096a6;margin-top:1px;letter-spacing:0}
+#landing .lp-nav-r{display:flex;align-items:center;gap:6px}
+#landing .lp-link{background:none;border:0;font:inherit;font-weight:700;color:#5b6070;cursor:pointer;padding:10px 14px;border-radius:11px;transition:.14s}
+#landing .lp-link:hover{color:#14151a;background:#f4f4fa}
+#landing .lp-nav-cta{background:#14151a;color:#fff;border:0;font:inherit;font-weight:800;padding:11px 18px;border-radius:12px;cursor:pointer;transition:.16s}
+#landing .lp-nav-cta:hover{transform:translateY(-1px);background:#26283a}
+#landing .lp-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:54px 0 26px}
+#landing .lp-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:800;color:#7c5cff;background:#f1edff;border:1px solid #e6ddff;padding:7px 14px;border-radius:999px;margin-bottom:22px}
+#landing .lp-eyebrow svg{width:15px;height:15px}
+#landing .lp-title{font-size:clamp(34px,5vw,58px);line-height:1.08;font-weight:800;letter-spacing:-.038em;margin:0 0 20px;color:#101119;text-wrap:balance}
+#landing .lp-lead{font-size:clamp(19px,2.3vw,26px);line-height:1.35;font-weight:700;color:#272a3c;margin:0 0 13px;letter-spacing:-.02em}
+#landing .lp-lead b{color:#7c5cff;font-weight:800}
+#landing .lp-desc{font-size:16px;line-height:1.6;color:#6a6f80;margin:0 0 30px;max-width:430px}
+#landing .lp-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+#landing .lp-btn{font:inherit;font-weight:800;border-radius:14px;padding:15px 28px;cursor:pointer;border:1.6px solid transparent;transition:transform .15s,box-shadow .15s,background .15s;font-size:16px;letter-spacing:-.01em}
+#landing .lp-btn-primary{background:#7c5cff;color:#fff;box-shadow:0 12px 28px rgba(124,92,255,.3)}
+#landing .lp-btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(124,92,255,.4)}
+#landing .lp-btn-ghost{background:#fff;color:#26283a;border-color:#e3e3ec}
+#landing .lp-btn-ghost:hover{background:#f7f7fb;transform:translateY(-2px)}
+#landing .lp-badges{display:flex;flex-wrap:wrap;gap:9px}
+#landing .lp-badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:#4a4f60;background:#f8f8fc;border:1px solid #ececf3;padding:9px 13px;border-radius:12px}
+#landing .lp-badge svg{width:16px;height:16px;color:#7c5cff;flex:0 0 auto}
+#landing .lp-stack{position:relative;width:460px;height:460px;margin:0 auto}
+#landing .lp-hero-r{display:flex;justify-content:center;min-width:0}
+#landing .lp-mock{position:absolute;border-radius:20px;box-shadow:0 20px 52px rgba(24,24,52,.15);border:1px solid rgba(20,20,50,.05);transition:transform .28s ease;will-change:transform;overflow:hidden}
+#landing .lp-mock:hover{transform:scale(1.055)!important;z-index:9;box-shadow:0 26px 64px rgba(24,24,52,.22)}
+#landing .lp-mock-flyer{width:206px;height:274px;top:44px;left:2px;transform:rotate(-4deg);z-index:3;background:linear-gradient(165deg,#8163ff,#6b48f0);color:#fff;padding:24px 21px;display:flex;flex-direction:column}
+#landing .mf-badge{align-self:flex-start;font-size:10.5px;font-weight:800;letter-spacing:.14em;background:rgba(255,255,255,.2);padding:5px 10px;border-radius:999px}
+#landing .mf-title{font-size:31px;font-weight:800;line-height:1.12;margin-top:16px;letter-spacing:-.03em}
+#landing .mf-sub{font-size:13px;opacity:.9;margin-top:9px;line-height:1.45}
+#landing .mf-foot{margin-top:auto;font-size:12px;font-weight:600;opacity:.92;line-height:1.5;border-top:1px solid rgba(255,255,255,.25);padding-top:12px}
+#landing .lp-mock-menu{width:222px;top:8px;left:216px;transform:rotate(4deg);z-index:2;background:#fbf6ec;color:#3d3527;padding:20px 22px 24px}
+#landing .mm-h{font-size:16px;font-weight:800;letter-spacing:.32em;text-align:center;padding-bottom:12px;border-bottom:1.5px solid #e6dcc4;margin-bottom:12px}
+#landing .mm-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin:11px 0;font-weight:600}
+#landing .mm-row b{font-weight:800}
+#landing .mm-row span{color:#5c5340}
+#landing .lp-mock-coupon{width:252px;top:296px;left:8px;transform:rotate(-2deg);z-index:4;background:#fff;padding:18px;display:flex;align-items:center;gap:16px;border:1.5px solid #efe7ff}
+#landing .mc-perc{font-size:38px;font-weight:800;color:#7c5cff;letter-spacing:-.04em;line-height:1;padding-right:16px;border-right:2px dashed #d9ccff}
+#landing .mc-t{font-size:16px;font-weight:800;color:#1c1d26}
+#landing .mc-s{font-size:12px;color:#8a8fa0;margin-top:5px;font-weight:600}
+#landing .lp-mock-card{width:230px;top:266px;left:236px;transform:rotate(5deg);z-index:3;background:#14151a;color:#fff;padding:22px 22px 24px}
+#landing .mb-logo{font-size:18px;font-weight:800;letter-spacing:-.02em;color:#b9a6ff}
+#landing .mb-name{font-size:21px;font-weight:800;margin-top:26px;letter-spacing:-.02em}
+#landing .mb-role{font-size:12.5px;color:#9096a6;margin-top:4px;font-weight:600}
+#landing .mb-contact{font-size:12px;color:#c7cbd8;margin-top:14px;font-weight:500}
+#landing .lp-makes{background:#f8f8fc;border-top:1px solid #eeeef4;margin-top:44px;padding:66px 0 82px}
+#landing .lp-makes h2{text-align:center;font-size:clamp(26px,3.6vw,38px);font-weight:800;letter-spacing:-.032em;margin:0 0 10px;color:#101119}
+#landing .lp-makes .lp-mk-sub{text-align:center;color:#6a6f80;font-size:16px;margin:0 0 42px}
+#landing .lp-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+#landing .lp-card{background:#fff;border:1px solid #ececf2;border-radius:22px;padding:24px;cursor:pointer;transition:transform .18s,box-shadow .18s,border-color .18s;box-shadow:0 4px 16px rgba(20,20,45,.04);text-align:left}
+#landing .lp-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(20,20,45,.1);border-color:#dcd2ff}
+#landing .lp-ico{width:54px;height:54px;border-radius:15px;background:#f1edff;display:grid;place-items:center;margin-bottom:17px}
+#landing .lp-ico svg{width:26px;height:26px;color:#7c5cff}
+#landing .lp-card h3{font-size:18px;font-weight:800;margin:0 0 7px;color:#14151a;letter-spacing:-.02em}
+#landing .lp-card p{font-size:14px;line-height:1.55;color:#6a6f80;margin:0}
+#landing .lp-final{padding:70px 24px 30px;text-align:center}
+#landing .lp-final h2{font-size:clamp(24px,3.2vw,34px);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;color:#101119}
+#landing .lp-final p{color:#6a6f80;font-size:16px;margin:0 0 26px}
+#landing .lp-foot{text-align:center;color:#a3a8b6;font-size:12.5px;padding:26px 24px 40px;line-height:1.7}
+@media(max-width:900px){
+#landing .lp-hero{grid-template-columns:1fr;gap:6px;padding:36px 0 20px}
+#landing .lp-desc{max-width:none}
+#landing .lp-stack{transform:scale(.92);margin-top:-6px}
+#landing .lp-cards{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+#landing .lp-nav{height:60px}
+#landing .lp-brand small{display:none}
+#landing .lp-nav .lp-link{display:none}
+#landing .lp-hero{padding:26px 0 10px}
+#landing .lp-cta .lp-btn{flex:1 1 auto;text-align:center}
+#landing .lp-stack{width:340px;height:400px;transform:scale(.72);transform-origin:top center;margin:0 auto -60px}
+#landing .lp-cards{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){#landing .lp-mock,#landing .lp-btn,#landing .lp-card{transition:none}}
+</style>
+<div id="landing">
+<header class="lp-nav">
+<div class="lp-brand"><span class="lp-mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg></span><span>디자인공방<small>사장님을 위한 홍보물 제작소</small></span></div>
+<div class="lp-nav-r"><button class="lp-link" onclick="_enterApp();var b=document.getElementById('loginBtn');b&&b.click()">로그인</button><button class="lp-nav-cta" onclick="_enterApp()">무료로 시작하기</button></div>
+</header>
+<section class="lp-wrap lp-hero">
+<div class="lp-hero-l">
+<span class="lp-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>AI 홍보물 제작 서비스</span>
+<h1 class="lp-title">사장님을 위한<br>AI 홍보물 제작</h1>
+<p class="lp-lead"><b>10초 만에</b> 전단지 · 메뉴판<br>명함 · 쿠폰 완성</p>
+<p class="lp-desc">AI가 디자인부터 배치까지 자동으로 제작합니다.</p>
+<div class="lp-cta"><button class="lp-btn lp-btn-primary" onclick="_enterApp()">무료로 시작하기</button><button class="lp-btn lp-btn-ghost" onclick="document.getElementById('lp-makes').scrollIntoView({behavior:'smooth'})">샘플 보기</button></div>
+<div class="lp-badges">
+<span class="lp-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>10초 생성</span>
+<span class="lp-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>PNG 다운로드</span>
+<span class="lp-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>AI 자동배치</span>
+<span class="lp-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>상업적 이용 가능</span>
+</div>
+</div>
+<div class="lp-hero-r">
+<div class="lp-stack">
+<div class="lp-mock lp-mock-flyer"><div class="mf-badge">OPEN EVENT</div><div class="mf-title">오픈 기념<br>30% 할인</div><div class="mf-sub">지금 예약 시 사은품 증정</div><div class="mf-foot">행복 헤어살롱<br>010 · 1234 · 5678</div></div>
+<div class="lp-mock lp-mock-menu"><div class="mm-h">MENU</div><div class="mm-row"><span>아메리카노</span><b>4,000</b></div><div class="mm-row"><span>카페라떼</span><b>4,500</b></div><div class="mm-row"><span>바닐라라떼</span><b>5,000</b></div><div class="mm-row"><span>수제 딸기라떼</span><b>5,500</b></div></div>
+<div class="lp-mock lp-mock-coupon"><div class="mc-perc">30%</div><div class="mc-body"><div class="mc-t">할인 쿠폰</div><div class="mc-s">첫 방문 고객 대상 · ~06.30</div></div></div>
+<div class="lp-mock lp-mock-card"><div class="mb-logo">Han.D</div><div class="mb-name">김한아</div><div class="mb-role">대표 · Designer</div><div class="mb-contact">hanah0602@naver.com</div></div>
+</div>
+</div>
+</section>
+<section class="lp-makes" id="lp-makes">
+<div class="lp-wrap">
+<h2>무엇을 만들 수 있나요?</h2>
+<p class="lp-mk-sub">클릭 한 번으로 원하는 홍보물을 바로 만들어보세요.</p>
+<div class="lp-cards">
+<button class="lp-card" onclick="_enterApp('banner')"><div class="lp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div><h3>전단지</h3><p>매장 이벤트·오픈 홍보를 한 장에 담아냅니다.</p></button>
+<button class="lp-card" onclick="_enterApp('menu')"><div class="lp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg></div><h3>메뉴판</h3><p>메뉴와 가격을 깔끔하게 정리해 보여줍니다.</p></button>
+<button class="lp-card" onclick="_enterApp('card')"><div class="lp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div><h3>명함</h3><p>브랜드가 담긴 프로페셔널한 명함을 만듭니다.</p></button>
+<button class="lp-card" onclick="_enterApp('coupon')"><div class="lp-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg></div><h3>쿠폰</h3><p>재방문을 부르는 할인·적립 쿠폰을 만듭니다.</p></button>
+</div>
+</div>
+</section>
+<section class="lp-final">
+<h2>지금 바로 만들어보세요</h2>
+<p>복잡한 프로그램 없이, 웹에서 무료로 시작할 수 있어요.</p>
+<button class="lp-btn lp-btn-primary" onclick="_enterApp()">무료로 시작하기</button>
+</section>
+<div class="lp-foot">디자인공방 · 운영 한디(HanD) · 대표 김한아<br>문의 hanah0602@naver.com</div>
+</div>
+<script>
+window._enterApp=function(tab){try{localStorage.setItem('dg_entered','1')}catch(e){}document.body.classList.add('entered');window.scrollTo(0,0);if(tab){var b=document.querySelector('.nav button[data-tab="'+tab+'"]');if(b)b.click()}};
+try{if(localStorage.getItem('dg_entered')==='1')document.body.classList.add('entered')}catch(e){}
+document.addEventListener('DOMContentLoaded',function(){var br=document.querySelector('.app .brand');if(br){br.style.cursor='pointer';br.title='홈으로';br.addEventListener('click',function(){document.body.classList.remove('entered');window.scrollTo(0,0)})}});
+</script>
 <div class="app">
 <header class="topbar">
 <div class="brand"><div class="brand-mark"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 19l5.5-1.5L19 8l-3-3-9.5 9.5L5 20z"/><path d="M13.5 7.5l3 3"/></svg></div><div><div class="brand-title">디자인공방</div><div class="brand-sub">사장님을 위한 홍보물 제작소</div></div></div>

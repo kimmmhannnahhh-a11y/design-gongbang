@@ -105,6 +105,16 @@ const BG_ARCHETYPES = [
   "an overhead flat-lay arrangement of a few themed items on a clean surface with generous empty space",
   "a dreamy close-up of a single hero element with heavy soft blur around it and lots of clean empty space"
 ];
+// 메뉴판 전용: 가장자리 장식 배치/밀도를 매번 바꿔 같은 업종도 매번 다르게 (가운데 비우는 규칙은 유지).
+const MENU_EDGE_STYLES = [
+  "concentrate the decorations mainly across the TOP header band and keep the rest calm and airy",
+  "run a single elegant decorative border framing all four outer edges",
+  "gather the decorations richly along the BOTTOM like a footer scene, keeping the top clean",
+  "place a bold decorative strip down ONE side (left or right) only, leaving the other side plain",
+  "use just a few small tasteful accents tucked into the corners, very minimal and spacious",
+  "use lush, dense premium decorations wrapping the whole outer frame",
+  "scatter soft, light decorative accents sparsely around the wide outer margins"
+];
 
 // 개별 장식 요소(테마별, 복수 선택) -> 고급 비주얼 묘사
 // "(랜덤)"은 특수값: 모델이 테마에 맞는 장식을 알아서 구성.
@@ -213,7 +223,7 @@ function pickSize(documentType, orientation, layoutType) {
 function layoutSpaceInstruction(documentType, layoutType) {
   if (documentType === "menu") {
     const cols = /3\s*단/.test(layoutType) ? 3 : /2\s*단/.test(layoutType) ? 2 : 1;
-    let s = "Compose this as a vertical menu-poster background. Keep a clean empty header band across the top, and reserve generous empty space in the central body arranged for " + cols + " vertical column" + (cols > 1 ? "s" : "") + " of menu text so that menu names and prices stay perfectly readable. Place every decorative element only around the outer edges, corners and borders, and never inside the central text columns.";
+    let s = "Compose this as a vertical menu-poster background. Keep a clean empty header band across the top, and reserve generous empty space in the central body arranged for " + cols + " vertical column" + (cols > 1 ? "s" : "") + " of menu text so that menu names and prices stay perfectly readable. Place every decorative element only around the outer edges, corners and borders, and never inside the central text columns. For variety in this version, " + pick(MENU_EDGE_STYLES) + ".";
     if (/카테고리/.test(layoutType)) s += " Leave clearly separated empty blocks for several category sections.";
     return s;
   }
@@ -265,7 +275,7 @@ function buildPrompt(data) {
 
   return [
     "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", rendered " + style + ".",
-    "VERY IMPORTANT for variety: compose THIS version specifically as " + archetype + ". Do not default to a literal interior room scene.",
+    (data.documentType === "menu" ? "" : "VERY IMPORTANT for variety: compose THIS version specifically as " + archetype + ". Do not default to a literal interior room scene."),
     light,
     palette,
     mood ? ("Overall mood/feeling: " + mood + ".") : "",

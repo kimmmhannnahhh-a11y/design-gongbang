@@ -246,6 +246,8 @@ function buildPrompt(data) {
   // 계절 -> THEME_VISUALS(분위기/색톤). season 우선, 없으면 theme, 없으면 기본.
   const themeKey = THEME_VISUALS[data.season] ? data.season : (THEME_VISUALS[data.theme] ? data.theme : "기본");
   const themePart = THEME_VISUALS[themeKey];
+  // 이미지 스타일: photo(실물사진) / illust(그림) / auto(랜덤). 미지정 -> auto.
+  const imgStyle = ["photo", "illust", "auto"].includes(data.style) ? data.style : "auto";
 
   const industry = clampStr(data.industry || data.businessType || "", 40);
 
@@ -260,22 +262,30 @@ function buildPrompt(data) {
   if (known.length) decoPart += "Feature these decorative elements as rich, high-quality realistic product photography or refined premium illustration (never low-resolution icons or flat emoji): " + known.map(d => DECO_VISUALS[d]).join(", ") + ".";
   if (unknown.length) decoPart += (decoPart ? " " : "") + "Also elegantly incorporate, in a premium way: " + unknown.join(", ") + ".";
   const custom = clampStr(data.customDeco || "", 100);
-  if (custom) decoPart += (decoPart ? " " : "") + "Design reference from the shop owner (interpret tastefully as visuals, never render as literal text): " + custom + ".";
-  if (isRandom || (!picked.length && !custom)) decoPart += (decoPart ? " " : "") + "Creatively choose and compose a tasteful, varied set of premium decorative elements that best fit the theme.";
+  if (custom) {
+    if (imgStyle === "photo") decoPart += (decoPart ? " " : "") + "Feature realistic, true-to-life product photographs of EACH of the following as the main hero subjects, clearly recognizable and naturally arranged together (show the actual real products, never any text or logo): " + custom + ".";
+    else decoPart += (decoPart ? " " : "") + "Tastefully feature clear visuals of EACH of the following (interpret as imagery, never as literal text): " + custom + ".";
+  }
+  // 직접입력(custom)이 있으면 랜덤 장식과 섞지 않는다.
+  if (!custom && (isRandom || !picked.length)) decoPart += (decoPart ? " " : "") + "Creatively choose and compose a tasteful, varied set of premium decorative elements that best fit the theme.";
 
   const accent = isHex(data.accentColor) ? data.accentColor : "#7c5cff";
   const layoutPart = layoutSpaceInstruction(data.documentType, data.layoutType);
   const mood = clampStr(data.mood, 30), color = clampStr(data.color, 30), material = clampStr(data.material, 30), space = clampStr(data.space, 30);
 
   // 랜덤 4축 조합(화풍 × 조명 × 팔레트 × 구도)으로 매 생성마다 다른 느낌.
-  const style = pick(ART_STYLES), light = pick(LIGHTING), palette = pick(PALETTE_MOODS), comp = pick(VARIATIONS);
+  let styleDesc;
+  if (imgStyle === "photo") styleDesc = "as ultra-realistic, high-resolution commercial product photography: a genuine real photograph with natural lighting, real physical materials, lifelike texture and soft depth of field. It must absolutely NOT look like an illustration, drawing, painting, watercolor, cartoon or 3D-render";
+  else if (imgStyle === "illust") styleDesc = pick(["as a refined, premium digital illustration", "as an elegant watercolor painting with soft bleeding edges", "as a soft gouache painting with gentle brush texture", "as a delicate, finely detailed hand-drawn illustration"]);
+  else styleDesc = pick(ART_STYLES);
+  const light = pick(LIGHTING), palette = pick(PALETTE_MOODS), comp = pick(VARIATIONS);
   const scheme = pick(COLOR_SCHEMES), archetype = pick(BG_ARCHETYPES);
   // 기본 보라색 강조를 매번 강제하면 결과가 죄다 보라톤으로 비슷해짐 → 기본색일 땐 랜덤 팔레트가 주도.
   const isDefaultAccent = (data.accentColor === "#7657ff" || data.accentColor === "#7c5cff" || !isHex(data.accentColor));
 
   return [
-    "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", rendered " + style + ".",
-    (data.documentType === "menu" ? "" : "VERY IMPORTANT for variety: compose THIS version specifically as " + archetype + ". Do not default to a literal interior room scene."),
+    "Create a premium, high-end commercial poster-quality background" + (industry ? " for a " + industry : "") + ", " + themePart + ", rendered " + styleDesc + ".",
+    (data.documentType === "menu" ? "" : (imgStyle === "photo" ? "Compose THIS version as a realistic photographic scene: present the real subject/product as a clearly recognizable, naturally photographed hero, well lit on a clean real surface or tasteful setting, with generous soft empty space on the opposite side reserved for text." : "VERY IMPORTANT for variety: compose THIS version specifically as " + archetype + ". Do not default to a literal interior room scene.")),
     light,
     palette,
     mood ? ("Overall mood/feeling: " + mood + ".") : "",
@@ -349,6 +359,7 @@ module.exports = async (req, res) => {
       industry: clampStr(body.industry, 40),
       layoutType: clampStr(body.layoutType, 40),
       templateStyle: clampStr(body.templateStyle, 40),
+      style: clampStr(body.style, 10),
       theme: clampStr(body.theme, 20),
       mood: clampStr(body.mood, 30),
       color: clampStr(body.color, 30),

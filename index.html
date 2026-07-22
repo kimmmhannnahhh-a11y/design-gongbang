@@ -561,7 +561,7 @@ function menuAiPanelHtml(){return `<div class="ai-panel" data-scope="menu">
 <div class="mp-sec"><div class="mp-h"><span>테마 (분위기·색감·계절·스타일·재질)</span></div><div id="mpThemeBox"></div></div>
 <div class="mp-sec"><div class="mp-h"><span>이미지 스타일</span></div><select class="select ai-style"><option value="photo">실물사진</option><option value="illust">그림(일러스트)</option><option value="auto">자동(랜덤)</option></select></div>
 <div class="mp-sec"><div class="mp-h"><span>장식 요소 (복수 선택)</span><button type="button" class="mp-more" id="mpDecoMore">전체 장식 보기</button></div><div class="mp-subh">추천</div><div id="mpDecoReco"></div><div id="mpDecoAll"></div><div class="mp-custom"><input id="mpDecoCustom" class="input" maxlength="100" placeholder="원하는 장식을 직접 입력 (예: 체리와 빨간 리본)"></div></div>
-<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">배경 원본 저장</button></div>
+<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><label class="btn ai-upload" style="cursor:pointer">📷 내 사진 올리기<input type="file" class="ai-file" accept="image/*" style="display:none"></label><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">배경 원본 저장</button></div>
 <div class="ai-status"></div></div>`}
 function wireMenuPicker(p){
   p.querySelector("#mpSearch").addEventListener("input",e=>{menuAI.q=e.target.value.trim().toLowerCase();renderMenuPickers()});
@@ -597,7 +597,7 @@ function aiPanelHtml(scope){return `<div class="ai-panel" data-scope="${scope}">
 <div class="ai-row"><label class="ai-lab">이미지 스타일<select class="select ai-style"><option value="photo">실물사진</option><option value="illust">그림(일러스트)</option><option value="auto">자동(랜덤)</option></select></label></div>
 <div class="ai-lab2">장식 요소 (복수 선택 · 테마별)</div><div class="ai-decos"></div>
 <div class="ai-customs" style="display:none;margin-top:10px"></div>
-<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">배경 원본 저장</button></div>
+<div class="ai-btns"><button type="button" class="btn primary ai-gen">AI 디자인 생성</button><label class="btn ai-upload" style="cursor:pointer">📷 내 사진 올리기<input type="file" class="ai-file" accept="image/*" style="display:none"></label><button type="button" class="btn ai-regen" style="display:none">재생성</button><button type="button" class="btn ai-remove" style="display:none">AI 배경 제거</button><button type="button" class="btn ai-download" style="display:none">배경 원본 저장</button></div>
 <div class="ai-status"></div></div>`}
 function panelOf(scope){return document.querySelector(`.ai-panel[data-scope="${scope}"]`)}
 
@@ -765,6 +765,8 @@ function restoreEditState(es){
   return true;
 }
 $$(".nav button").forEach(function(b){b.addEventListener("click",function(){reeditActive=false})});
+// 내 사진 올리기: 업로드 이미지를 AI배경(AI_BG)에 넣어 기존 배경 파이프라인 재사용. AI생성 아니라 횟수 차감 없음.
+function wireAiUpload(p,scope){const f=p.querySelector(".ai-file");if(!f)return;f.onchange=e=>{const file=e.target.files[0];if(!file)return;if(!/^image\//.test(file.type||"")){alert("이미지 파일만 올릴 수 있어요.");e.target.value="";return}const r=new FileReader();r.onload=()=>{AI_BG[scope]=r.result;reeditActive=false;renderScope(scope);const st=p.querySelector(".ai-status");if(st){st.className="ai-status ok";st.textContent="내 사진을 배경으로 적용했어요."}const rm=p.querySelector(".ai-remove"),dl=p.querySelector(".ai-download");if(rm)rm.style.display="";if(dl)dl.style.display=""};r.readAsDataURL(file);e.target.value=""}}
 ["banner","menu","coupon","card"].forEach(scope=>{
   const host=document.querySelector(`#view-${scope} .preview-panel`);
   if(!host)return;
@@ -776,6 +778,7 @@ $$(".nav button").forEach(function(b){b.addEventListener("click",function(){reed
     p.querySelector(".ai-regen").onclick=()=>aiGenerate("menu");
     p.querySelector(".ai-remove").onclick=()=>aiRemove("menu");
     p.querySelector(".ai-download").onclick=()=>downloadBg("menu");
+    wireAiUpload(p,"menu");
     const mpng=document.querySelector('#view-menu .actions .btn.primary');
     if(mpng)mpng.onclick=e=>downloadPng("menu",e.currentTarget);
     addSaveBtn("menu");
@@ -789,6 +792,7 @@ $$(".nav button").forEach(function(b){b.addEventListener("click",function(){reed
   p.querySelector(".ai-decos").addEventListener("click",e=>{const tg=e.target.closest(".ai-custom-toggle");if(tg){const cs=p.querySelector(".ai-customs");const show=cs.style.display==="none";cs.style.display=show?"":"none";tg.classList.toggle("on",show);if(show){const rnd=p.querySelector('.ai-deco[data-v="(랜덤)"]');if(rnd)rnd.classList.remove("on");if(!cs.querySelector(".ai-custom-item"))addCustomRow(cs)}return}const b=e.target.closest(".ai-deco");if(!b)return;const box=b.parentElement;if(b.dataset.v==="(랜덤)"){box.querySelectorAll(".ai-deco").forEach(x=>x.classList.remove("on"));b.classList.add("on")}else{b.classList.toggle("on");const rnd=box.querySelector('.ai-deco[data-v="(랜덤)"]');if(rnd)rnd.classList.remove("on");if(!box.querySelector(".ai-deco.on")&&rnd)rnd.classList.add("on")}});
   p.querySelector(".ai-customs").addEventListener("click",e=>{if(e.target.closest(".ai-add"))addCustomRow(p.querySelector(".ai-customs"))});
   p.querySelector(".ai-gen").onclick=()=>aiGenerate(scope);
+  wireAiUpload(p,scope);
   p.querySelector(".ai-regen").onclick=()=>aiGenerate(scope);
   p.querySelector(".ai-remove").onclick=()=>aiRemove(scope);
   p.querySelector(".ai-download").onclick=()=>downloadBg(scope);

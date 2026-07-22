@@ -345,7 +345,7 @@ $("#resetMenuEdit").onclick=()=>{pushHist();menuState.textStyles={};selTxt=null;
 let bMode="none",bSel=null,bDrag=null,bResize=null,bHist=[];
 function bPush(){bHist.push(JSON.stringify(bannerState.textStyles));if(bHist.length>60)bHist.shift()}
 function bTstyle(k){return bannerState.textStyles[k]||(bannerState.textStyles[k]={x:0,y:0,size:100,align:"",color:"",font:"",bold:false,italic:false})}
-function bApply(el){const s=bannerState.textStyles[el.dataset.tkey];if(!s)return;el.style.transform=`translate(${s.x||0}px,${s.y||0}px) scale(${(s.size||100)/100})`;el.style.color=s.color||"";el.style.fontFamily=s.font||"";el.style.fontWeight=s.bold?"900":"";el.style.fontStyle=s.italic?"italic":"";if(s.align)el.style.textAlign=s.align}
+function bApply(el){const s=bannerState.textStyles[el.dataset.tkey];if(!s){el.style.transform="";el.style.color="";el.style.fontFamily="";el.style.fontWeight="";el.style.fontStyle="";el.style.textAlign="";return}el.style.transform=`translate(${s.x||0}px,${s.y||0}px) scale(${(s.size||100)/100})`;el.style.color=s.color||"";el.style.fontFamily=s.font||"";el.style.fontWeight=s.bold?"900":"";el.style.fontStyle=s.italic?"italic":"";if(s.align)el.style.textAlign=s.align}
 function bApplyAll(){$$("#banner .txt").forEach(bApply)}
 function bRemoveHandle(){$$("#banner .txt-handle").forEach(h=>h.remove())}
 function bAddHandle(el){el.style.position="relative";const h=document.createElement("div");h.className="txt-handle";el.appendChild(h);h.onpointerdown=e=>{e.stopPropagation();e.preventDefault();bPush();const s=bTstyle(el.dataset.tkey);bResize={el,key:el.dataset.tkey,sx:e.clientX,os:s.size||100}}}

@@ -1,0 +1,17 @@
+{
+  "name": "디자인공방",
+  "short_name": "디자인공방",
+  "description": "10초 만에 만드는 AI 홍보물 — 전단지·메뉴판·명함·쿠폰",
+  "lang": "ko",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0e1118",
+  "theme_color": "#0d1017",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

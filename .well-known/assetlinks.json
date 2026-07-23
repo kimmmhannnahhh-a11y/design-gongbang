@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.han.designgongbang",
+      "sha256_cert_fingerprints": [
+        "9D:2A:93:CB:C1:46:2B:CC:F1:7B:01:09:02:63:BB:25:94:C9:B6:62:C0:B6:C6:20:32:0D:23:EF:E5:54:2E:35"
+      ]
+    }
+  }
+]

@@ -893,7 +893,17 @@ $("#galGrid").addEventListener("click",async e=>{const v=e.target.closest(".gal-
 /* ===== 프리미엄 결제 (포트원 V2) ===== */
 /* 포트원 가입 후 발급받은 값을 넣으면 실제 결제창이 열림. 비어있으면 준비중 안내. */
 const PORTONE_STORE_ID="store-9eca82ce-e322-4dd3-99e2-f192e020a4a9", PORTONE_CHANNEL_KEY="channel-key-85a96ef2-b68a-49f5-8fee-732a57943e5e";
+// 안드로이드 앱(TWA) 감지: 앱은 launch URL에 ?platform=android 붙임(또는 android-app 리퍼러). 한번 감지되면 저장.
+const IS_APP=(()=>{try{if(localStorage.getItem('dg_is_app')==='1')return true;const p=new URLSearchParams(location.search);if(p.get('platform')==='android'||p.get('twa')==='1'||(document.referrer||'').startsWith('android-app://')){localStorage.setItem('dg_is_app','1');return true}}catch(e){}return false})();
+const WEB_URL="https://design-gongbang.vercel.app";
 const pmModal=$("#premiumModal");
+// 플레이스토어 정책: 앱 내 디지털상품 외부결제 금지 -> 앱에선 결제 숨기고 웹 유도(넷플릭스식).
+if(IS_APP&&pmModal){
+  $$(".pm-sub").forEach(b=>{b.style.display="none"});
+  const ph=$("#pmPhone");if(ph)ph.style.display="none";
+  const box=pmModal.querySelector(".lg-box"),err=pmModal.querySelector("#pmErr");
+  if(box&&!pmModal.querySelector(".pm-app-note")){const n=document.createElement("div");n.className="pm-app-note";n.style.cssText="font-size:13px;color:var(--sub);line-height:1.7;text-align:center;margin:6px 0 2px";n.innerHTML='프리미엄은 <b>웹사이트</b>에서 구독할 수 있어요.<br>웹에서 로그인 후 구독하면 앱에서도 그대로 적용돼요.<br><button type="button" class="lg-btn lg-primary" id="pmWeb" style="margin-top:12px">웹에서 프리미엄 보기</button>';err?box.insertBefore(n,err):box.appendChild(n);const wb=n.querySelector("#pmWeb");if(wb)wb.onclick=()=>{try{window.open(WEB_URL,"_blank","noopener")}catch(e){location.href=WEB_URL}}}
+}
 function openPremium(){if(!window._authUser){openLogin();return}pmModal.classList.add("open");$("#pmErr").textContent=""}
 function closePremium(){pmModal.classList.remove("open")}
 $("#pmClose").onclick=closePremium;pmModal.onclick=e=>{if(e.target===pmModal)closePremium()};
@@ -902,6 +912,7 @@ async function subscribePremium(e){
   const amount=parseInt(btn.dataset.amount,10)||4900;
   const planName=btn.dataset.name||"프리미엄";
   const plan=btn.dataset.plan||"monthly";
+  if(IS_APP){$("#pmErr").textContent="앱에서는 웹사이트에서 구독해주세요.";return}
   if(!window.PortOne||!PORTONE_STORE_ID||!PORTONE_CHANNEL_KEY){$("#pmErr").textContent="결제 준비 중이에요. 곧 오픈합니다!";return}
   const phone=($("#pmPhone").value||"").replace(/[^0-9]/g,"");
   if(phone.length<10){$("#pmErr").textContent="휴대폰 번호를 입력해주세요. (결제 필수)";$("#pmPhone").focus();return}

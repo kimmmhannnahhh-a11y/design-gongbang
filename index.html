@@ -120,7 +120,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 형태</div></div></div>
 <div class="label">방향</div><div class="segment" id="ncOrientation"><button class="on" data-o="horizontal">가로형</button><button data-o="vertical">세로형</button></div>
 <div class="label" style="margin-top:14px">종류</div><div class="segment" id="ncKind"><button class="on" data-k="normal">일반 명함</button><button data-k="photo">포토 명함</button></div><div class="label" style="margin-top:14px">로고</div><div class="segment" id="ncLogoToggle"><button class="on" data-on="1">넣기</button><button data-on="0">빼기</button></div><div class="label" style="margin-top:14px">모서리</div><div class="segment" id="ncCorner"><button class="on" data-c="round">둥글게</button><button data-c="sharp">각지게</button></div><div class="label" style="margin-top:14px">QR 코드 <span style="font-weight:500;color:var(--muted)">(웹사이트 링크)</span></div><div class="segment" id="ncQrToggle"><button class="on" data-qr="0">빼기</button><button data-qr="1">넣기</button></div><div class="field" id="ncQrUrlWrap" style="margin-top:10px;display:none"><div class="label">QR 링크 (스캔하면 열릴 주소)</div><input class="input" id="ncQrUrl" placeholder="https://... (홈페이지·인스타·예약 등)" value="https://designgongbang.com"></div></div>
-<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">템플릿 선택</div></div></div><div class="field"><div class="label">업종 (선택하면 맞춤 템플릿 추천)</div><select class="select" id="ncIndustry"><option value="">업종 선택 안 함</option><option>카페</option><option>베이커리</option><option>음식점</option><option>고깃집</option><option>미용실</option><option>네일</option><option>뷰티</option><option>피부</option><option>개발자</option><option>IT</option><option>스타트업</option><option>디자이너</option><option>포토</option><option>크리에이터</option><option>법인</option><option>기업</option><option>금융</option><option>변호사</option><option>호텔</option><option>주얼리</option><option>전통</option><option>한식</option><option>공방</option><option>작가</option></select></div><div class="template-grid" id="ncTemplates"></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">명함 템플릿 선택</div><div class="panel-sub" style="font-size:12px;color:var(--sub);margin-top:3px">브랜드 스타일에 맞는 디자인을 골라보세요 · 앞/뒤 함께 제작</div></div></div><div class="field"><div class="label">업종 (선택하면 맞춤 템플릿 추천)</div><select class="select" id="ncIndustry"><option value="">업종 선택 안 함</option><option>카페</option><option>베이커리</option><option>음식점</option><option>고깃집</option><option>미용실</option><option>네일</option><option>뷰티</option><option>피부</option><option>개발자</option><option>IT</option><option>스타트업</option><option>디자이너</option><option>포토</option><option>크리에이터</option><option>법인</option><option>기업</option><option>금융</option><option>변호사</option><option>호텔</option><option>주얼리</option><option>전통</option><option>한식</option><option>공방</option><option>작가</option></select></div><div class="template-grid" id="ncTemplates"></div></div>
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">명함 정보</div></div></div>
 <div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div><div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="이서준"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div><div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div><div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div><div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div><div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="designgongbang.com"></div>
 <div class="field photo-upload-wrap" id="photoWrap"><div class="label">프로필 사진</div><input class="input" type="file" id="ncPhoto" accept="image/*"></div></div>
@@ -203,32 +203,21 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .card-preview .nc-name,.card-preview .nc-company,.card-preview .nc-lines .txt{width:max-content;max-width:100%}
 
 /* ===== 명함 템플릿 썸네일 ===== */
-.tplt{position:relative;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
-.tplt:hover{transform:translateY(-3px)}
-/* 앞/뒤 명함 살짝 겹친 미리보기 */
-.tplt-stack{position:relative;height:88px;margin:4px 4px 12px}
-.tplt-stack .tplt-mini{position:absolute;top:0;left:0;right:0;height:72px;border-radius:9px;overflow:hidden;background:var(--tb);color:var(--tf);box-shadow:0 4px 14px rgba(0,0,0,.28);transition:transform .18s cubic-bezier(.2,.8,.2,1)}
-.tplt-mini-back{transform:translate(11px,10px) rotate(3.5deg)}
-.tplt-mini-back .bl{position:absolute;left:50%;top:50%;width:26px;height:9px;border-radius:2px;background:currentColor;color:#fff;opacity:.55;transform:translate(-50%,-50%)}
-.tplt-mini-front{transform:translate(-4px,-2px);display:flex;flex-direction:column;justify-content:flex-end;gap:5px;padding:11px 12px}
-.tplt:hover .tplt-mini-back{transform:translate(15px,12px) rotate(5deg)}
-.tplt:hover .tplt-mini-front{transform:translate(-6px,-4px)}
-.template-card.on .tplt-mini{box-shadow:0 4px 14px rgba(124,92,255,.35)}
-.tplt-brand{font-size:11px;font-weight:800;color:var(--tf);opacity:.95;letter-spacing:-.01em}
-.tplt-mini-front .l1{height:5px;width:64%;border-radius:3px;background:var(--tf);opacity:.8}
-.tplt-mini-front .l2{height:3px;width:42%;border-radius:3px;background:var(--tf);opacity:.38}
-.tpl-name-ko{font-size:11px;color:var(--sub);font-weight:600;margin-left:6px}
-/* 6종 썸네일 전용 배경/폰트 */
-.tplt-premium .tplt-mini-front{background:linear-gradient(135deg,#151515,#0b0b0b)}
-.tplt-premium .tplt-brand{font-family:'Nanum Myeongjo',serif;letter-spacing:.1em;color:#d8b978}
-.tplt-luxury .tplt-mini-front{background:linear-gradient(120deg,#e7e9f0 0%,#d7c7e8 30%,#c8dbe8 55%,#e9dfd0 80%,#e7e9f0 100%)}
-.tplt-luxury .tplt-brand{font-family:'Nanum Myeongjo',serif;letter-spacing:.08em}
-.tplt-modern .tplt-mini-front{background:linear-gradient(120deg,#f6f7f9 60%,#e9e2f5 100%)}
-.tplt-creative .tplt-brand{font-family:'Nanum Myeongjo',serif;font-style:italic;font-size:14px}
-.tplt-signature .tplt-brand{letter-spacing:.02em}
-.tplt-vertical .tplt-mini-front{flex-direction:row;align-items:stretch;padding:0}
-.tplt-vertical .tplt-mini-front .l1,.tplt-vertical .tplt-mini-front .l2{display:none}
-.tplt-vertical .tplt-brand{writing-mode:vertical-rl;padding:10px;background:rgba(0,0,0,.05)}
+/* ===== 실제 미니 명함 프리뷰 카드 ===== */
+.tplt{cursor:pointer;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.tplt:hover{transform:translateY(-4px)}
+.tplt-head{display:flex;align-items:center;gap:6px;margin:2px 3px 9px;font-size:12.5px;line-height:1.2;flex-wrap:wrap}
+.tplt-title{font-weight:850;letter-spacing:-.01em}
+.tplt-ko{color:var(--sub);font-weight:600;font-size:11.5px}
+.tpl-badge-in{font-size:9px;font-weight:900;letter-spacing:.03em;padding:2px 7px;border-radius:999px;color:#fff}
+.tpl-badge-in.b-best{background:#f0a500;color:#3a2c00}.tpl-badge-in.b-new{background:#2f8fff}.tpl-badge-in.b-hot{background:#ff3b5c}
+.tplt-stack{position:relative;margin:0 5px 10px}
+.tplt-back-peek{position:absolute;left:9px;right:-5px;top:9px;bottom:-5px;border-radius:12px;transform:rotate(2.4deg);transition:transform .2s cubic-bezier(.2,.8,.2,1);box-shadow:0 6px 16px rgba(0,0,0,.22)}
+.tplt-scaler{position:relative;width:100%;overflow:hidden;border-radius:12px;box-shadow:0 8px 22px rgba(0,0,0,.32);transition:box-shadow .2s}
+.tplt-scaler .card-preview{position:absolute;top:0;left:0;transform-origin:top left;box-shadow:none!important;border-radius:0!important;margin:0!important}
+.tplt:hover .tplt-back-peek{transform:rotate(4.2deg) translate(3px,2px)}
+.template-card.on .tplt-scaler{outline:2.5px solid var(--purple);outline-offset:2px;box-shadow:0 8px 26px rgba(124,92,255,.42)}
+.tpl-tag{font-size:11px;color:var(--sub);margin:0 4px;line-height:1.35}
 /* 배지 */
 .tpl-badge{position:absolute;top:7px;right:7px;font-size:9px;font-weight:900;letter-spacing:.03em;padding:2px 7px;border-radius:999px;color:#fff;z-index:2}
 .tpl-badge.b-best{background:#f0a500;color:#3a2c00}.tpl-badge.b-new{background:#2f8fff}.tpl-badge.b-hot{background:#ff3b5c}.tpl-badge.b-rec{background:var(--purple)}.tpl-badge.b-pop{background:#12c48b}
@@ -673,7 +662,14 @@ const ncTemplates=[
 function ncTpl(id){return ncTemplates.find(t=>t.id===id)||ncTemplates[0]}
 let ncState={orientation:"horizontal",kind:"normal",tpl:"signature",industry:"",accent:"#7657ff",photo:"",logoImg:"",logoOn:true,qr:false,corner:"round",photoPos:{x:50,y:50},textStyles:{}};
 function tplBadgeHtml(b){if(!b)return"";const cls=b==="BEST"?"b-best":b==="NEW"?"b-new":b==="HOT"?"b-hot":b==="인기"?"b-pop":"b-rec";return `<span class="tpl-badge ${cls}">${b}</span>`}
-function renderCardTemplates(){const box=$("#ncTemplates");if(!box)return;const co=(($("#ncCo")&&$("#ncCo").value)||"BRAND").slice(0,12);box.innerHTML=ncTemplates.map(t=>`<div class="template-card tplt tplt-${t.id}${t.id===ncState.tpl?" on":""}" data-id="${t.id}">${tplBadgeHtml(t.badge)}<div class="tplt-stack"><div class="tplt-mini tplt-mini-back" style="--tb:${t.back||t.bg}"><i class="bl"></i></div><div class="tplt-mini tplt-mini-front" style="--tb:${t.bg};--tf:${t.fg}"><span class="tplt-brand">${co}</span><i class="l1"></i><i class="l2"></i></div></div><div class="tpl-name">${t.name}<span class="tpl-name-ko">${t.ko||""}</span></div><div class="tpl-tag">${t.tag}</div></div>`).join("");$$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");if(c.dataset.id==="aipick")applyAiPick();cardRender()})}
+// 템플릿 미리보기용 샘플 명함 데이터 (실제 앞면을 축소 렌더)
+const NC_SAMPLE={co:"한디자인",name:"김한아",role:"대표",mobile:"010-1234-5678",email:"kimhana@handesign.kr",addr:"서울특별시 강남구 테헤란로 123",web:"www.handesign.kr"};
+function tplBadgeIn(b){if(!b)return"";const cls=b==="BEST"?"b-best":b==="NEW"?"b-new":"b-hot";return `<span class="tpl-badge-in ${cls}">${b}</span>`}
+function ncMiniFront(t){const o=t.id==="vertical"?"vertical":"horizontal",s=NC_SAMPLE;const left=`<div class="nc-left"><div class="nc-logo">HD</div><div class="nc-company">${s.co}</div></div>`;const right=`<div class="nc-right"><div class="nc-name">${s.name}<span class="nc-role">${s.role}</span></div><div class="nc-lines"><span>${s.mobile}</span><span>${s.email}</span><span>${s.addr}</span><span>${s.web}</span></div></div>`;return `<div class="card-preview ${o} nc-front tpl-${t.id}">${left}${right}</div>`}
+// 미니 명함을 셀 너비에 맞춰 축소
+function fitMiniCards(){document.querySelectorAll("#ncTemplates .tplt-scaler").forEach(sc=>{const card=sc.firstElementChild;if(!card)return;card.style.transform="none";const nw=card.offsetWidth||610,nh=card.offsetHeight||339,w=sc.clientWidth||nw,k=w/nw;card.style.transform="scale("+k+")";sc.style.height=(nh*k)+"px"})}
+window.addEventListener("resize",()=>{try{fitMiniCards()}catch(e){}});
+function renderCardTemplates(){const box=$("#ncTemplates");if(!box)return;box.innerHTML=ncTemplates.map((t,i)=>`<div class="template-card tplt tplt-${t.id}${t.id===ncState.tpl?" on":""}" data-id="${t.id}"><div class="tplt-head"><span class="tplt-title">${String(i+1).padStart(2,"0")}. ${t.name}</span><span class="tplt-ko">(${t.ko||""})</span>${tplBadgeIn(t.badge)}</div><div class="tplt-stack"><div class="tplt-back-peek" style="background:${t.back||t.bg}"></div><div class="tplt-scaler">${ncMiniFront(t)}</div></div><div class="tpl-tag">${t.tag}</div></div>`).join("");$$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");cardRender()});requestAnimationFrame(fitMiniCards)}
 function recommendedTpls(){const ind=ncState.industry;if(!ind)return[];return ncTemplates.filter(t=>(t.inds||[]).some(x=>x===ind)).map(t=>t.id)}
 function applyAiPick(){const rec=recommendedTpls();ncState.tpl=rec[0]||"signature";renderCardTemplates();cardRender()}
 renderCardTemplates();

@@ -255,8 +255,8 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
     <div class="mpg-row"><span>계정</span><b id="mpgEmail">-</b></div>
     <div class="mpg-row"><span>이용 중인 상품</span><b id="mpgPlan">무료</b></div>
     <div id="mpgFreeBox" style="display:none"><button class="lg-btn lg-primary" id="mpgUpgrade" style="margin-top:14px">프리미엄 업그레이드</button></div>
-    <div id="mpgPremiumBox" style="display:none"><button class="lg-btn" id="mpgCancel" style="margin-top:14px">이용권 해지</button></div>
-    <div class="pm-note" style="margin-top:14px">해지·환불 문의: <b>rlagksdk@010king.com</b></div>
+    <div id="mpgPremiumBox" style="display:none"><button class="lg-btn" id="mpgCancel" style="margin-top:14px;background:#241318;color:#ff8b98;border:1.5px solid #5b2730">구독 해지하기</button><div class="pm-note" style="margin-top:8px">해지하면 다음 결제부터 청구되지 않아요. 남은 기간은 계속 이용돼요.</div></div>
+    <div class="pm-note" style="margin-top:14px">기타 문의: <b>rlagksdk@010king.com</b></div>
   </div>
 </div>
 <style>
@@ -955,7 +955,7 @@ const myPageModal=$("#myPageModal");
 function openMyPage(){if(!window._authUser){openLogin();return}const pi=window._premiumInfo||{};$("#mpgEmail").textContent=window._authUser.email||"-";$("#mpgPlan").textContent=pi.premium?(pi.plan==="pro"?"프로 (월 9,900원)":"라이트 (월 4,900원)"):"무료";$("#mpgPremiumBox").style.display=pi.premium?"block":"none";$("#mpgFreeBox").style.display=pi.premium?"none":"block";myPageModal.classList.add("open")}
 $("#mpgClose").onclick=()=>myPageModal.classList.remove("open");myPageModal.onclick=e=>{if(e.target===myPageModal)myPageModal.classList.remove("open")};
 $("#mpgUpgrade").onclick=()=>{myPageModal.classList.remove("open");openPremium()};
-$("#mpgCancel").onclick=async()=>{if(!confirm("정기결제를 해지할까요?\n남은 이용기간까지는 계속 이용되고, 다음 결제부터 청구되지 않아요."))return;const b=$("#mpgCancel");b.disabled=true;b.textContent="해지 중…";try{const idToken=window._getIdToken?await window._getIdToken():null;const r=await fetch("/api/cancel-subscription",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({idToken})});const j=await r.json().catch(()=>({ok:false}));if(j&&j.ok){alert("정기결제가 해지됐어요. 남은 기간까지 이용 가능해요.");myPageModal.classList.remove("open")}else{alert("해지에 실패했어요. 다시 시도해주세요.")}}catch(e){alert("해지 중 오류가 발생했어요.")}finally{b.disabled=false;b.textContent="이용권 해지"}};
+$("#mpgCancel").onclick=async()=>{if(!confirm("구독을 해지할까요?\n남은 이용기간까지는 계속 이용되고, 다음 결제부터 청구되지 않아요."))return;const b=$("#mpgCancel");b.disabled=true;b.textContent="해지 중…";let ok=false;try{const idToken=window._getIdToken?await window._getIdToken():null;const r=await fetch("/api/cancel-subscription",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({idToken})});const j=await r.json().catch(()=>({ok:false}));ok=!!(j&&j.ok)}catch(e){}if(!ok){try{const cr=window._cancelPremium?await window._cancelPremium():{ok:false};ok=!!(cr&&cr.ok)}catch(e){}}b.disabled=false;b.textContent="구독 해지하기";if(ok){alert("구독이 해지됐어요.");window._premiumInfo={premium:false};if(window.onAuthChanged)window.onAuthChanged(window._authUser);updateRemainingUI();myPageModal.classList.remove("open")}else{alert("해지에 실패했어요. 잠시 후 다시 시도해주세요.")}};
 </script>
 <!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>

@@ -245,7 +245,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
     </div>
     <input id="pmPhone" class="input" type="tel" maxlength="13" placeholder="휴대폰 번호 (결제 필수 · 예: 01012345678)" style="margin-bottom:8px">
     <div class="lg-err" id="pmErr"></div>
-    <div class="pm-note">1개월 이용권 · <b>자동 갱신·정기결제 아님</b> · 부가세 포함<br>만료 후 계속 이용하려면 다시 결제하시면 돼요.</div>
+    <div class="pm-note"><b>매월 자동 결제</b> · 언제든 해지 가능 · 부가세 포함<br>카드를 등록하면 매달 자동으로 결제돼요. 해지는 [내 계정]에서.</div>
   </div>
 </div>
 <div class="lg-modal" id="myPageModal">
@@ -317,8 +317,8 @@ const menuTemplates=[
 {id:"category2",name:"2단 카테고리형",tag:"분류별 2단",cols:2,category:true,theme:"dark"},
 {id:"simple3",name:"3단 심플형",tag:"컴팩트",cols:3,category:false,theme:"blue"},
 {id:"category3",name:"3단 카테고리형",tag:"분류별 3단",cols:3,category:true,theme:"cream"},
-{id:"photo",name:"사진형",tag:"사진 포함",cols:2,category:true,theme:"blush"},
-{id:"poster",name:"포스터형",tag:"강조형",cols:1,category:false,theme:"dark"}
+{id:"photo",name:"파스텔형",tag:"핑크 2단",cols:2,category:true,theme:"blush"},
+{id:"poster",name:"포스터형",tag:"강조형",cols:1,category:false,theme:"cream"}
 ];
 let menuState={tpl:"simple1",accent:"#bd8454",sections:[{title:"MENU",items:[["아메리카노","4,000원","깔끔하고 진한 풍미"],["카페라떼","4,800원","부드러운 우유와 에스프레소"],["바닐라라떼","5,300원","달콤한 바닐라 향"],["딸기 에이드","5,800원","상큼한 생딸기 에이드"],["크로플","6,500원","바삭한 크로플과 아이스크림"]]}],textStyles:{}};
 function tplThumb(t){return `<div class="tpl-mini" style="background:${t.theme==="dark"?"#171717":t.theme==="green"?"#e6eee0":t.theme==="blush"?"#f3e4e7":t.theme==="blue"?"#e6edf4":"#f3ede2"}"><div style="position:absolute;inset:10px;display:grid;grid-template-columns:repeat(${t.cols},1fr);gap:5px">${Array.from({length:t.cols}).map(()=>'<i style="display:block;border-top:3px solid #96745b;background:repeating-linear-gradient(#0000 0 8px,#7774 9px 10px)"></i>').join("")}</div></div>`}
@@ -907,6 +907,8 @@ $("#galGrid").addEventListener("click",async e=>{const v=e.target.closest(".gal-
 /* ===== 프리미엄 결제 (포트원 V2) ===== */
 /* 포트원 가입 후 발급받은 값을 넣으면 실제 결제창이 열림. 비어있으면 준비중 안내. */
 const PORTONE_STORE_ID="store-9eca82ce-e322-4dd3-99e2-f192e020a4a9", PORTONE_CHANNEL_KEY="channel-key-85a96ef2-b68a-49f5-8fee-732a57943e5e";
+// 정기결제(빌링) 채널 키 - 포트원 INIBillTst(정기결제) 채널 만든 뒤 여기 입력하면 정기결제 켜짐.
+const PORTONE_BILLING_CHANNEL_KEY="";
 // 안드로이드 앱(TWA) 감지: 앱은 launch URL에 ?platform=android 붙임(또는 android-app 리퍼러). 한번 감지되면 저장.
 const IS_APP=(()=>{try{if(localStorage.getItem('dg_is_app')==='1')return true;const p=new URLSearchParams(location.search);if(p.get('platform')==='android'||p.get('twa')==='1'||(document.referrer||'').startsWith('android-app://')){localStorage.setItem('dg_is_app','1');return true}}catch(e){}return false})();
 const WEB_URL="https://design-gongbang.vercel.app";
@@ -921,22 +923,28 @@ if(IS_APP&&pmModal){
 function openPremium(){if(!window._authUser){openLogin();return}pmModal.classList.add("open");$("#pmErr").textContent=""}
 function closePremium(){pmModal.classList.remove("open")}
 $("#pmClose").onclick=closePremium;pmModal.onclick=e=>{if(e.target===pmModal)closePremium()};
+// 정기결제(빌링): 카드 등록(빌링키) -> 서버가 첫 청구+구독저장+프리미엄 활성화. 이후 매월 서버 cron이 자동청구.
 async function subscribePremium(e){
   const btn=(e&&e.currentTarget)||$("#pmSubscribe");
-  const amount=parseInt(btn.dataset.amount,10)||4900;
+  const planKey=btn.dataset.plan||"light";
   const planName=btn.dataset.name||"프리미엄";
-  const plan=btn.dataset.plan||"monthly";
   if(IS_APP){$("#pmErr").textContent="앱에서는 웹사이트에서 구독해주세요.";return}
-  if(!window.PortOne||!PORTONE_STORE_ID||!PORTONE_CHANNEL_KEY){$("#pmErr").textContent="결제 준비 중이에요. 곧 오픈합니다!";return}
+  if(!window._authUser){openLogin();return}
+  if(!window.PortOne||!PORTONE_STORE_ID||!PORTONE_BILLING_CHANNEL_KEY){$("#pmErr").textContent="정기결제 준비 중이에요. 곧 오픈합니다!";return}
   const phone=($("#pmPhone").value||"").replace(/[^0-9]/g,"");
   if(phone.length<10){$("#pmErr").textContent="휴대폰 번호를 입력해주세요. (결제 필수)";$("#pmPhone").focus();return}
   const email=(window._authUser&&window._authUser.email)||"";
-  const label=btn.textContent;btn.disabled=true;btn.textContent="결제 진행 중…";$("#pmErr").textContent="";
+  const label=btn.textContent;btn.disabled=true;btn.textContent="카드 등록 중…";$("#pmErr").textContent="";
   try{
-    const paymentId="dg_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
-    const res=await window.PortOne.requestPayment({storeId:PORTONE_STORE_ID,channelKey:PORTONE_CHANNEL_KEY,paymentId,orderName:"디자인공방 "+planName+" (월 구독)",totalAmount:amount,currency:"CURRENCY_KRW",payMethod:"CARD",redirectUrl:location.origin+location.pathname,customer:{email,phoneNumber:phone,fullName:(email?email.split("@")[0]:"구매자")}});
-    if(res&&res.code!=null){$("#pmErr").textContent="결제 실패: "+(res.message||res.code);}
-    else{const r=window._setPremium?await window._setPremium(paymentId,plan):{ok:false};if(r&&r.ok){closePremium();alert(planName+" 이용권이 활성화됐어요. 감사합니다.")}else{$("#pmErr").textContent="결제는 완료됐지만 활성화에 실패했어요. 문의해주세요.";}}
+    const issueId="dgbk_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
+    const issue=await window.PortOne.requestIssueBillingKey({storeId:PORTONE_STORE_ID,channelKey:PORTONE_BILLING_CHANNEL_KEY,billingKeyMethod:"CARD",issueId,issueName:"디자인공방 정기결제 카드등록",customer:{fullName:(email?email.split("@")[0]:"구매자"),phoneNumber:phone,email}});
+    if(!issue||!issue.billingKey){if(issue&&issue.code!=null)$("#pmErr").textContent="카드 등록 실패: "+(issue.message||issue.code);else $("#pmErr").textContent="카드 등록이 취소됐어요.";btn.disabled=false;btn.textContent=label;return}
+    btn.textContent="결제 처리 중…";
+    const idToken=window._getIdToken?await window._getIdToken():null;
+    const r=await fetch("/api/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({idToken,billingKey:issue.billingKey,plan:planKey,email})});
+    const j=await r.json().catch(()=>({ok:false}));
+    if(j&&j.ok){window._premiumInfo={premium:true,plan:planKey};closePremium();alert(planName+" 정기구독이 시작됐어요. 감사합니다.");if(window.onAuthChanged)window.onAuthChanged(window._authUser);updateRemainingUI()}
+    else{$("#pmErr").textContent=(j&&j.error)||"결제에 실패했어요. 다시 시도해주세요.";}
   }catch(err){$("#pmErr").textContent="결제 오류: "+((err&&err.message)||"잠시 후 다시 시도해주세요");}
   finally{btn.disabled=false;btn.textContent=label;}
 }
@@ -947,7 +955,7 @@ const myPageModal=$("#myPageModal");
 function openMyPage(){if(!window._authUser){openLogin();return}const pi=window._premiumInfo||{};$("#mpgEmail").textContent=window._authUser.email||"-";$("#mpgPlan").textContent=pi.premium?(pi.plan==="pro"?"프로 (월 9,900원)":"라이트 (월 4,900원)"):"무료";$("#mpgPremiumBox").style.display=pi.premium?"block":"none";$("#mpgFreeBox").style.display=pi.premium?"none":"block";myPageModal.classList.add("open")}
 $("#mpgClose").onclick=()=>myPageModal.classList.remove("open");myPageModal.onclick=e=>{if(e.target===myPageModal)myPageModal.classList.remove("open")};
 $("#mpgUpgrade").onclick=()=>{myPageModal.classList.remove("open");openPremium()};
-$("#mpgCancel").onclick=async()=>{if(!confirm("이용권을 해지할까요?\n환불은 고객센터(rlagksdk@010king.com)로 문의해주세요."))return;const b=$("#mpgCancel");b.disabled=true;const r=window._cancelPremium?await window._cancelPremium():{ok:false};b.disabled=false;if(r&&r.ok){alert("이용권이 해지됐어요.");if(window.onAuthChanged)window.onAuthChanged(window._authUser);updateRemainingUI();myPageModal.classList.remove("open")}else{alert("해지에 실패했어요. 다시 시도해주세요.")}};
+$("#mpgCancel").onclick=async()=>{if(!confirm("정기결제를 해지할까요?\n남은 이용기간까지는 계속 이용되고, 다음 결제부터 청구되지 않아요."))return;const b=$("#mpgCancel");b.disabled=true;b.textContent="해지 중…";try{const idToken=window._getIdToken?await window._getIdToken():null;const r=await fetch("/api/cancel-subscription",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({idToken})});const j=await r.json().catch(()=>({ok:false}));if(j&&j.ok){alert("정기결제가 해지됐어요. 남은 기간까지 이용 가능해요.");myPageModal.classList.remove("open")}else{alert("해지에 실패했어요. 다시 시도해주세요.")}}catch(e){alert("해지 중 오류가 발생했어요.")}finally{b.disabled=false;b.textContent="이용권 해지"}};
 </script>
 <!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>

@@ -5,5 +5,8 @@
   "description": "디자인공방 - 사장님을 위한 홍보물 제작소 (배너/메뉴판/쿠폰/명함 + AI 배경 생성)",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
   }
 }

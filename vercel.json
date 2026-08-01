@@ -1,8 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/generate-image.js": {
-      "maxDuration": 60
-    }
-  }
+    "api/generate-image.js": { "maxDuration": 60 },
+    "api/subscribe.js": { "maxDuration": 30 },
+    "api/cancel-subscription.js": { "maxDuration": 15 },
+    "api/billing-cron.js": { "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/billing-cron", "schedule": "0 3 * * *" }
+  ]
 }

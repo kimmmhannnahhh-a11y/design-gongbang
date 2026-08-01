@@ -8,16 +8,33 @@ const OPENAI_CHAT = "https://api.openai.com/v1/chat/completions";
 
 // GPT가 매번 완전히 다른 "아트디렉션 프롬프트"를 작성 -> 결과가 매번 다양해짐(챗GPT급).
 // 실패하면 기존 buildPrompt로 폴백.
+const DIVERSE_PALETTES = [
+  "deep charcoal black and subtle silver", "clean ivory white and soft cool grey",
+  "cool teal and jade green with cream", "navy blue and muted brass",
+  "dusty rose pink and warm beige", "terracotta and burnt sienna",
+  "sage green and oatmeal", "burgundy wine and blush pink",
+  "royal purple and soft lavender", "crisp high-contrast black and white",
+  "fresh mint and aqua with white", "warm amber and cream",
+  "forest green and antique bronze", "slate blue-grey and off-white"
+];
 async function expandPrompt(data, apiKey) {
-  const sys = "You are a world-class art director creating PREMIUM commercial poster BACKGROUNDS (background only). Given the shop context, output ONE vivid, highly specific English image-generation prompt. CRITICAL RULES: (1) Be BOLD and DRAMATICALLY VARIED every time - invent a distinctly different composition, color palette, art style (photography / illustration / 3D / watercolor / gouache / risograph / collage / gradient-abstract etc.), lighting, camera angle, and props. Never repeat the same centered layout or the same cliche. (2) It is a BACKGROUND: absolutely NO text, letters, numbers, logos, or watermarks anywhere. (3) Leave generous clean, uncluttered empty space where headline text will be overlaid later. Return ONLY the prompt, 2-4 sentences, no preamble.";
+  const style = data.style === "photo" ? "photo" : data.style === "illust" ? "illust" : "auto";
+  const mediumRule = style === "photo"
+    ? "MEDIUM (MANDATORY): ultra-realistic professional commercial PHOTOGRAPHY - real lighting, real materials, real depth of field. It MUST look like a real photo. Absolutely NOT illustration, watercolor, painting, drawing or 3D render."
+    : style === "illust"
+    ? "MEDIUM (MANDATORY): refined premium hand-crafted ILLUSTRATION with a consistent illustrative style. Not a photograph."
+    : "MEDIUM: choose any premium medium (photography, illustration, 3D, gouache, collage...) and vary it each time.";
+  const palette = DIVERSE_PALETTES[Math.floor(Math.random() * DIVERSE_PALETTES.length)];
   const seed = Math.floor(Math.random() * 100000);
   const decos = (Array.isArray(data.decorations) ? data.decorations.filter(d => d !== "(랜덤)") : []).join(", ");
-  const user = "Shop/context -> industry: " + (data.industry || data.businessType || "") +
+  const sys = "You are a world-class art director creating a PREMIUM commercial poster BACKGROUND (background only). Output ONE vivid, specific English image-generation prompt. STRICT RULES: (1) Obey the MEDIUM instruction EXACTLY - never change or mix the medium. (2) The DOMINANT color palette MUST be the palette given by the user - do NOT drift to gold/yellow/warm unless that is the given palette. (3) Strongly vary composition, camera angle, lighting, and props using the seed so THIS image is clearly different from any previous one. (4) BACKGROUND ONLY: absolutely no text, letters, numbers, logos or watermark; leave generous clean empty space for headline text to be overlaid later. Return ONLY the prompt, 2-4 sentences, no preamble.";
+  const user = mediumRule + " DOMINANT COLOR PALETTE (must clearly dominate the image): " + palette + ". " +
+    "Shop context -> industry: " + (data.industry || data.businessType || "") +
     " | season/theme: " + (data.season || data.theme || "") + " | mood: " + (data.mood || "") +
-    " | color feel: " + (data.color || "") + " | material: " + (data.material || "") + " | style ref: " + (data.space || "") +
-    " | decorations: " + decos + " | custom idea: " + (data.customDeco || "") +
-    " | document: " + data.documentType + " | layout: " + (data.layoutType || "") + " | accent color: " + (data.accentColor || "") +
-    " | variation seed #" + seed + " (use this to make THIS result clearly different from any previous one).";
+    " | material: " + (data.material || "") + " | decorations to feature: " + decos +
+    " | custom idea: " + (data.customDeco || "") +
+    " | document: " + data.documentType + " | layout: " + (data.layoutType || "") +
+    " | variation seed #" + seed + ".";
   const r = await fetch(OPENAI_CHAT, {
     method: "POST",
     headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
@@ -408,6 +425,7 @@ module.exports = async (req, res) => {
       style: clampStr(body.style, 10),
       theme: clampStr(body.theme, 20),
       mood: clampStr(body.mood, 30),
+      style: clampStr(body.style, 12),
       color: clampStr(body.color, 30),
       season: clampStr(body.season, 30),
       material: clampStr(body.material, 30),

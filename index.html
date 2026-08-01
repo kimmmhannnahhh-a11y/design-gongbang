@@ -891,7 +891,7 @@ $("#galGrid").addEventListener("click",async e=>{const v=e.target.closest(".gal-
 
 /* ===== 프리미엄 결제 (포트원 V2) ===== */
 /* 포트원 가입 후 발급받은 값을 넣으면 실제 결제창이 열림. 비어있으면 준비중 안내. */
-const PORTONE_STORE_ID="", PORTONE_CHANNEL_KEY="";
+const PORTONE_STORE_ID="store-9eca82ce-e322-4dd3-99e2-f192e020a4a9", PORTONE_CHANNEL_KEY="channel-key-85a96ef2-b68a-49f5-8fee-732a57943e5e";
 const pmModal=$("#premiumModal");
 function openPremium(){if(!window._authUser){openLogin();return}pmModal.classList.add("open");$("#pmErr").textContent=""}
 function closePremium(){pmModal.classList.remove("open")}
@@ -902,7 +902,7 @@ async function subscribePremium(){
   btn.disabled=true;btn.textContent="결제 진행 중…";
   try{
     const paymentId="dg_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
-    const res=await window.PortOne.requestPayment({storeId:PORTONE_STORE_ID,channelKey:PORTONE_CHANNEL_KEY,paymentId,orderName:"디자인공방 프리미엄 (월)",totalAmount:4900,currency:"KRW",payMethod:"CARD",customer:{email:(window._authUser&&window._authUser.email)||""}});
+    const res=await window.PortOne.requestPayment({storeId:PORTONE_STORE_ID,channelKey:PORTONE_CHANNEL_KEY,paymentId,orderName:"디자인공방 프리미엄 (월)",totalAmount:4900,currency:"KRW",payMethod:"CARD",redirectUrl:location.origin+location.pathname,customer:{email:(window._authUser&&window._authUser.email)||""}});
     if(res&&res.code!=null){$("#pmErr").textContent=res.message||"결제가 취소됐어요.";}
     else{const r=window._setPremium?await window._setPremium(paymentId):{ok:false};if(r&&r.ok){closePremium();alert("프리미엄이 활성화됐어요! 감사합니다 🎉")}else{$("#pmErr").textContent="결제는 완료됐지만 활성화에 실패했어요. 문의해주세요.";}}
   }catch(e){$("#pmErr").textContent="결제 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";}

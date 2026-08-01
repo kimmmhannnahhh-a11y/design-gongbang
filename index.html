@@ -171,6 +171,30 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 /* 명함 커스텀 이미지 오버레이 */
 #ncFront{position:relative}
 .nc-custom-img{position:absolute;top:14px;left:14px;width:64px;height:auto;max-width:60%;z-index:6;border-radius:4px}
+/* 명함 템플릿별 실제 디자인 차별화 */
+/* 다크: 모든 글자 밝게 */
+.card-preview.tpl-dark{--nc-accent:#a99bff}
+.card-preview.tpl-dark .nc-lines{color:#c7ccd6}
+.card-preview.tpl-dark .nc-role{color:#aeb4c0}
+.card-preview.tpl-dark .nc-left{border-right-color:rgba(255,255,255,.16)}
+.card-preview.tpl-dark .vertical.nc-left,.vertical.card-preview.tpl-dark .nc-left{border-bottom-color:rgba(255,255,255,.16)}
+/* 프리미엄: 세리프 + 골드 라인 + 우아한 여백 (고급 명함 느낌) */
+.card-preview.tpl-premium{--nc-accent:#b08d57}
+.tpl-premium .nc-left{border-right-color:#e0d3b8}
+.tpl-premium .nc-logo{background:transparent;border:1.5px solid #b08d57;color:#b08d57;border-radius:0;font-family:'Nanum Myeongjo',serif;font-weight:700}
+.tpl-premium .nc-company{font-family:'Nanum Myeongjo',serif;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:15px}
+.tpl-premium .nc-name{font-family:'Nanum Myeongjo',serif;font-weight:800;letter-spacing:.02em}
+.tpl-premium .nc-right{position:relative}
+.tpl-premium .nc-right .nc-name{padding-top:14px}
+.tpl-premium .nc-right .nc-name:before{content:"";position:absolute;left:28px;top:26px;width:38px;height:2px;background:#b08d57}
+.tpl-premium .nc-role{color:#9a8460}
+/* 미니멀: 로고 블록 제거, 얇고 넓은 여백, 가는 강조선 */
+.tpl-minimal .nc-left{border-right:0;justify-content:flex-start;padding-top:38px}
+.tpl-minimal .nc-logo{width:auto;height:auto;background:transparent;color:var(--nc-accent);border-radius:0;font-size:30px;font-weight:800;margin-bottom:12px}
+.tpl-minimal .nc-company{font-weight:700;letter-spacing:.06em;font-size:15px}
+.tpl-minimal .nc-name{font-weight:800;letter-spacing:.01em}
+.tpl-minimal .nc-lines{opacity:.72;gap:6px}
+.tpl-minimal .nc-right{padding-top:38px}
 /* 프리미엄 */
 .premium-btn,#premiumBtn{background:linear-gradient(135deg,#ffd43b,#f0a500)!important;color:#3a2c00!important;border:0!important;font-weight:850;box-shadow:0 2px 12px rgba(240,165,0,.5)}
 .pm-price{display:flex;align-items:baseline;gap:8px;margin:6px 0 14px}.pm-price b{font-size:26px;font-weight:900}.pm-price span{font-size:12px;color:var(--muted)}
@@ -462,7 +486,7 @@ function cpSetMode(m){cpMode=m;[["cpModeOff","none"],["cpModeMove","move"],["cpM
 if($("#cpModeOff")){$("#cpModeOff").onclick=()=>cpSetMode("none");$("#cpModeMove").onclick=()=>cpSetMode("move");$("#cpModeText").onclick=()=>cpSetMode("text");["cpEditX","cpEditY","cpEditSize"].forEach(id=>{$("#"+id).onfocus=()=>{if(cpSel)cpPush()};$("#"+id).oninput=e=>{if(!cpSel)return;const s=cpTstyle(cpSel.dataset.tkey),map={cpEditX:"x",cpEditY:"y",cpEditSize:"size"};s[map[id]]=+e.target.value||0;cpApply(cpSel)}});[["cpAlignLeft","left"],["cpAlignCenter","center"],["cpAlignRight","right"]].forEach(([id,a])=>$("#"+id).onclick=()=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).align=a;cpApply(cpSel)});TXTCOLORS.forEach(c=>{const e=document.createElement("span");e.className="chip";e.dataset.c=c;e.style.background=c;e.onclick=()=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).color=c;cpApply(cpSel);cpSyncUI()};$("#cpTxtColors").append(e)});FONTS.forEach(([n,f])=>$("#cpTxtFont").insertAdjacentHTML("beforeend",`<option value="${f}">${n}</option>`));$("#cpTxtFont").onchange=e=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).font=e.target.value;cpApply(cpSel)};$("#cpTxtBold").onclick=()=>{if(!cpSel)return;cpPush();const s=cpTstyle(cpSel.dataset.tkey);s.bold=!s.bold;cpApply(cpSel);cpSyncUI()};$("#cpTxtItalic").onclick=()=>{if(!cpSel)return;cpPush();const s=cpTstyle(cpSel.dataset.tkey);s.italic=!s.italic;cpApply(cpSel);cpSyncUI()}}
 
 const ncTemplates=[{id:"simple",name:"심플",tag:"정돈된 기본형"},{id:"premium",name:"프리미엄",tag:"고급스러운 배치"},{id:"dark",name:"다크",tag:"강한 대비"},{id:"minimal",name:"미니멀",tag:"여백 중심"}];
-let ncState={orientation:"horizontal",kind:"normal",tpl:"simple",accent:"#7657ff",photo:"",customImg:"",qr:true,photoPos:{x:50,y:50},textStyles:{}};
+let ncState={orientation:"horizontal",kind:"normal",tpl:"simple",accent:"#7657ff",photo:"",logoImg:"",qr:true,photoPos:{x:50,y:50},textStyles:{}};
 ncTemplates.forEach(t=>$("#ncTemplates").insertAdjacentHTML("beforeend",`<div class="template-card ${t.id==="simple"?"on":""}" data-id="${t.id}"><div class="tpl-mini" style="background:${t.id==="dark"?"#171b25":t.id==="premium"?"#efe4d3":t.id==="minimal"?"#e8ecf1":"#fff"}"><div style="position:absolute;left:10px;top:10px;width:32%;bottom:10px;background:#7657ff22;border-radius:6px"></div><div style="position:absolute;right:10px;top:15px;width:48%;height:5px;background:#777"></div><div style="position:absolute;right:10px;top:28px;width:38%;height:3px;background:#aaa"></div></div><div class="tpl-name">${t.name}</div><div class="tpl-tag">${t.tag}</div></div>`));
 $$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");cardRender()});
 $$("#ncOrientation button").forEach(b=>b.onclick=()=>{$$("#ncOrientation button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.orientation=b.dataset.o;cardRender()});
@@ -471,9 +495,9 @@ $$("#ncQrToggle button").forEach(b=>b.onclick=()=>{$$("#ncQrToggle button").forE
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=c;e.onclick=()=>{$$("#ncChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");ncState.accent=c;cardRender()};$("#ncChips").append(e)});
 ["ncCo","ncName","ncRole","ncMobile","ncEmail","ncAddr","ncWeb","ncQrUrl"].forEach(id=>$("#"+id).addEventListener("input",cardRender));
 $("#ncPhoto").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{ncState.photo=r.result;cardRender()};r.readAsDataURL(f)};
-// 포토명함이면 사진영역 전체를 채우고(ncState.photo), 그 외 템플릿이면 작은 오버레이(customImg)로.
-$("#ncImgInput").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{if(ncState.kind==="photo"){ncState.photo=r.result}else{ncState.customImg=r.result}$("#ncImgRemove").style.display="";cardRender()};r.readAsDataURL(f);e.target.value=""};
-$("#ncImgRemove").onclick=()=>{if(ncState.kind==="photo"){ncState.photo=""}else{ncState.customImg="";if(ncState.textStyles)delete ncState.textStyles.img}$("#ncImgRemove").style.display="none";cardRender()};
+// 포토명함이면 사진영역 전체(ncState.photo), 일반명함이면 로고 자리(ncState.logoImg = "D" 대체).
+$("#ncImgInput").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{if(ncState.kind==="photo"){ncState.photo=r.result}else{ncState.logoImg=r.result}$("#ncImgRemove").style.display="";cardRender()};r.readAsDataURL(f);e.target.value=""};
+$("#ncImgRemove").onclick=()=>{if(ncState.kind==="photo"){ncState.photo=""}else{ncState.logoImg=""}$("#ncImgRemove").style.display="none";cardRender()};
 // 포토명함 사진 위치 조정: 사진을 마우스/터치로 드래그해 보이는 영역 이동(object-position).
 let photoDrag=null;
 function bindPhotoDrag(){const img=$("#ncFront .nc-photo-img");if(!img)return;img.style.cursor="move";img.style.touchAction="none";img.onpointerdown=e=>{e.preventDefault();e.stopPropagation();const rect=img.getBoundingClientRect();const pp=ncState.photoPos||{x:50,y:50};photoDrag={sx:e.clientX,sy:e.clientY,ox:pp.x,oy:pp.y,w:rect.width||1,h:rect.height||1,img}}}
@@ -484,10 +508,11 @@ let cScale=1;
 function fitCard(){const card=document.getElementById("ncFront"),fit=document.getElementById("ncFit");if(!card||!fit)return;const stage=fit.parentElement;if(!stage)return;const cs=getComputedStyle(stage),pad=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0);const avail=stage.clientWidth-pad;if(avail<=0)return;card.style.transform='none';const natW=card.offsetWidth,natH=card.offsetHeight;if(!natW)return;cScale=Math.min(1,avail/natW);card.style.transform='scale('+cScale+')';fit.style.width=(natW*cScale)+'px';fit.style.height=(natH*cScale)+'px'}
 window.addEventListener("resize",()=>{try{fitCard()}catch(e){}});
 function cardRender(){const el=$("#ncFront"),o=ncState.orientation;el.style.setProperty("--nc-accent",ncState.accent);
-let bg="#fff",color="#151923";if(ncState.tpl==="dark"){bg="#171b25";color="#fff"}if(ncState.tpl==="premium"){bg="#f5efe2";color="#27231e"}if(ncState.tpl==="minimal"){bg="#eef1f5"}
-const cimg=ncState.customImg?`<img class="nc-custom-img txt" data-tkey="img" src="${ncState.customImg}" alt="">`:"";const qrHtml=ncState.qr?'<div class="nc-qr" id="ncQr"></div>':'';
-if(ncState.kind==="photo"){el.className=`card-preview ${o} photo-card`;el.style.background=bg;el.style.color=color;el.innerHTML=`${cimg}<div class="photo-area">${ncState.photo?`<img class="nc-photo-img" src="${ncState.photo}" style="object-position:${(ncState.photoPos&&ncState.photoPos.x)||50}% ${(ncState.photoPos&&ncState.photoPos.y)||50}%">`:""}</div><div class="photo-info" style="position:relative"><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);cApplyAll();cBind();try{bindPhotoDrag()}catch(e){}applyBg("card");try{fitCard()}catch(e){}return}
-el.className=`card-preview ${o} nc-front`;el.style.background=bg;el.style.color=color;el.innerHTML=`${cimg}<div class="nc-left"><div class="nc-logo txt" data-tkey="logo">D</div><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div></div><div class="nc-right"><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);cApplyAll();cBind();applyBg("card");try{fitCard()}catch(e){}}
+let bg="#fff",color="#151923";if(ncState.tpl==="dark"){bg="#171b25";color="#f5f6fa"}if(ncState.tpl==="premium"){bg="#f6efe1";color="#2a2620"}if(ncState.tpl==="minimal"){bg="#eef1f5"}
+const qrHtml=ncState.qr?'<div class="nc-qr" id="ncQr"></div>':'';
+const logoInner=ncState.logoImg?`<img src="${ncState.logoImg}" style="width:100%;height:100%;object-fit:cover">`:"D";
+if(ncState.kind==="photo"){el.className=`card-preview ${o} photo-card tpl-${ncState.tpl}`;el.style.background=bg;el.style.color=color;el.innerHTML=`<div class="photo-area">${ncState.photo?`<img class="nc-photo-img" src="${ncState.photo}" style="object-position:${(ncState.photoPos&&ncState.photoPos.x)||50}% ${(ncState.photoPos&&ncState.photoPos.y)||50}%">`:""}</div><div class="photo-info" style="position:relative"><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);cApplyAll();cBind();try{bindPhotoDrag()}catch(e){}applyBg("card");try{fitCard()}catch(e){}return}
+el.className=`card-preview ${o} nc-front tpl-${ncState.tpl}`;el.style.background=bg;el.style.color=color;el.innerHTML=`<div class="nc-left"><div class="nc-logo txt" data-tkey="logo">${logoInner}</div><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div></div><div class="nc-right"><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);cApplyAll();cBind();applyBg("card");try{fitCard()}catch(e){}}
 
 /* ============================================================
    AI 배경 디자인 생성 (OpenAI gpt-image-1, 백엔드 경유)
@@ -814,7 +839,7 @@ function restoreEditState(es,opts){opts=opts||{};
   try{
     if(scope==="menu"){if(typeof renderMenuInputs==="function")renderMenuInputs();document.querySelectorAll("#menuTemplates .template-card").forEach(c=>c.classList.toggle("on",c.dataset.id===menuState.tpl))}
     if(scope==="coupon"){document.querySelectorAll("#cpType button").forEach(b=>b.classList.toggle("on",b.dataset.type===cpState.type));if(typeof renderCpTexts==="function")renderCpTexts()}
-    if(scope==="card"){document.querySelectorAll("#ncOrientation button").forEach(b=>b.classList.toggle("on",b.dataset.o===ncState.orientation));document.querySelectorAll("#ncKind button").forEach(b=>b.classList.toggle("on",b.dataset.k===ncState.kind));document.querySelectorAll("#ncQrToggle button").forEach(b=>b.classList.toggle("on",(b.dataset.qr==="1")===!!ncState.qr));const pw=document.getElementById("photoWrap");if(pw)pw.style.display=ncState.kind==="photo"?"block":"none";const qw=document.getElementById("ncQrUrlWrap");if(qw)qw.style.display=ncState.qr?"":"none";const rm=document.getElementById("ncImgRemove");if(rm)rm.style.display=(ncState.customImg||ncState.photo)?"":"none"}
+    if(scope==="card"){document.querySelectorAll("#ncOrientation button").forEach(b=>b.classList.toggle("on",b.dataset.o===ncState.orientation));document.querySelectorAll("#ncKind button").forEach(b=>b.classList.toggle("on",b.dataset.k===ncState.kind));document.querySelectorAll("#ncQrToggle button").forEach(b=>b.classList.toggle("on",(b.dataset.qr==="1")===!!ncState.qr));const pw=document.getElementById("photoWrap");if(pw)pw.style.display=ncState.kind==="photo"?"block":"none";const qw=document.getElementById("ncQrUrlWrap");if(qw)qw.style.display=ncState.qr?"":"none";const rm=document.getElementById("ncImgRemove");if(rm)rm.style.display=(ncState.logoImg||ncState.photo)?"":"none"}
   }catch(e){}
   if(!opts.silent){const nav=document.querySelector('.nav button[data-tab="'+scope+'"]');if(nav)nav.click();}
   try{renderScope(scope)}catch(e){}

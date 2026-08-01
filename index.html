@@ -33,7 +33,8 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .menu-board{--menu-accent:#bd8454;width:620px;min-height:780px;background:#f7f3eb;color:#25211d;border-radius:12px;padding:48px;box-shadow:var(--shadow);position:relative;overflow:hidden;transform-origin:top left}.menu-fit{overflow:hidden;margin:0 auto;max-width:100%}.menu-board.dark{background:#111;color:#f7f1e7}.menu-board.green{background:#edf2e8}.menu-board.blush{background:#f7ecee}.menu-board.blue{background:#eef3f8}.menu-top{text-align:center;border-bottom:1px solid rgba(80,70,60,.25);padding-bottom:24px;margin-bottom:28px}.menu-kicker{font-size:10px;letter-spacing:.22em;color:var(--menu-accent);font-weight:900}.menu-top h2{font-size:40px;margin:8px 0 5px}.menu-top p{font-size:12px;opacity:.62}.menu-columns{display:grid;gap:22px}.menu-columns.c1{grid-template-columns:1fr}.menu-columns.c2{grid-template-columns:1fr 1fr}.menu-columns.c3{grid-template-columns:repeat(3,1fr)}.menu-section h3{font-size:15px;letter-spacing:.08em;color:var(--menu-accent);padding-bottom:7px;border-bottom:2px solid var(--menu-accent);margin:0 0 13px}.menu-item{display:grid;grid-template-columns:1fr auto;gap:5px 14px;margin-bottom:15px}.menu-item strong,.menu-item b{font-size:15px}.menu-item strong,.menu-item span{justify-self:start}.menu-item b{color:var(--menu-accent)}.menu-item span{grid-column:1/3;font-size:10px;opacity:.57}.menu-foot{text-align:center;margin-top:34px;padding-top:20px;border-top:1px solid rgba(80,70,60,.25);font-size:11px;opacity:.65}
 .coupon{width:760px;min-height:300px;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);position:relative;transform-origin:top left}.cp-fit{overflow:hidden;margin:0 auto;max-width:100%}.coupon .cp-title{white-space:pre-line}.coupon.discount{display:grid;grid-template-columns:1.05fr 1.45fr .86fr}.coupon.discount .cp-a,.coupon.discount .cp-c{background:#f3eee4;color:#28231f}.coupon.discount .cp-b{background:var(--cp-accent);color:#fff}.cp-a,.cp-b,.cp-c{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px}.cp-eyebrow{font-size:10px;font-weight:900;letter-spacing:.2em;color:var(--cp-accent)}.cp-title{font-size:28px;font-weight:950;line-height:1.15;margin-top:10px}.cp-value{font-size:76px;font-weight:950;line-height:.9}.cp-unit{font-size:28px}.cp-cond{font-size:14px;font-weight:750;margin-top:10px}.cp-valid{font-size:11px;margin-top:10px;padding:6px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px}.qrbox{width:82px;height:82px;background:#fff;padding:5px;border-radius:10px}.qrbox canvas,.qrbox img{width:100%!important;height:100%!important}
 .coupon.amount{background:linear-gradient(135deg,#171923,#2b1f20);color:#fff;display:grid;grid-template-columns:1.2fr .8fr;padding:34px}.coupon.amount .cp-title{text-align:left;font-size:34px;margin:0}.coupon.amount .amount-value{font-size:72px;font-weight:950;color:#ffc65b}.coupon.amount .right{display:flex;align-items:center;justify-content:center;flex-direction:column;border-left:1px dashed rgba(255,255,255,.25)}.coupon.visit{background:#fff0f4;color:#44252f;padding:34px;display:flex;align-items:center;justify-content:space-between}.coupon.visit .stamp-row{display:flex;gap:10px}.coupon.visit .stamp{width:48px;height:48px;border-radius:50%;border:2px solid var(--cp-accent);display:grid;place-items:center;font-weight:900}.coupon.stamp{background:#f6f0df;color:#2b281f;padding:32px;display:flex;align-items:stretch;justify-content:space-between;gap:26px}.coupon.stamp .stamp-left{display:flex;flex-direction:column;min-width:0}.coupon.stamp .stamp-grid{display:grid;grid-template-columns:repeat(5,minmax(0,50px));gap:11px 12px;justify-content:end;align-self:center;flex:0 0 auto}.coupon.stamp .stamp-cell{aspect-ratio:1;border-radius:50%;border:2px dashed var(--cp-accent);display:grid;place-items:center;font-size:11px}.coupon.free{background:linear-gradient(135deg,#e5f5ed,#d5ece0);color:#183627;padding:34px;display:grid;grid-template-columns:1fr .75fr}.coupon.free .gift{display:grid;place-items:center;font-size:90px}
-.coupon.visit,.coupon.stamp{width:540px;min-height:0;aspect-ratio:1.75}
+.coupon.visit{width:540px;min-height:0;aspect-ratio:2}
+.coupon.stamp{width:540px;min-height:0}
 .coupon.visit{padding:26px}
 .coupon.stamp{padding:24px;gap:16px}
 .coupon.stamp .stamp-grid{grid-template-columns:repeat(5,minmax(0,42px));gap:9px 10px}
@@ -351,6 +352,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
     .pm-plan-price b{font-size:21px;color:#fff}
     .pm-plan ul{list-style:none;padding:0;margin:0 0 11px;font-size:12px;color:var(--sub);line-height:1.75}
     .pm-plan ul li:before{content:"✓ ";color:var(--purple);font-weight:800}
+    .pm-q{color:#f0c14a;font-weight:900}
     .pm-badge{position:absolute;top:-9px;right:14px;background:var(--purple);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px}
     .pm-plan .lg-btn{width:100%}
     .pm-plan .lg-btn:not(.lg-primary){background:transparent;border:1.5px solid var(--purple);color:#c9bcff;font-weight:700}
@@ -363,7 +365,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
         <div class="pm-plan-name">베이직</div>
         <div class="pm-plan-price"><b>4,900</b>원 / 월</div>
         <ul>
-          <li>AI 배경 월 40장</li>
+          <li>AI 배경 월 <span class="pm-q">40장</span></li>
           <li>광고 제거</li>
           <li>내 디자인함 저장 40개</li>
         </ul>
@@ -373,7 +375,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
         <div class="pm-plan-name">라이트</div>
         <div class="pm-plan-price"><b>7,900</b>원 / 월</div>
         <ul>
-          <li>AI 배경 월 70장</li>
+          <li>AI 배경 월 <span class="pm-q">70장</span></li>
           <li>광고 제거</li>
           <li>내 디자인함 저장 70개</li>
         </ul>
@@ -384,7 +386,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
         <div class="pm-plan-name">프로</div>
         <div class="pm-plan-price"><b>9,900</b>원 / 월</div>
         <ul>
-          <li>AI 배경 월 100장</li>
+          <li>AI 배경 월 <span class="pm-q">100장</span></li>
           <li>우선 생성 (더 빠름)</li>
           <li>광고 제거 · 저장 100개</li>
         </ul>
@@ -394,7 +396,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
         <div class="pm-plan-name">프리미엄</div>
         <div class="pm-plan-price"><b>19,900</b>원 / 월</div>
         <ul>
-          <li>AI 배경 월 200장</li>
+          <li>AI 배경 월 <span class="pm-q">200장</span></li>
           <li>우선 생성 · 광고 제거</li>
           <li>실물명함 할인 · 브랜드킷</li>
           <li>팀 공유 · 저장 무제한</li>

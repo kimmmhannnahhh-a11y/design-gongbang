@@ -444,7 +444,7 @@ FONTS.forEach(([n,f])=>$("#cTxtFont").insertAdjacentHTML("beforeend",`<option va
 $("#cTxtFont").onchange=e=>{if(!cSel)return;cPush();cTstyle(cSel.dataset.tkey).font=e.target.value;cApply(cSel)};
 $("#cTxtBold").onclick=()=>{if(!cSel)return;cPush();const s=cTstyle(cSel.dataset.tkey);s.bold=!s.bold;cApply(cSel);cSync()};
 $("#cTxtItalic").onclick=()=>{if(!cSel)return;cPush();const s=cTstyle(cSel.dataset.tkey);s.italic=!s.italic;cApply(cSel);cSync()};
-$("#cResetEdit").onclick=()=>{cPush();ncState.textStyles={};cSel=null;cRemoveHandle();$$("#ncFront .txt").forEach(el=>{el.style.transform="";el.style.color="";el.style.fontFamily="";el.style.fontWeight="";el.style.fontStyle="";el.style.textAlign="";el.classList.remove("sel")});cSync()};
+$("#cResetEdit").onclick=()=>{cPush();ncState.textStyles={};ncState.logoImg="";ncState.photo="";ncState.photoPos={x:50,y:50};cSel=null;cRemoveHandle();const rm=$("#ncImgRemove");if(rm)rm.style.display="none";cardRender();cSync()};
 
 let cpState={type:"discount",accent:"#df4b3f",textStyles:{},texts:["사용 시 직원에게 보여주세요"]};
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===6?" on":"");e.style.background=c;e.onclick=()=>{$$("#cpChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");cpState.accent=c;couponRender()};$("#cpChips").append(e)});

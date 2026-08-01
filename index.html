@@ -505,7 +505,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <script>
 const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
 const VIEWS={banner:"view-banner",menu:"view-menu",coupon:"view-coupon",card:"view-card"};
-$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on");try{fitMenu()}catch(e){}try{fitCoupon()}catch(e){}try{fitCard()}catch(e){}});
+$$(".nav button").forEach(b=>b.onclick=()=>{$$(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");$$(".view").forEach(v=>v.classList.remove("on"));$("#"+VIEWS[b.dataset.tab]).classList.add("on");try{fitMenu()}catch(e){}try{fitCoupon()}catch(e){}try{fitCard()}catch(e){}try{requestAnimationFrame(fitMiniCards)}catch(e){}});
 const SOLID=["#7657ff","#171b25","#bd8454","#1da56c","#1589b7","#e3447e","#df4b3f","#ffd43b","#ffffff"];
 // 홍보배너 기본 배치(파인애플 기본배경에 맞춘 오른쪽정렬·어두운 글자). AI 배경 새로 만들면 {}로 초기화됨.
 const BANNER_DEFAULT_STYLES={cat:{x:9,y:-18,size:140,align:"",color:""},head:{x:178,y:5,size:100,align:"",color:"#25211d"},sub:{x:402,y:8,size:136,align:"",color:"#25211d"},tag:{x:396,y:-46,size:129,align:"",color:""},info:{x:5,y:35,size:100,align:"",color:"#25211d"}};

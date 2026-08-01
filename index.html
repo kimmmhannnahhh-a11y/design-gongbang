@@ -228,7 +228,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
           <li>광고 제거</li>
           <li>내 디자인함 무제한 저장</li>
         </ul>
-        <button class="lg-btn pm-sub">라이트 시작하기</button>
+        <button class="lg-btn pm-sub" data-plan="light" data-amount="4900" data-name="라이트">라이트 시작하기</button>
       </div>
       <div class="pm-plan pm-plan-pro">
         <span class="pm-badge">추천</span>
@@ -240,7 +240,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
           <li>우선 생성 (더 빠름)</li>
           <li>광고 제거 · 무제한 저장</li>
         </ul>
-        <button class="lg-btn lg-primary pm-sub" id="pmSubscribe">프로 시작하기</button>
+        <button class="lg-btn lg-primary pm-sub" id="pmSubscribe" data-plan="pro" data-amount="9900" data-name="프로">프로 시작하기</button>
       </div>
     </div>
     <div class="lg-err" id="pmErr"></div>
@@ -896,19 +896,22 @@ const pmModal=$("#premiumModal");
 function openPremium(){if(!window._authUser){openLogin();return}pmModal.classList.add("open");$("#pmErr").textContent=""}
 function closePremium(){pmModal.classList.remove("open")}
 $("#pmClose").onclick=closePremium;pmModal.onclick=e=>{if(e.target===pmModal)closePremium()};
-async function subscribePremium(){
-  const btn=$("#pmSubscribe");
-  if(!window.PortOne||!PORTONE_STORE_ID||!PORTONE_CHANNEL_KEY){$("#pmErr").textContent="결제 준비 중이에요. 곧 오픈합니다! (포트원 설정 필요)";return}
-  btn.disabled=true;btn.textContent="결제 진행 중…";
+async function subscribePremium(e){
+  const btn=(e&&e.currentTarget)||$("#pmSubscribe");
+  const amount=parseInt(btn.dataset.amount,10)||4900;
+  const planName=btn.dataset.name||"프리미엄";
+  const plan=btn.dataset.plan||"monthly";
+  if(!window.PortOne||!PORTONE_STORE_ID||!PORTONE_CHANNEL_KEY){$("#pmErr").textContent="결제 준비 중이에요. 곧 오픈합니다!";return}
+  const label=btn.textContent;btn.disabled=true;btn.textContent="결제 진행 중…";$("#pmErr").textContent="";
   try{
     const paymentId="dg_"+Date.now()+"_"+Math.random().toString(36).slice(2,8);
-    const res=await window.PortOne.requestPayment({storeId:PORTONE_STORE_ID,channelKey:PORTONE_CHANNEL_KEY,paymentId,orderName:"디자인공방 프리미엄 (월)",totalAmount:4900,currency:"KRW",payMethod:"CARD",redirectUrl:location.origin+location.pathname,customer:{email:(window._authUser&&window._authUser.email)||""}});
-    if(res&&res.code!=null){$("#pmErr").textContent=res.message||"결제가 취소됐어요.";}
-    else{const r=window._setPremium?await window._setPremium(paymentId):{ok:false};if(r&&r.ok){closePremium();alert("프리미엄이 활성화됐어요! 감사합니다 🎉")}else{$("#pmErr").textContent="결제는 완료됐지만 활성화에 실패했어요. 문의해주세요.";}}
-  }catch(e){$("#pmErr").textContent="결제 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.";}
-  finally{btn.disabled=false;btn.textContent="프리미엄 시작하기";}
+    const res=await window.PortOne.requestPayment({storeId:PORTONE_STORE_ID,channelKey:PORTONE_CHANNEL_KEY,paymentId,orderName:"디자인공방 "+planName+" (월 구독)",totalAmount:amount,currency:"CURRENCY_KRW",payMethod:"CARD",redirectUrl:location.origin+location.pathname,customer:{email:(window._authUser&&window._authUser.email)||""}});
+    if(res&&res.code!=null){$("#pmErr").textContent="결제 실패: "+(res.message||res.code);}
+    else{const r=window._setPremium?await window._setPremium(paymentId,plan):{ok:false};if(r&&r.ok){closePremium();alert(planName+" 프리미엄이 활성화됐어요! 감사합니다 🎉")}else{$("#pmErr").textContent="결제는 완료됐지만 활성화에 실패했어요. 문의해주세요.";}}
+  }catch(err){$("#pmErr").textContent="결제 오류: "+((err&&err.message)||"잠시 후 다시 시도해주세요");}
+  finally{btn.disabled=false;btn.textContent=label;}
 }
-$$(".pm-sub").forEach(function(b){b.onclick=subscribePremium});
+$$(".pm-sub").forEach(function(b){b.addEventListener("click",subscribePremium)});
 </script>
 <!-- ===== 카카오 SDK + Firebase 인증 (HAEKA와 동일 백엔드: card-store-finder) ===== -->
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
@@ -941,7 +944,7 @@ window._saveDesign=async(dataUrl,meta)=>{const u=auth.currentUser;if(!u)return{o
 window._listDesigns=async()=>{const u=auth.currentUser;if(!u)return{ok:false,items:[]};try{await dgMigrate(u.uid);const db=await dgIDB();const arr=await dgReq(dgStore(db,'readonly').index('uid').getAll(u.uid));db.close();arr.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));return{ok:true,items:arr}}catch(e){console.error('listDesigns',e);return{ok:false,items:[]}}};
 window._deleteDesign=async(id)=>{const u=auth.currentUser;if(!u)return{ok:false};try{const db=await dgIDB();await dgReq(dgStore(db,'readwrite').delete(id));db.close();return{ok:true}}catch(e){console.error('deleteDesign',e);return{ok:false}}};
 // 프리미엄 상태 저장/조회 (결제 성공 시 활성화). 실제 검증은 추후 서버 웹훅으로 강화 예정.
-window._setPremium=async(paymentId)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await setDoc(doc(db,'users',u.uid),{premium:true,premiumPlan:'monthly',premiumSince:new Date().toISOString(),lastPaymentId:paymentId||'',app:'design-gongbang'},{merge:true});return{ok:true}}catch(e){console.error('setPremium',e);return{ok:false}}};
+window._setPremium=async(paymentId,plan)=>{const u=auth.currentUser;if(!u)return{ok:false};try{await setDoc(doc(db,'users',u.uid),{premium:true,premiumPlan:plan||'monthly',premiumSince:new Date().toISOString(),lastPaymentId:paymentId||'',app:'design-gongbang'},{merge:true});return{ok:true}}catch(e){console.error('setPremium',e);return{ok:false}}};
 window._getPremium=async()=>{const u=auth.currentUser;if(!u)return{premium:false};try{const d=await getDoc(doc(db,'users',u.uid));return{premium:!!(d.exists()&&d.data().premium)}}catch(e){return{premium:false}}};
 </script>
 </body>

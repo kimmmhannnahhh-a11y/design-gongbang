@@ -460,7 +460,7 @@ module.exports = async (req, res) => {
     let quality = "low";
     try {
       const prem = await verifyPremium(typeof body.idToken === "string" ? body.idToken : "");
-      if (prem.premium) quality = prem.plan === "pro" ? "high" : "medium";
+      if (prem.premium) quality = "medium"; // 모든 유료 플랜 동일 화질(중화질). 고화질 폐지.
     } catch (e) { /* 실패 시 low 유지 */ }
     void ALLOWED_QUALITY;
 

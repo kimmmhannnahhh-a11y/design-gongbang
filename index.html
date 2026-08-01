@@ -351,29 +351,49 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
     .pm-plan .lg-btn:not(.lg-primary):hover{background:rgba(124,92,255,.14)}
     </style>
     <h3>프리미엄</h3>
-    <div class="lg-sub">광고 없이 · 더 많이 · 더 예쁘게</div>
+    <div class="lg-sub">광고 없이 · 더 많이 · 매달 자동결제</div>
     <div class="pm-plans">
       <div class="pm-plan">
-        <div class="pm-plan-name">라이트</div>
+        <div class="pm-plan-name">베이직</div>
         <div class="pm-plan-price"><b>4,900</b>원 / 월</div>
         <ul>
-          <li>AI 배경 월 80장 (중화질)</li>
+          <li>AI 배경 월 40장</li>
           <li>광고 제거</li>
-          <li>내 디자인함 저장 80개</li>
+          <li>내 디자인함 저장 40개</li>
         </ul>
-        <button class="lg-btn pm-sub" data-plan="light" data-amount="4900" data-name="라이트">라이트 시작하기</button>
+        <button class="lg-btn pm-sub" data-plan="basic" data-amount="4900" data-name="베이직">베이직 시작하기</button>
+      </div>
+      <div class="pm-plan">
+        <div class="pm-plan-name">라이트</div>
+        <div class="pm-plan-price"><b>7,900</b>원 / 월</div>
+        <ul>
+          <li>AI 배경 월 70장</li>
+          <li>광고 제거</li>
+          <li>내 디자인함 저장 70개</li>
+        </ul>
+        <button class="lg-btn pm-sub" data-plan="light" data-amount="7900" data-name="라이트">라이트 시작하기</button>
       </div>
       <div class="pm-plan pm-plan-pro">
         <span class="pm-badge">추천</span>
         <div class="pm-plan-name">프로</div>
         <div class="pm-plan-price"><b>9,900</b>원 / 월</div>
         <ul>
-          <li>AI 배경 월 200장 (중화질)</li>
-          <li>고화질 30장 포함</li>
+          <li>AI 배경 월 100장</li>
           <li>우선 생성 (더 빠름)</li>
-          <li>광고 제거 · 저장 200개</li>
+          <li>광고 제거 · 저장 100개</li>
         </ul>
         <button class="lg-btn lg-primary pm-sub" id="pmSubscribe" data-plan="pro" data-amount="9900" data-name="프로">프로 시작하기</button>
+      </div>
+      <div class="pm-plan">
+        <div class="pm-plan-name">프리미엄</div>
+        <div class="pm-plan-price"><b>19,900</b>원 / 월</div>
+        <ul>
+          <li>AI 배경 월 200장</li>
+          <li>우선 생성 · 광고 제거</li>
+          <li>실물명함 할인 · 브랜드킷</li>
+          <li>팀 공유 · 저장 무제한</li>
+        </ul>
+        <button class="lg-btn pm-sub" data-plan="premium" data-amount="19900" data-name="프리미엄">프리미엄 시작하기</button>
       </div>
     </div>
     <input id="pmPhone" class="input" type="tel" maxlength="13" placeholder="휴대폰 번호 (결제 필수 · 예: 01012345678)" style="margin-bottom:8px">
@@ -825,12 +845,12 @@ if(scope==="coupon"){return Object.assign(base,{documentType:"coupon",layoutType
 return Object.assign(base,{documentType:"businessCard",orientation:ncState.orientation,layoutType:ncState.orientation+"/"+ncState.kind,accentColor:ncState.accent,title:$("#ncCo").value,subtitle:$("#ncName").value})}
 
 function isPremium(){return !!(window._premiumInfo&&window._premiumInfo.premium)}
-// 프리미엄 월 할당량(요금제): 라이트 80장 / 프로 200장. 월별 localStorage 카운터.
-const PREMIUM_QUOTA={light:80,pro:200};
+// 프리미엄 월 할당량(요금제): 베이직40/라이트70/프로100/프리미엄200장. 월별 localStorage 카운터.
+const PREMIUM_QUOTA={basic:40,light:70,pro:100,premium:200};
 function pmMonthKey(){const d=new Date();return `dg_ai_pm_${d.getFullYear()}-${d.getMonth()+1}`}
 function getPremiumUsed(){try{return +(localStorage.getItem(pmMonthKey())||0)}catch(e){return 0}}
 function consumePremium(){try{localStorage.setItem(pmMonthKey(),getPremiumUsed()+1)}catch(e){}}
-function premiumQuota(){const pl=(window._premiumInfo&&window._premiumInfo.plan)||"light";return PREMIUM_QUOTA[pl]||80}
+function premiumQuota(){const pl=(window._premiumInfo&&window._premiumInfo.plan)||"basic";return PREMIUM_QUOTA[pl]||40}
 function getPremiumRemaining(){return Math.max(0,premiumQuota()-getPremiumUsed())}
 function updateRemainingUI(){const prem=isPremium();const rem=getFreeRemaining(),canAd=adsLeft()>0;document.querySelectorAll(".ai-panel").forEach(p=>{
   p.querySelector(".ai-remain").textContent = prem ? `✦ 이번 달 ${getPremiumRemaining()}장 남음 (프리미엄)` : (rem>0 ? `오늘 생성 ${rem}회 남음` : (canAd?`광고 보고 ${adsLeft()}회 더 받기`:"오늘 횟수 소진 (내일 초기화)"));
@@ -1142,7 +1162,7 @@ $$(".pm-sub").forEach(function(b){b.addEventListener("click",subscribePremium)})
 
 /* ===== 마이페이지 (내 상품·해지) ===== */
 const myPageModal=$("#myPageModal");
-function openMyPage(){if(!window._authUser){openLogin();return}const pi=window._premiumInfo||{};$("#mpgEmail").textContent=window._authUser.email||"-";$("#mpgPlan").textContent=pi.premium?(pi.plan==="pro"?"프로 (월 9,900원)":"라이트 (월 4,900원)"):"무료";$("#mpgPremiumBox").style.display=pi.premium?"block":"none";$("#mpgFreeBox").style.display=pi.premium?"none":"block";myPageModal.classList.add("open")}
+function openMyPage(){if(!window._authUser){openLogin();return}const pi=window._premiumInfo||{};$("#mpgEmail").textContent=window._authUser.email||"-";$("#mpgPlan").textContent=pi.premium?({basic:"베이직 (월 4,900원)",light:"라이트 (월 7,900원)",pro:"프로 (월 9,900원)",premium:"프리미엄 (월 19,900원)"}[pi.plan]||"프리미엄"):"무료";$("#mpgPremiumBox").style.display=pi.premium?"block":"none";$("#mpgFreeBox").style.display=pi.premium?"none":"block";myPageModal.classList.add("open")}
 $("#mpgClose").onclick=()=>myPageModal.classList.remove("open");myPageModal.onclick=e=>{if(e.target===myPageModal)myPageModal.classList.remove("open")};
 $("#mpgUpgrade").onclick=()=>{myPageModal.classList.remove("open");openPremium()};
 $("#mpgCancel").onclick=async()=>{if(!confirm("구독을 해지할까요?\n남은 이용기간까지는 계속 이용되고, 다음 결제부터 청구되지 않아요."))return;const b=$("#mpgCancel");b.disabled=true;b.textContent="해지 중…";let ok=false;try{const idToken=window._getIdToken?await window._getIdToken():null;const r=await fetch("/api/cancel-subscription",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({idToken})});const j=await r.json().catch(()=>({ok:false}));ok=!!(j&&j.ok)}catch(e){}if(!ok){try{const cr=window._cancelPremium?await window._cancelPremium():{ok:false};ok=!!(cr&&cr.ok)}catch(e){}}b.disabled=false;b.textContent="구독 해지하기";if(ok){alert("구독이 해지됐어요.");window._premiumInfo={premium:false};if(window.onAuthChanged)window.onAuthChanged(window._authUser);updateRemainingUI();myPageModal.classList.remove("open")}else{alert("해지에 실패했어요. 잠시 후 다시 시도해주세요.")}};

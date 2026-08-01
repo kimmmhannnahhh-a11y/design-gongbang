@@ -320,6 +320,29 @@ function rateLimited(ip) {
   return rec.count > maxPerWindow;
 }
 
+// Firebase ID토큰 검증 + Firestore users/{uid}.premium 확인 (service account 없이 REST로).
+// 토큰이 위조/만료면 Firestore REST가 문서를 안 주므로 프리미엄 화질을 못 받음.
+const FB_PROJECT = "card-store-finder";
+async function verifyPremium(idToken) {
+  if (!idToken || idToken.split(".").length < 3) return { premium: false };
+  let uid = "";
+  try {
+    const payload = JSON.parse(Buffer.from(idToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8"));
+    uid = payload.user_id || payload.sub || "";
+    if (payload.aud !== FB_PROJECT) return { premium: false };
+    if (payload.exp && (Date.now() / 1000) > payload.exp) return { premium: false };
+  } catch (e) { return { premium: false }; }
+  if (!uid) return { premium: false };
+  const url = "https://firestore.googleapis.com/v1/projects/" + FB_PROJECT + "/databases/(default)/documents/users/" + encodeURIComponent(uid);
+  const r = await fetch(url, { headers: { Authorization: "Bearer " + idToken } });
+  if (!r.ok) return { premium: false };
+  const j = await r.json();
+  const f = (j && j.fields) || {};
+  const premium = !!(f.premium && f.premium.booleanValue === true);
+  const plan = (f.premiumPlan && f.premiumPlan.stringValue) || "light";
+  return { premium, plan };
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     res.status(405).json({ ok: false, error: "허용되지 않은 요청 방식입니다." });
@@ -379,10 +402,13 @@ module.exports = async (req, res) => {
 
     const prompt = buildPrompt(data);
     const size = pickSize(documentType, orientation, data.layoutType);
-    // 프리미엄 tier 검증(로그인/결제)이 서버에 붙기 전까지는 무조건 low로 강제.
-    // (인증 없이 body.quality를 신뢰하면 누구나 quality:"high"를 직접 보내 공짜 고화질 남용 가능)
-    // 추후: const isPremium = await verifyPremium(req); quality = isPremium && ALLOWED_QUALITY.includes(body.quality) ? body.quality : "low";
-    const quality = "low";
+    // 프리미엄 tier 서버 검증: Firebase ID토큰으로 본인 확인 + Firestore에서 premium 여부 확인.
+    // (클라가 quality를 직접 보내는 게 아니라, 서버가 토큰 검증 후 결정 -> 위조 불가)
+    let quality = "low";
+    try {
+      const prem = await verifyPremium(typeof body.idToken === "string" ? body.idToken : "");
+      if (prem.premium) quality = prem.plan === "pro" ? "high" : "medium";
+    } catch (e) { /* 실패 시 low 유지 */ }
     void ALLOWED_QUALITY;
 
     const oaRes = await fetch(OPENAI_URL, {

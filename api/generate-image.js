@@ -246,8 +246,13 @@ function isHex(v) {
 }
 
 // 문서 유형 + 방향 -> gpt-image-1 지원 사이즈
-function pickSize(documentType, orientation, layoutType) {
-  if (documentType === "banner") return "1536x1024";
+function pickSize(documentType, orientation, layoutType, ratio) {
+  if (documentType === "banner") {
+    const r = ratio || "16:9";
+    if (r === "1:1") return "1024x1024";
+    if (r === "4:5" || r === "210:297" || r === "3:4") return "1024x1536"; // 세로/A4
+    return "1536x1024"; // 가로형/와이드/롱배너/블로그(가로)
+  }
   if (documentType === "coupon") return "1536x1024";
   if (documentType === "businessCard") {
     return orientation === "vertical" ? "1024x1536" : "1536x1024";
@@ -449,7 +454,7 @@ module.exports = async (req, res) => {
         prompt = gp + " " + layoutPart + " STRICT: no text, letters, numbers, logos or watermark of any language anywhere. Keep the reserved text areas visually clean and uncluttered.";
       }
     } catch (e) { /* 폴백: buildPrompt */ }
-    const size = pickSize(documentType, orientation, data.layoutType);
+    const size = pickSize(documentType, orientation, data.layoutType, clampStr(body.ratio, 12));
     // 프리미엄 tier 서버 검증: Firebase ID토큰으로 본인 확인 + Firestore에서 premium 여부 확인.
     // (클라가 quality를 직접 보내는 게 아니라, 서버가 토큰 검증 후 결정 -> 위조 불가)
     let quality = "low";

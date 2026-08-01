@@ -4,6 +4,29 @@
 // API 키는 반드시 서버 환경변수 OPENAI_API_KEY 로만 사용. 프론트에 절대 노출 금지.
 
 const OPENAI_URL = "https://api.openai.com/v1/images/generations";
+const OPENAI_CHAT = "https://api.openai.com/v1/chat/completions";
+
+// GPT가 매번 완전히 다른 "아트디렉션 프롬프트"를 작성 -> 결과가 매번 다양해짐(챗GPT급).
+// 실패하면 기존 buildPrompt로 폴백.
+async function expandPrompt(data, apiKey) {
+  const sys = "You are a world-class art director creating PREMIUM commercial poster BACKGROUNDS (background only). Given the shop context, output ONE vivid, highly specific English image-generation prompt. CRITICAL RULES: (1) Be BOLD and DRAMATICALLY VARIED every time - invent a distinctly different composition, color palette, art style (photography / illustration / 3D / watercolor / gouache / risograph / collage / gradient-abstract etc.), lighting, camera angle, and props. Never repeat the same centered layout or the same cliche. (2) It is a BACKGROUND: absolutely NO text, letters, numbers, logos, or watermarks anywhere. (3) Leave generous clean, uncluttered empty space where headline text will be overlaid later. Return ONLY the prompt, 2-4 sentences, no preamble.";
+  const seed = Math.floor(Math.random() * 100000);
+  const decos = (Array.isArray(data.decorations) ? data.decorations.filter(d => d !== "(랜덤)") : []).join(", ");
+  const user = "Shop/context -> industry: " + (data.industry || data.businessType || "") +
+    " | season/theme: " + (data.season || data.theme || "") + " | mood: " + (data.mood || "") +
+    " | color feel: " + (data.color || "") + " | material: " + (data.material || "") + " | style ref: " + (data.space || "") +
+    " | decorations: " + decos + " | custom idea: " + (data.customDeco || "") +
+    " | document: " + data.documentType + " | layout: " + (data.layoutType || "") + " | accent color: " + (data.accentColor || "") +
+    " | variation seed #" + seed + " (use this to make THIS result clearly different from any previous one).";
+  const r = await fetch(OPENAI_CHAT, {
+    method: "POST",
+    headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "gpt-4o-mini", temperature: 1.15, top_p: 0.95, max_tokens: 340, messages: [{ role: "system", content: sys }, { role: "user", content: user }] })
+  });
+  if (!r.ok) return "";
+  const j = await r.json();
+  return ((j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || "").trim();
+}
 
 // ---- 허용 값 검증용 화이트리스트 ----
 const ALLOWED_DOC = ["menu", "banner", "coupon", "businessCard"];
@@ -400,7 +423,15 @@ module.exports = async (req, res) => {
         : []
     };
 
-    const prompt = buildPrompt(data);
+    // 1차: GPT가 매번 다른 아트디렉션 프롬프트 작성 -> 다양성 확보. 실패 시 buildPrompt 폴백.
+    let prompt = buildPrompt(data);
+    try {
+      const gp = await expandPrompt(data, apiKey);
+      if (gp && gp.length > 30) {
+        const layoutPart = layoutSpaceInstruction(data.documentType, data.layoutType);
+        prompt = gp + " " + layoutPart + " STRICT: no text, letters, numbers, logos or watermark of any language anywhere. Keep the reserved text areas visually clean and uncluttered.";
+      }
+    } catch (e) { /* 폴백: buildPrompt */ }
     const size = pickSize(documentType, orientation, data.layoutType);
     // 프리미엄 tier 서버 검증: Firebase ID토큰으로 본인 확인 + Firestore에서 premium 여부 확인.
     // (클라가 quality를 직접 보내는 게 아니라, 서버가 토큰 검증 후 결정 -> 위조 불가)

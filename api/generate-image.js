@@ -27,7 +27,7 @@ async function expandPrompt(data, apiKey) {
   const palette = DIVERSE_PALETTES[Math.floor(Math.random() * DIVERSE_PALETTES.length)];
   const seed = Math.floor(Math.random() * 100000);
   const decos = (Array.isArray(data.decorations) ? data.decorations.filter(d => d !== "(랜덤)") : []).join(", ");
-  const sys = "You are a world-class art director creating a PREMIUM commercial poster BACKGROUND (background only). Output ONE vivid, specific English image-generation prompt. STRICT RULES: (1) Obey the MEDIUM instruction EXACTLY - never change or mix the medium. (2) The DOMINANT color palette MUST be the palette given by the user - do NOT drift to gold/yellow/warm unless that is the given palette. (3) Strongly vary composition, camera angle, lighting, and props using the seed so THIS image is clearly different from any previous one. (4) BACKGROUND ONLY: absolutely no text, letters, numbers, logos or watermark; leave generous clean empty space for headline text to be overlaid later. Return ONLY the prompt, 2-4 sentences, no preamble.";
+  const sys = "You are a world-class art director creating a PREMIUM commercial poster BACKGROUND (background only). Output ONE vivid, specific English image-generation prompt. STRICT RULES: (1) Obey the MEDIUM instruction EXACTLY - never change or mix the medium. (2) The DOMINANT color palette MUST be the palette given by the user - do NOT drift to gold/yellow/warm unless that is the given palette. (3) Strongly vary composition, camera angle, lighting, and props using the seed so THIS image is clearly different from any previous one. (4) BACKGROUND ONLY: absolutely no text, letters, numbers, logos or watermark; leave generous clean empty space for headline text to be overlaid later. (5) Strictly professional and SFW: do NOT focus on people, human bodies or skin, and nothing suggestive - focus on objects, materials, patterns, scenery and props. Return ONLY the prompt, 2-4 sentences, no preamble.";
   const user = mediumRule + " DOMINANT COLOR PALETTE (must clearly dominate the image): " + palette + ". " +
     "Shop context -> industry: " + (data.industry || data.businessType || "") +
     " | season/theme: " + (data.season || data.theme || "") + " | mood: " + (data.mood || "") +
@@ -425,7 +425,6 @@ module.exports = async (req, res) => {
       style: clampStr(body.style, 10),
       theme: clampStr(body.theme, 20),
       mood: clampStr(body.mood, 30),
-      style: clampStr(body.style, 12),
       color: clampStr(body.color, 30),
       season: clampStr(body.season, 30),
       material: clampStr(body.material, 30),
@@ -460,14 +459,22 @@ module.exports = async (req, res) => {
     } catch (e) { /* 실패 시 low 유지 */ }
     void ALLOWED_QUALITY;
 
-    const oaRes = await fetch(OPENAI_URL, {
+    const callGen = (pr) => fetch(OPENAI_URL, {
       method: "POST",
-      headers: {
-        "Authorization": "Bearer " + apiKey,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ model: "gpt-image-1", prompt, n: 1, size, quality })
+      headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "gpt-image-1", prompt: pr, n: 1, size, quality, moderation: "low" })
     });
+    let oaRes = await callGen(prompt);
+    // 검열 시스템 오탐(moderation_blocked) 시 프롬프트 새로 뽑아 1회 재시도.
+    if (!oaRes.ok) {
+      let ej = {}; try { ej = await oaRes.clone().json(); } catch (e) {}
+      if (ej && ej.error && ej.error.code === "moderation_blocked") {
+        console.warn("[generate-image] moderation 오탐 -> 재시도");
+        let p2 = buildPrompt(data);
+        try { const gp2 = await expandPrompt(data, apiKey); if (gp2 && gp2.length > 30) p2 = gp2 + " " + layoutSpaceInstruction(data.documentType, data.layoutType) + " STRICT: no text, letters, numbers, logos or watermark anywhere. Keep the reserved text areas clean and uncluttered."; } catch (e) {}
+        oaRes = await callGen(p2);
+      }
+    }
 
     if (!oaRes.ok) {
       let detail = "";

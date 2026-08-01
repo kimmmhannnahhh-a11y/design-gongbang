@@ -105,7 +105,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 형태</div></div></div>
 <div class="label">방향</div><div class="segment" id="ncOrientation"><button class="on" data-o="horizontal">가로형</button><button data-o="vertical">세로형</button></div>
 <div class="label" style="margin-top:14px">종류</div><div class="segment" id="ncKind"><button class="on" data-k="normal">일반 명함</button><button data-k="photo">포토 명함</button></div><div class="label" style="margin-top:14px">로고</div><div class="segment" id="ncLogoToggle"><button class="on" data-on="1">넣기</button><button data-on="0">빼기</button></div><div class="label" style="margin-top:14px">모서리</div><div class="segment" id="ncCorner"><button class="on" data-c="round">둥글게</button><button data-c="sharp">각지게</button></div><div class="label" style="margin-top:14px">QR 코드 <span style="font-weight:500;color:var(--muted)">(웹사이트 링크)</span></div><div class="segment" id="ncQrToggle"><button class="on" data-qr="0">빼기</button><button data-qr="1">넣기</button></div><div class="field" id="ncQrUrlWrap" style="margin-top:10px;display:none"><div class="label">QR 링크 (스캔하면 열릴 주소)</div><input class="input" id="ncQrUrl" placeholder="https://... (홈페이지·인스타·예약 등)" value="https://designgongbang.com"></div></div>
-<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">템플릿 선택</div></div></div><div class="template-grid" id="ncTemplates"></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">템플릿 선택</div></div></div><div class="field"><div class="label">업종 (선택하면 맞춤 템플릿 추천)</div><select class="select" id="ncIndustry"><option value="">업종 선택 안 함</option><option>카페</option><option>베이커리</option><option>음식점</option><option>고깃집</option><option>미용실</option><option>네일</option><option>뷰티</option><option>피부</option><option>개발자</option><option>IT</option><option>스타트업</option><option>디자이너</option><option>포토</option><option>크리에이터</option><option>법인</option><option>기업</option><option>금융</option><option>변호사</option><option>호텔</option><option>주얼리</option><option>전통</option><option>한식</option><option>공방</option><option>작가</option></select></div><div class="template-grid" id="ncTemplates"></div></div>
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">명함 정보</div></div></div>
 <div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div><div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="이서준"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div><div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div><div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div><div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div><div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="designgongbang.com"></div>
 <div class="field photo-upload-wrap" id="photoWrap"><div class="label">프로필 사진</div><input class="input" type="file" id="ncPhoto" accept="image/*"></div></div>
@@ -174,34 +174,122 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 /* 명함 커스텀 이미지 오버레이 */
 #ncFront{position:relative}
 .nc-custom-img{position:absolute;top:14px;left:14px;width:64px;height:auto;max-width:60%;z-index:6;border-radius:4px}
-/* 명함 템플릿별 실제 디자인 차별화 */
-/* 다크: 모든 글자 밝게 */
-.card-preview.tpl-dark{--nc-accent:#a99bff}
-.card-preview.tpl-dark .nc-lines{color:#c7ccd6}
-.card-preview.tpl-dark .nc-role{color:#aeb4c0}
-.card-preview.tpl-dark .nc-left{border-right-color:rgba(255,255,255,.16)}
-.card-preview.tpl-dark .vertical.nc-left,.vertical.card-preview.tpl-dark .nc-left{border-bottom-color:rgba(255,255,255,.16)}
-/* 프리미엄: 세리프 + 골드 라인 + 우아한 여백 (고급 명함 느낌) */
-.card-preview.tpl-premium{--nc-accent:#b08d57}
-.tpl-premium .nc-left{border-right-color:#e0d3b8}
-.tpl-premium .nc-logo{background:transparent;border:1.5px solid #b08d57;color:#b08d57;border-radius:0;font-family:'Nanum Myeongjo',serif;font-weight:700}
-.tpl-premium .nc-company{font-family:'Nanum Myeongjo',serif;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:15px}
-.tpl-premium .nc-name{font-family:'Nanum Myeongjo',serif;font-weight:800;letter-spacing:.02em}
-.tpl-premium .nc-right{position:relative}
-.tpl-premium .nc-right .nc-name{padding-top:14px}
-.tpl-premium .nc-right .nc-name:before{content:"";position:absolute;left:28px;top:26px;width:38px;height:2px;background:#b08d57}
-.tpl-premium .nc-role{color:#9a8460}
-/* 미니멀: 로고 블록 제거, 얇고 넓은 여백, 가는 강조선 */
-.tpl-minimal .nc-left{border-right:0;justify-content:flex-start;padding-top:38px}
-.tpl-minimal .nc-logo{width:auto;height:auto;background:transparent;color:var(--nc-accent);border-radius:0;font-size:30px;font-weight:800;margin-bottom:12px}
-.tpl-minimal .nc-company{font-weight:700;letter-spacing:.06em;font-size:15px}
-.tpl-minimal .nc-name{font-weight:800;letter-spacing:.01em}
-.tpl-minimal .nc-lines{opacity:.72;gap:6px}
-.tpl-minimal .nc-right{padding-top:38px}
 /* 편집 중엔 카드 밖으로 나간 리사이즈 핸들도 잡히게 */
 .card-preview.editing{overflow:visible}
 /* 텍스트 요소를 글자폭에 맞춰 리사이즈 핸들이 글자 바로 옆에 오게 */
 .card-preview .nc-name,.card-preview .nc-company,.card-preview .nc-lines .txt{width:max-content;max-width:100%}
+
+/* ===== 명함 템플릿 썸네일 ===== */
+.tplt{position:relative}
+.tplt-mini{position:relative;height:74px;border-radius:10px;overflow:hidden;background:var(--tb);color:var(--tf);padding:11px 12px;margin-bottom:8px;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.tplt-brand{font-size:11px;font-weight:800;color:var(--tf);opacity:.95;letter-spacing:-.01em}
+.tplt-mini .l1{height:5px;width:66%;border-radius:3px;background:var(--tf);opacity:.85}
+.tplt-mini .l2{height:3px;width:44%;border-radius:3px;background:var(--tf);opacity:.4}
+.tplt-mz .tplt-mini{background:linear-gradient(135deg,#7b2ff7,#f107a3)}
+.tplt-startup .tplt-mini{background:linear-gradient(135deg,#1b1e3a,#3a2a6a)}
+.tplt-luxury .tplt-mini{background:linear-gradient(135deg,#1a1c20,#2c2f36)}
+.tplt-modern .tplt-mini{background:#0e0e0e}
+.tplt-developer .tplt-mini{background:#0d1117;font-family:'Courier New',monospace}
+.tplt-developer .tplt-brand:before{content:"> ";color:#3fb950}
+.tplt-premium .tplt-brand,.tplt-luxury .tplt-brand,.tplt-restaurant .tplt-brand{font-family:'Nanum Myeongjo',serif;letter-spacing:.1em;text-transform:uppercase}
+.tplt-traditional .tplt-brand,.tplt-beauty .tplt-brand{font-family:'Nanum Myeongjo',serif}
+.tplt-portfolio .tplt-brand{font-size:15px;font-weight:900}
+.tplt-corporate .tplt-mini{border-left:5px solid #12233f}
+.tplt-cafe .tplt-mini{background:radial-gradient(circle at 80% 20%,#d8c3a2,#ece0cf)}
+/* 배지 */
+.tpl-badge{position:absolute;top:7px;right:7px;font-size:9px;font-weight:900;letter-spacing:.03em;padding:2px 7px;border-radius:999px;color:#fff;z-index:2}
+.tpl-badge.b-best{background:#f0a500;color:#3a2c00}.tpl-badge.b-new{background:#2f8fff}.tpl-badge.b-hot{background:#ff3b5c}.tpl-badge.b-rec{background:var(--purple)}.tpl-badge.b-pop{background:#12c48b}
+
+/* ===== 명함 실제 디자인: 템플릿마다 완전히 다르게 ===== */
+/* 공통: 폰트/여백 리셋 훅 */
+.card-preview[class*="tpl-"] .nc-role{color:inherit;opacity:.65}
+/* Signature - 여백 중심 브랜드 */
+.tpl-signature .nc-left{border-right:1px solid rgba(0,0,0,.08);justify-content:center}
+.tpl-signature .nc-logo{background:transparent;border:1.5px solid var(--nc-accent);color:var(--nc-accent);border-radius:50%}
+.tpl-signature .nc-company{font-size:22px;letter-spacing:-.02em}
+.tpl-signature .nc-name{font-weight:800}
+/* Premium - 블랙&골드 세리프 */
+.tpl-premium{--nc-accent:#c6a35a}
+.tpl-premium .nc-left{border-right:1px solid rgba(198,163,90,.35)}
+.tpl-premium .nc-logo{background:transparent;border:1px solid #c6a35a;color:#c6a35a;border-radius:0;font-family:'Nanum Myeongjo',serif}
+.tpl-premium .nc-company{font-family:'Nanum Myeongjo',serif;letter-spacing:.16em;text-transform:uppercase;font-size:14px;color:#c6a35a}
+.tpl-premium .nc-name{font-family:'Nanum Myeongjo',serif;letter-spacing:.02em}
+.tpl-premium .nc-lines{color:#cfc3a6}
+/* MZ Instagram - 그라데이션 감성 */
+.tpl-mz{background:linear-gradient(135deg,#7b2ff7 0%,#e93cac 55%,#ff8a3d 100%)!important}
+.tpl-mz .nc-left{border-right:0}
+.tpl-mz .nc-logo{background:rgba(255,255,255,.2);color:#fff;border-radius:16px;backdrop-filter:blur(6px)}
+.tpl-mz .nc-company{color:#fff;font-weight:900;letter-spacing:-.02em}
+.tpl-mz .nc-name{font-weight:900;font-size:27px}.tpl-mz .nc-lines,.tpl-mz .nc-role{color:rgba(255,255,255,.9)}
+/* Modern Black - 애플 미니멀 */
+.tpl-modern .nc-left{border-right:0}
+.tpl-modern .nc-logo{width:38px;height:38px;background:#fff;color:#0e0e0e;border-radius:9px;font-size:18px}
+.tpl-modern .nc-company{font-weight:600;letter-spacing:.04em;font-size:15px;color:#fff}
+.tpl-modern .nc-name{font-weight:700;letter-spacing:-.01em}.tpl-modern .nc-lines{color:#9aa0a6}
+/* Minimal - 여백/얇게 */
+.tpl-minimal .nc-left{border-right:0;padding-top:38px}
+.tpl-minimal .nc-logo{display:none}
+.tpl-minimal .nc-company{font-weight:700;letter-spacing:.05em;font-size:15px}
+.tpl-minimal .nc-name{font-weight:700}.tpl-minimal .nc-lines{opacity:.7}.tpl-minimal .nc-right{padding-top:38px}
+/* Cafe - 따뜻 */
+.tpl-cafe{--nc-accent:#9c6b3f}
+.tpl-cafe .nc-left{border-right:1px dashed rgba(120,80,40,.3)}
+.tpl-cafe .nc-logo{background:#9c6b3f;color:#fff;border-radius:14px}
+.tpl-cafe .nc-company{color:#7a4f28;font-weight:800}
+/* Beauty - 뷰티 로즈 */
+.tpl-beauty{--nc-accent:#c14f74}
+.tpl-beauty .nc-left{border-right:1px solid rgba(193,79,116,.25)}
+.tpl-beauty .nc-logo{background:transparent;border:1.5px solid #c14f74;color:#c14f74;border-radius:50%}
+.tpl-beauty .nc-company{font-family:'Nanum Myeongjo',serif;color:#a5385c;letter-spacing:.04em}
+.tpl-beauty .nc-name{font-family:'Nanum Myeongjo',serif}
+/* Developer - 터미널 */
+.tpl-developer .nc-left{border-right:1px solid #21262d}
+.tpl-developer .nc-logo{background:#161b22;color:#3fb950;border-radius:8px;font-family:'Courier New',monospace;border:1px solid #30363d}
+.tpl-developer .nc-company{font-family:'Courier New',monospace;color:#3fb950;font-weight:700}
+.tpl-developer .nc-company:before{content:"$ "}
+.tpl-developer .nc-name{font-family:'Courier New',monospace;font-weight:700}.tpl-developer .nc-lines{font-family:'Courier New',monospace;color:#8b949e}
+/* Corporate - 신뢰 */
+.tpl-corporate{--nc-accent:#12233f}
+.tpl-corporate .nc-left{background:#12233f;color:#fff;border-right:0;align-items:flex-start}
+.tpl-corporate .nc-logo{background:#fff;color:#12233f;border-radius:6px}
+.tpl-corporate .nc-company{color:#fff;font-weight:800;letter-spacing:.02em}
+.tpl-corporate .nc-name{color:#12233f;font-weight:800}
+/* Traditional - 한지/전통 */
+.tpl-traditional{--nc-accent:#b23b2e;background:#efe4cd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 20h40M20 0v40' stroke='%23d8c8a8' stroke-width='.5'/%3E%3C/svg%3E")!important}
+.tpl-traditional .nc-left{border-right:1px solid rgba(120,70,40,.25)}
+.tpl-traditional .nc-logo{background:#b23b2e;color:#efe4cd;border-radius:4px;font-family:'Nanum Myeongjo',serif}
+.tpl-traditional .nc-company{font-family:'Nanum Myeongjo',serif;color:#8a2e22;letter-spacing:.06em}
+.tpl-traditional .nc-name{font-family:'Nanum Myeongjo',serif}
+/* Creative - 자유 타이포 */
+.tpl-creative{--nc-accent:#111}
+.tpl-creative .nc-left{border-right:0}
+.tpl-creative .nc-logo{background:#111;color:#fff4d6;border-radius:0;transform:rotate(-6deg)}
+.tpl-creative .nc-company{font-weight:900;font-size:22px;letter-spacing:-.03em}
+.tpl-creative .nc-name{font-weight:900;font-size:30px;line-height:.95}
+/* Startup - Linear 컬러 */
+.tpl-startup{background:linear-gradient(160deg,#12142b,#221a4a 60%,#0f1020)!important}
+.tpl-startup .nc-left{border-right:1px solid rgba(255,255,255,.08)}
+.tpl-startup .nc-logo{background:linear-gradient(135deg,#7b8cff,#c86bff);color:#fff;border-radius:11px}
+.tpl-startup .nc-company{color:#fff;font-weight:800}
+.tpl-startup .nc-name{color:#fff;font-weight:800}.tpl-startup .nc-lines,.tpl-startup .nc-role{color:#b9bce0}
+/* Luxury - 메탈/글래스 */
+.tpl-luxury{--nc-accent:#cbb682;background:linear-gradient(135deg,#15171b,#23262c 55%,#15171b)!important}
+.tpl-luxury .nc-left{border-right:1px solid rgba(203,182,130,.3)}
+.tpl-luxury .nc-logo{background:linear-gradient(135deg,#cbb682,#8f7a4a);color:#15171b;border-radius:0;font-family:'Nanum Myeongjo',serif}
+.tpl-luxury .nc-company{font-family:'Nanum Myeongjo',serif;color:#cbb682;letter-spacing:.14em;text-transform:uppercase;font-size:14px}
+.tpl-luxury .nc-name{font-family:'Nanum Myeongjo',serif;color:#eee4cc}.tpl-luxury .nc-lines{color:#b9ac8c}
+/* Portfolio - 큰 이름 */
+.tpl-portfolio .nc-left{display:none}
+.tpl-portfolio.nc-front{grid-template-columns:1fr}
+.tpl-portfolio .nc-right{padding:34px}
+.tpl-portfolio .nc-name{font-size:40px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.tpl-portfolio .nc-company{color:var(--nc-accent);font-weight:800;margin-bottom:6px}
+/* Restaurant - 미식 */
+.tpl-restaurant{--nc-accent:#c8a25a}
+.tpl-restaurant .nc-left{border-right:1px solid rgba(200,162,90,.3)}
+.tpl-restaurant .nc-logo{background:transparent;border:1px solid #c8a25a;color:#c8a25a;border-radius:50%;font-family:'Nanum Myeongjo',serif}
+.tpl-restaurant .nc-company{font-family:'Nanum Myeongjo',serif;color:#c8a25a;letter-spacing:.1em;text-transform:uppercase;font-size:13px}
+.tpl-restaurant .nc-name{font-family:'Nanum Myeongjo',serif}.tpl-restaurant .nc-lines{color:#d8ccb6}
 /* AI 배경 밝기 자동 감지 -> 글자색 자동 (사용자가 직접 지정한 색은 인라인이라 유지됨) */
 .banner.aibg-light .headline,.banner.aibg-light .subline,.banner.aibg-light #bInfo,.aibg-light .cp-title,.aibg-light .cp-cond,.aibg-light .cp-eyebrow,.aibg-light .cp-shop,.aibg-light .menu-item strong,.aibg-light .menu-item span,.aibg-light .menu-section h3,.aibg-light .mv-kicker,.aibg-light .mv-shop,.aibg-light .mv-desc,.aibg-light .mv-phone{color:#16171b}
 .banner.aibg-dark .headline,.banner.aibg-dark .subline{color:#fff}
@@ -505,9 +593,33 @@ document.addEventListener("keydown",e=>{const t=(e.target.tagName||"");if(t==="I
 function cpSetMode(m){cpMode=m;[["cpModeOff","none"],["cpModeMove","move"],["cpModeText","text"]].forEach(([id,mm])=>{const b=$("#"+id);if(b)b.classList.toggle("on",mm===m)});const mc=$("#cpMoveControls");if(mc)mc.style.display=m==="move"?"flex":"none";const tc=$("#cpTextControls");if(tc)tc.style.display=m==="text"?"flex":"none";cpRemoveHandle();$$("#coupon .txt").forEach(x=>x.classList.remove("sel"));cpSel=null;cpSyncUI();const bd=$("#coupon");bd.classList.toggle("editing",m!=="none");bd.classList.toggle("mode-move",m==="move");bd.classList.toggle("mode-text",m==="text")}
 if($("#cpModeOff")){$("#cpModeOff").onclick=()=>cpSetMode("none");$("#cpModeMove").onclick=()=>cpSetMode("move");$("#cpModeText").onclick=()=>cpSetMode("text");["cpEditX","cpEditY","cpEditSize"].forEach(id=>{$("#"+id).onfocus=()=>{if(cpSel)cpPush()};$("#"+id).oninput=e=>{if(!cpSel)return;const s=cpTstyle(cpSel.dataset.tkey),map={cpEditX:"x",cpEditY:"y",cpEditSize:"size"};s[map[id]]=+e.target.value||0;cpApply(cpSel)}});[["cpAlignLeft","left"],["cpAlignCenter","center"],["cpAlignRight","right"]].forEach(([id,a])=>$("#"+id).onclick=()=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).align=a;cpApply(cpSel)});TXTCOLORS.forEach(c=>{const e=document.createElement("span");e.className="chip";e.dataset.c=c;e.style.background=c;e.onclick=()=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).color=c;cpApply(cpSel);cpSyncUI()};$("#cpTxtColors").append(e)});FONTS.forEach(([n,f])=>$("#cpTxtFont").insertAdjacentHTML("beforeend",`<option value="${f}">${n}</option>`));$("#cpTxtFont").onchange=e=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).font=e.target.value;cpApply(cpSel)};$("#cpTxtBold").onclick=()=>{if(!cpSel)return;cpPush();const s=cpTstyle(cpSel.dataset.tkey);s.bold=!s.bold;cpApply(cpSel);cpSyncUI()};$("#cpTxtItalic").onclick=()=>{if(!cpSel)return;cpPush();const s=cpTstyle(cpSel.dataset.tkey);s.italic=!s.italic;cpApply(cpSel);cpSyncUI()}}
 
-const ncTemplates=[{id:"simple",name:"심플",tag:"정돈된 기본형"},{id:"premium",name:"프리미엄",tag:"고급스러운 배치"},{id:"dark",name:"다크",tag:"강한 대비"},{id:"minimal",name:"미니멀",tag:"여백 중심"}];
-let ncState={orientation:"horizontal",kind:"normal",tpl:"simple",accent:"#7657ff",photo:"",logoImg:"",logoOn:true,qr:false,corner:"round",photoPos:{x:50,y:50},textStyles:{}};
-ncTemplates.forEach(t=>$("#ncTemplates").insertAdjacentHTML("beforeend",`<div class="template-card ${t.id==="simple"?"on":""}" data-id="${t.id}"><div class="tpl-mini" style="background:${t.id==="dark"?"#171b25":t.id==="premium"?"#efe4d3":t.id==="minimal"?"#e8ecf1":"#fff"}"><div style="position:absolute;left:10px;top:10px;width:32%;bottom:10px;background:#7657ff22;border-radius:6px"></div><div style="position:absolute;right:10px;top:15px;width:48%;height:5px;background:#777"></div><div style="position:absolute;right:10px;top:28px;width:38%;height:3px;background:#aaa"></div></div><div class="tpl-name">${t.name}</div><div class="tpl-tag">${t.tag}</div></div>`));
+// 명함 템플릿 레지스트리 — 완전히 다른 브랜드 스타일. bg/fg + 업종추천 + 배지.
+const ncTemplates=[
+ {id:"signature",name:"Signature",tag:"브랜드 중심",badge:"추천",bg:"#faf8f4",fg:"#1a1a1a",inds:["기본","디자인","브랜드","공방"]},
+ {id:"premium",name:"Premium",tag:"블랙 & 골드",badge:"BEST",bg:"#111111",fg:"#efe1c2",inds:["법인","기업","호텔","변호사"]},
+ {id:"mz",name:"MZ Instagram",tag:"그라데이션 감성",badge:"HOT",bg:"#20123a",fg:"#ffffff",inds:["카페","음식점","뷰티","크리에이터"]},
+ {id:"modern",name:"Modern Black",tag:"애플 미니멀",badge:"NEW",bg:"#0e0e0e",fg:"#ffffff",inds:["개발자","IT","스타트업"]},
+ {id:"minimal",name:"Minimal",tag:"여백 중심",badge:"인기",bg:"#f4f5f7",fg:"#17181c",inds:["개발자","디자이너","스타트업"]},
+ {id:"cafe",name:"Cafe",tag:"따뜻한 카페",badge:"",bg:"#ece0cf",fg:"#3c2c1e",inds:["카페","베이커리","디저트"]},
+ {id:"beauty",name:"Beauty",tag:"뷰티 살롱",badge:"",bg:"#f6e9ee",fg:"#6a2a3d",inds:["미용실","네일","뷰티","피부"]},
+ {id:"developer",name:"Developer",tag:"코드 감성",badge:"",bg:"#0d1117",fg:"#e6edf3",inds:["개발자","IT"]},
+ {id:"corporate",name:"Corporate",tag:"신뢰 기업형",badge:"",bg:"#ffffff",fg:"#12233f",inds:["법인","기업","금융"]},
+ {id:"traditional",name:"Traditional",tag:"한지 · 전통",badge:"",bg:"#efe4cd",fg:"#3a2416",inds:["전통","한식","공방"]},
+ {id:"creative",name:"Creative",tag:"자유 타이포",badge:"",bg:"#fff4d6",fg:"#191919",inds:["디자이너","크리에이터","작가"]},
+ {id:"startup",name:"Startup",tag:"Linear 컬러",badge:"NEW",bg:"#0f1020",fg:"#ffffff",inds:["스타트업","IT"]},
+ {id:"luxury",name:"Luxury",tag:"메탈 글래스",badge:"",bg:"#15171b",fg:"#e6dcc4",inds:["뷰티","법인","호텔","주얼리"]},
+ {id:"portfolio",name:"Portfolio",tag:"큰 이름",badge:"",bg:"#ffffff",fg:"#111111",inds:["디자이너","포토","작가"]},
+ {id:"restaurant",name:"Restaurant",tag:"미식 감각",badge:"",bg:"#1b1411",fg:"#f0e3d2",inds:["음식점","고깃집","레스토랑"]},
+ {id:"aipick",name:"AI Pick",tag:"업종 자동 추천",badge:"추천",bg:"#eef1f5",fg:"#17181c",inds:[]}
+];
+function ncTpl(id){return ncTemplates.find(t=>t.id===id)||ncTemplates[0]}
+let ncState={orientation:"horizontal",kind:"normal",tpl:"signature",industry:"",accent:"#7657ff",photo:"",logoImg:"",logoOn:true,qr:false,corner:"round",photoPos:{x:50,y:50},textStyles:{}};
+function tplBadgeHtml(b){if(!b)return"";const cls=b==="BEST"?"b-best":b==="NEW"?"b-new":b==="HOT"?"b-hot":b==="인기"?"b-pop":"b-rec";return `<span class="tpl-badge ${cls}">${b}</span>`}
+function renderCardTemplates(){const box=$("#ncTemplates");if(!box)return;const co=(($("#ncCo")&&$("#ncCo").value)||"BRAND").slice(0,12);box.innerHTML=ncTemplates.map(t=>`<div class="template-card tplt tplt-${t.id}${t.id===ncState.tpl?" on":""}" data-id="${t.id}"><div class="tplt-mini" style="--tb:${t.bg};--tf:${t.fg}"><span class="tplt-brand">${co}</span><i class="l1"></i><i class="l2"></i></div>${tplBadgeHtml(t.badge)}<div class="tpl-name">${t.name}</div><div class="tpl-tag">${t.tag}</div></div>`).join("");$$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");if(c.dataset.id==="aipick")applyAiPick();cardRender()})}
+function recommendedTpls(){const ind=ncState.industry;if(!ind)return[];return ncTemplates.filter(t=>(t.inds||[]).some(x=>x===ind)).map(t=>t.id)}
+function applyAiPick(){const rec=recommendedTpls();ncState.tpl=rec[0]||"signature";renderCardTemplates();cardRender()}
+renderCardTemplates();
+{const _ni=$("#ncIndustry");if(_ni)_ni.onchange=()=>{ncState.industry=_ni.value;if(ncState.tpl==="aipick")applyAiPick();else renderCardTemplates()}}
 $$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");cardRender()});
 $$("#ncOrientation button").forEach(b=>b.onclick=()=>{$$("#ncOrientation button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.orientation=b.dataset.o;cardRender()});
 $$("#ncKind button").forEach(b=>b.onclick=()=>{$$("#ncKind button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.kind=b.dataset.k;$("#photoWrap").style.display=ncState.kind==="photo"?"block":"none";cardRender()});
@@ -530,7 +642,7 @@ let cScale=1;
 function fitCard(){const card=document.getElementById("ncFront"),fit=document.getElementById("ncFit");if(!card||!fit)return;const stage=fit.parentElement;if(!stage)return;const cs=getComputedStyle(stage),pad=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0);const avail=stage.clientWidth-pad;if(avail<=0)return;card.style.transform='none';const natW=card.offsetWidth,natH=card.offsetHeight;if(!natW)return;cScale=Math.min(1,avail/natW);card.style.transform='scale('+cScale+')';fit.style.width=(natW*cScale)+'px';fit.style.height=(natH*cScale)+'px'}
 window.addEventListener("resize",()=>{try{fitCard()}catch(e){}});
 function cardRender(){const el=$("#ncFront"),o=ncState.orientation;el.style.setProperty("--nc-accent",ncState.accent);
-let bg="#fff",color="#151923";if(ncState.tpl==="dark"){bg="#171b25";color="#f5f6fa"}if(ncState.tpl==="premium"){bg="#f6efe1";color="#2a2620"}if(ncState.tpl==="minimal"){bg="#eef1f5"}
+const _t=ncTpl(ncState.tpl);let bg=_t.bg||"#fff",color=_t.fg||"#151923";
 const qrHtml=ncState.qr?'<div class="nc-qr" id="ncQr"></div>':'';
 const logoInner=ncState.logoImg?`<img src="${ncState.logoImg}" style="width:100%;height:100%;object-fit:cover">`:"D";
 if(ncState.kind==="photo"){el.className=`card-preview ${o} photo-card tpl-${ncState.tpl}`;el.style.background=bg;el.style.color=color;el.style.borderRadius=ncState.corner==="sharp"?"0":"";el.innerHTML=`<div class="photo-area">${ncState.photo?`<img class="nc-photo-img" src="${ncState.photo}" style="object-position:${(ncState.photoPos&&ncState.photoPos.x)||50}% ${(ncState.photoPos&&ncState.photoPos.y)||50}%">`:""}</div><div class="photo-info" style="position:relative"><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role txt" data-tkey="role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);cApplyAll();cBind();try{bindPhotoDrag()}catch(e){}applyBg("card");try{fitCard()}catch(e){}return}

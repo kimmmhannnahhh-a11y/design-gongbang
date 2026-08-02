@@ -65,52 +65,20 @@ const faceFields = [
   "motif"
 ];
 
-const requiredIndustryIds = [
-  "police",
-  "cafe",
-  "hair",
-  "nail",
-  "taxi",
-  "developer",
-  "designer",
-  "realestate",
-  "hotel",
-  "airline",
-  "dental",
-  "fashion"
-];
-
 const expectedLayouts = {
   signature: ["classic-split", "classic-mark"],
   modern: ["modern-sidebar", "modern-contact"],
   minimal: ["minimal-space", "minimal-rule"],
   premium: ["premium-crest", "premium-balanced"],
   creative: ["creative-grid", "creative-notes"],
-  noir: ["noir-block", "noir-columns"],
-  police: ["police-emblem", "police-right"],
-  cafe: ["cafe-seal", "cafe-social"],
-  hair: ["hair-asymmetric", "hair-booking"],
-  nail: ["nail-center", "nail-corner"],
-  taxi: ["taxi-bold", "taxi-split"],
-  developer: ["developer-terminal", "developer-right"],
-  designer: ["designer-grid", "designer-details"],
-  realestate: ["realestate-split", "realestate-map"],
-  hotel: ["hotel-crest", "hotel-balanced"],
-  airline: ["airline-route", "airline-right"],
-  dental: ["dental-clean", "dental-center"],
-  fashion: ["fashion-editorial", "fashion-magazine"]
+  noir: ["noir-block", "noir-columns"]
 };
 
-test("registry exposes six basic and exactly twelve required industry templates", () => {
+test("registry exposes exactly the six basic templates", () => {
   assert.ok(Array.isArray(templates));
-  assert.equal(templates.length, 18);
+  assert.equal(templates.length, 6);
   assert.equal(templates.filter((item) => item.category === "basic").length, 6);
-
-  const industryIds = templates
-    .filter((item) => item.category === "industry")
-    .map((item) => item.id)
-    .sort();
-  assert.deepEqual(industryIds, [...requiredIndustryIds].sort());
+  assert.equal(templates.filter((item) => item.category === "industry").length, 0);
   assert.equal(new Set(templates.map((item) => item.id)).size, templates.length);
 });
 
@@ -153,34 +121,8 @@ test("layout IDs are stable and every template has a distinct composition", () =
     );
   }
 
-  assert.equal(new Set(templates.map((item) => item.frontLayout)).size, 18);
-  assert.equal(new Set(templates.map((item) => item.backLayout)).size, 18);
-});
-
-test("industry-defining colors, alignment, and positions cannot drift", () => {
-  const byId = Object.fromEntries(templates.map((item) => [item.id, item]));
-
-  assert.equal(byId.taxi.frontBackground, "#ffd21f");
-  assert.equal(byId.taxi.backBackground, "#ffc800");
-  assert.equal(byId.taxi.backLayout, "taxi-split");
-  assert.equal(byId.taxi.qrPosition.back, "bottom-left");
-
-  assert.equal(byId.nail.frontBackground, "#f8e2e9");
-  assert.equal(byId.nail.backBackground, "#f3ceda");
-  assert.equal(byId.nail.infoPosition.back, "bottom-right");
-  assert.equal(byId.nail.frontTextAlign, "center");
-
-  assert.equal(byId.police.logoPosition.front, "center");
-  assert.equal(byId.police.backTextAlign, "right");
-  assert.equal(byId.police.dividerStyle.back, "gold-bottom-rule");
-
-  assert.equal(byId.cafe.frontTextAlign, "center");
-  assert.equal(byId.cafe.backTextAlign, "center");
-  assert.equal(byId.cafe.qrPosition.back, "bottom-right");
-
-  assert.equal(byId.hair.qrPosition.back, "bottom-right");
-  assert.equal(byId.developer.backTextAlign, "right");
-  assert.equal(byId.developer.infoPosition.back, "center-right");
+  assert.equal(new Set(templates.map((item) => item.frontLayout)).size, 6);
+  assert.equal(new Set(templates.map((item) => item.backLayout)).size, 6);
 });
 
 test("every TemplateData visual token has a renderer style", () => {

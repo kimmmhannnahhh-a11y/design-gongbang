@@ -9,11 +9,13 @@
 <link rel="apple-touch-icon" href="/icon-192.png">
 <link rel="icon" type="image/png" href="/icon-192.png">
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&amp;family=Noto+Serif+KR:wght@400;500;600;700&amp;display=swap">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1256185497932248" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@04f46c6a/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<script src="business-card-templates.js"></script>
 <style>
 :root{--bg:#08090d;--surface:#101219;--surface2:#151822;--surface3:#1b1f2b;--line:#252938;--line2:#34394c;--text:#f7f8fb;--sub:#9ba3b5;--muted:#687083;--purple:#7c5cff;--purple2:#9a7cff;--danger:#ff6577;--shadow:0 24px 70px rgba(0,0,0,.42);--radius:22px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%}body{color:var(--text);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(900px 500px at 12% -10%,rgba(124,92,255,.13),transparent 58%),radial-gradient(720px 520px at 95% 0%,rgba(53,208,138,.05),transparent 56%),var(--bg);letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
@@ -21,7 +23,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .topstick{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,#08090d 93%,rgba(8,9,13,.82));backdrop-filter:blur(18px)}
 .brand{display:flex;align-items:center;gap:13px;min-width:250px}.brand-mark{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#8c6cff,#6545ed);box-shadow:0 12px 28px rgba(124,92,255,.27)}.brand-title{font-size:20px;font-weight:850;line-height:1.05}.brand-sub{margin-top:5px;color:var(--sub);font-size:12px;font-weight:600}
 .nav{margin:auto;display:flex;align-items:center;padding:5px;background:rgba(16,18,25,.92);border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}.nav button{border:0;background:transparent;color:var(--sub);height:42px;padding:0 18px;border-radius:11px;font-size:14px;font-weight:700;cursor:pointer;transition:.18s}.nav button.on{color:#fff;background:var(--surface3);box-shadow:inset 0 0 0 1px #34394c}.top-action{min-width:250px;display:flex;justify-content:flex-end}.top-action button{height:43px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:#12151e;font-weight:700}
-.view{display:none}.view.on{display:block}.workspace{display:grid;grid-template-columns:410px minmax(0,1fr);gap:24px;align-items:start}.left{display:flex;flex-direction:column;gap:14px}.panel,.preview-panel{background:linear-gradient(180deg,rgba(20,23,32,.98),rgba(14,16,23,.98));border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 44px rgba(0,0,0,.18)}.panel{padding:20px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}.step{color:var(--purple2);font-size:11px;font-weight:850;letter-spacing:.07em}.panel-title{font-size:16px;font-weight:800;margin-top:5px}.field{margin-bottom:14px}.field:last-child{margin-bottom:0}.label{display:flex;justify-content:space-between;margin-bottom:7px;color:#b8bfd0;font-size:12px;font-weight:700}.input,.select,.textarea{width:100%;border:1px solid var(--line2);border-radius:13px;background:#0d1017;color:#fff;padding:0 14px;outline:none;transition:.18s}.input,.select{height:49px}.textarea{min-height:86px;padding:13px 14px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.14)}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.segment{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;padding:5px;border:1px solid var(--line);border-radius:13px;background:#0d1017}.segment.wrap{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}#bannerRatio.wrap{grid-template-columns:repeat(4,1fr)}#bannerRatio.wrap button{height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}.segment button{height:38px;border:0;border-radius:9px;background:transparent;color:var(--sub);font-size:12px;font-weight:750;cursor:pointer}.segment button.on{background:#222738;color:#fff;box-shadow:inset 0 0 0 1px #383e52}.chips{display:flex;gap:11px;flex-wrap:wrap}.chip{width:29px;height:29px;border-radius:9px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}.chip.on{outline:2px solid #fff;outline-offset:3px}.btn{height:46px;padding:0 17px;border-radius:12px;border:1px solid var(--line2);background:#151924;font-weight:800;font-size:13px;cursor:pointer}.btn.primary{border:0;background:linear-gradient(135deg,#8767ff,#6949ed);box-shadow:0 11px 26px rgba(124,92,255,.25)}.btn.ghost{height:39px}.btn.danger{border-color:#5b2730;color:#ff8b98;background:#261318}.preview-panel{padding:18px;position:sticky;top:100px}.preview-head{display:flex;align-items:center;justify-content:space-between;padding:2px 3px 14px}.preview-name{font-size:14px;font-weight:800}.preview-note{font-size:11px;color:var(--muted)}.stage{min-height:auto;border:1px solid #202432;border-radius:18px;background:linear-gradient(45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,linear-gradient(-45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,linear-gradient(45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,linear-gradient(-45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,#0e1118;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px;overflow:auto}.actions{display:flex;gap:9px;justify-content:center;padding-top:16px;flex-wrap:wrap}
+.view{display:none}.view.on{display:block}.workspace{display:grid;grid-template-columns:410px minmax(0,1fr);gap:24px;align-items:start}.left{display:flex;flex-direction:column;gap:14px}.panel,.preview-panel{background:linear-gradient(180deg,rgba(20,23,32,.98),rgba(14,16,23,.98));border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 44px rgba(0,0,0,.18)}.panel{padding:20px}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}.step{color:var(--purple2);font-size:11px;font-weight:850;letter-spacing:.07em}.panel-title{font-size:16px;font-weight:800;margin-top:5px}.field{margin-bottom:14px}.field:last-child{margin-bottom:0}.label{display:flex;justify-content:space-between;margin-bottom:7px;color:#b8bfd0;font-size:12px;font-weight:700}.input,.select,.textarea{width:100%;border:1px solid var(--line2);border-radius:13px;background:#0d1017;color:#fff;padding:0 14px;outline:none;transition:.18s}.input,.select{height:49px}.textarea{min-height:86px;padding:13px 14px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.14)}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.segment{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:5px;padding:5px;border:1px solid var(--line);border-radius:13px;background:#0d1017}.segment.wrap{grid-auto-flow:row;grid-template-columns:repeat(3,1fr)}#bannerRatio.wrap{grid-template-columns:repeat(4,1fr)}#bannerRatio.wrap button{height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}.segment button{height:38px;border:0;border-radius:9px;background:transparent;color:var(--sub);font-size:12px;font-weight:750;cursor:pointer}.segment button.on{background:#222738;color:#fff;box-shadow:inset 0 0 0 1px #383e52}.chips{display:flex;gap:11px;flex-wrap:wrap}.chip{width:29px;height:29px;border-radius:9px;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}.chip.on{outline:2px solid #fff;outline-offset:3px}.btn{height:46px;padding:0 17px;border-radius:12px;border:1px solid var(--line2);background:#151924;font-weight:800;font-size:13px;cursor:pointer}.btn.primary{border:0;background:linear-gradient(135deg,#8767ff,#6949ed);box-shadow:0 11px 26px rgba(124,92,255,.25)}.btn.ghost{height:39px}.btn.danger{border-color:#5b2730;color:#ff8b98;background:#261318}.preview-panel{padding:18px;position:sticky;top:100px;max-height:calc(100vh - 120px);overflow-y:auto}.preview-head{display:flex;align-items:center;justify-content:space-between;padding:2px 3px 14px}.preview-name{font-size:14px;font-weight:800}.preview-note{font-size:11px;color:var(--muted)}.stage{min-height:auto;border:1px solid #202432;border-radius:18px;background:linear-gradient(45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,linear-gradient(-45deg,#0b0d13 25%,transparent 25%) 0 0/22px 22px,linear-gradient(45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,linear-gradient(-45deg,transparent 75%,#0b0d13 75%) 0 0/22px 22px,#0e1118;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px;overflow:auto}.actions{display:flex;gap:9px;justify-content:center;padding-top:16px;flex-wrap:wrap}
 .template-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.template-card{position:relative;min-height:118px;border:2px solid var(--line2);border-radius:14px;background:#0d1017;padding:10px;cursor:pointer;overflow:hidden}.template-card.on{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,255,.12)}.template-card.on:after{content:"✓";position:absolute;right:8px;top:8px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--purple);font-size:12px;font-weight:900}.tpl-mini{height:70px;border-radius:9px;margin-bottom:8px;background:#eee;overflow:hidden;position:relative}.tpl-name{font-size:12px;font-weight:800}.tpl-tag{font-size:10px;color:var(--muted);margin-top:3px}.more-btn{width:100%;margin-top:10px}
 .editor-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#0d1017;margin-bottom:14px}.editor-toolbar .group{display:flex;align-items:center;gap:7px}.editor-toolbar label{font-size:11px;color:var(--sub);font-weight:700}.editor-toolbar input[type=number]{width:72px;height:36px;border:1px solid var(--line2);border-radius:9px;background:#131722;color:#fff;padding:0 9px}.editor-toolbar button{height:36px;padding:0 11px;border:1px solid var(--line2);border-radius:9px;background:#171b26;font-size:12px;font-weight:750}.edit-element{position:relative;cursor:move}.edit-element.selected{outline:2px dashed var(--purple);outline-offset:4px}
 .editor-toolbar .mode-group{gap:6px}.editor-toolbar .mode-group button{font-weight:800}.editor-toolbar .mode-group button.on{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 6px 16px rgba(124,92,255,.3)}.editor-toolbar select{height:36px;border:1px solid var(--line2);border-radius:9px;background:#131722;color:#fff;padding:0 8px;font-size:12px;font-weight:700}.editor-toolbar .chip{width:22px;height:22px;border-radius:6px}.editor-toolbar button.tog.on{background:var(--purple);border-color:var(--purple);color:#fff}.editor-toolbar .divider{width:1px;height:26px;background:var(--line2);margin:0 3px}
@@ -49,7 +51,7 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .coupon.stamp .stamp-grid{grid-template-columns:repeat(5,minmax(0,42px));gap:9px 10px}
 .coupon.stamp .stamp-cell{font-size:10px}
 .card-preview{--nc-accent:#7657ff;width:610px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);position:relative;transform-origin:top left}.nc-fit{overflow:hidden;margin:0 auto;max-width:100%}.card-preview.horizontal{aspect-ratio:1.8}.card-preview.vertical{width:380px;aspect-ratio:.62}.nc-front{display:grid;background:#fff;color:#151923}.horizontal.nc-front{grid-template-columns:.95fr 1.35fr}.vertical.nc-front{grid-template-rows:.8fr 1.2fr}.nc-left{padding:28px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #eceef3}.vertical .nc-left{border-right:0;border-bottom:1px solid #eceef3;align-items:center;text-align:center}.nc-logo{width:56px;height:56px;border-radius:15px;background:var(--nc-accent);display:grid;place-items:center;color:#fff;margin-bottom:16px;overflow:hidden}.nc-logo img{width:100%;height:100%;object-fit:cover}.nc-company{font-size:20px;font-weight:900;color:var(--nc-accent)}.nc-right{padding:28px;display:flex;flex-direction:column;justify-content:center;position:relative}.nc-name{font-size:24px;font-weight:900}.nc-role{font-size:11px;color:#687083;margin-left:7px}.nc-lines{margin-top:15px;display:flex;flex-direction:column;gap:7px;font-size:11px;color:#3c4350}.nc-qr{position:absolute;right:18px;bottom:18px;width:58px;height:58px;padding:0;background:transparent;border:0;border-radius:0}.nc-qr img,.nc-qr canvas{mix-blend-mode:multiply}.nc-back{background:var(--nc-accent);color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}.photo-card{display:grid;background:#fff;color:#111}.horizontal.photo-card{grid-template-columns:.9fr 1.1fr}.vertical.photo-card{grid-template-rows:1.15fr .85fr}.photo-area{background:#e8e9ef;min-height:210px}.photo-area img{width:100%;height:100%;object-fit:cover}.photo-info{padding:28px;display:flex;flex-direction:column;justify-content:center}.photo-info .nc-name{font-size:28px}.photo-upload-wrap{display:none}
-@media(max-width:1050px){html,body{overflow-x:clip;max-width:100%}.app{overflow-x:clip;max-width:100%}.topbar{flex-wrap:wrap}.brand,.top-action{min-width:0}.nav{order:3;width:100%;overflow:auto}.workspace{grid-template-columns:1fr;min-width:0}.left,.preview-panel{min-width:0;max-width:100%}.preview-panel{position:relative;top:0}.ai-row{grid-template-columns:1fr}.ai-crow{max-width:none}}
+@media(max-width:1050px){html,body{overflow-x:clip;max-width:100%}.app{overflow-x:clip;max-width:100%}.topbar{flex-wrap:wrap}.brand,.top-action{min-width:0}.nav{order:3;width:100%;overflow:auto}.workspace{grid-template-columns:1fr;min-width:0}.left,.preview-panel{min-width:0;max-width:100%}.preview-panel{position:relative;top:0;max-height:none;overflow:visible}.ai-row{grid-template-columns:1fr}.ai-crow{max-width:none}}
 @media(max-width:650px){html,body{overflow-x:clip;max-width:100%}.app{padding:14px;overflow-x:clip}.row2{grid-template-columns:1fr}.ai-row{grid-template-columns:1fr}.stage{padding:14px;min-height:auto}.banner{max-height:46vh}.template-grid{grid-template-columns:1fr 1fr}.item-row{grid-template-columns:1fr 95px 34px}.select,.input,.textarea{max-width:100%}.ai-btns .btn,.actions .btn{flex:1 1 auto}}
 .ai-panel{margin-top:16px;border:1px solid var(--line);border-radius:16px;background:#0d1017;padding:15px}.ai-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.ai-badge{font-size:13px;font-weight:850}.ai-remain{font-size:11px;color:var(--purple2);font-weight:800}.ai-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.ai-crow{max-width:calc(50% - 4px)}.ai-lab{display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--sub);font-weight:700}.ai-lab2{font-size:11px;color:var(--sub);font-weight:700;margin-bottom:7px}.ai-panel .select{height:42px;font-size:13px}.ai-decos{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:13px}.ai-deco{height:32px;padding:0 12px;border:1px solid var(--line2);border-radius:999px;background:#151924;color:var(--sub);font-size:12px;font-weight:750;cursor:pointer;transition:.15s}.ai-custom-toggle{height:32px;padding:0 14px;border:1px dashed var(--line2);border-radius:999px;background:#151924;color:var(--purple2);font-size:12px;font-weight:800;cursor:pointer;transition:.15s}.ai-custom-toggle.on{background:rgba(124,92,255,.16);border-color:var(--purple);border-style:solid;color:#fff}.ai-deco.on{background:var(--purple);border-color:var(--purple);color:#fff}.ai-btns{display:flex;flex-wrap:wrap;gap:8px}.ai-btns .btn{height:42px;flex:1 1 120px}.ai-status{margin-top:11px;font-size:12px;font-weight:750;min-height:17px}.ai-status.loading{color:var(--purple2)}.ai-status.ok{color:#35d08a}.ai-status.err{color:var(--danger)}.ai-spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;vertical-align:-2px;animation:aispin .7s linear infinite;margin-right:6px}@keyframes aispin{to{transform:rotate(360deg)}}.btn:disabled{opacity:.5;cursor:not-allowed}.ai-modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.62);backdrop-filter:blur(4px)}.ai-modal .box{background:var(--surface);border:1px solid var(--line2);border-radius:18px;padding:26px 24px;max-width:340px;text-align:center;box-shadow:var(--shadow)}.ai-modal h3{margin:0 0 10px;font-size:17px}.ai-modal p{color:var(--sub);font-size:13px;line-height:1.65;margin:0 0 18px}
 </style>
@@ -120,10 +122,24 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 01</div><div class="panel-title">명함 형태</div></div></div>
 <div class="label">방향</div><div class="segment" id="ncOrientation"><button class="on" data-o="horizontal">가로형</button><button data-o="vertical">세로형</button></div>
 <div class="label" style="margin-top:14px">종류</div><div class="segment" id="ncKind"><button class="on" data-k="normal">일반 명함</button><button data-k="photo">포토 명함</button></div><div class="label" style="margin-top:14px">로고</div><div class="segment" id="ncLogoToggle"><button class="on" data-on="1">넣기</button><button data-on="0">빼기</button></div><div class="label" style="margin-top:14px">모서리</div><div class="segment" id="ncCorner"><button class="on" data-c="round">둥글게</button><button data-c="sharp">각지게</button></div><div class="label" style="margin-top:14px">QR 코드 <span style="font-weight:500;color:var(--muted)">(웹사이트 링크)</span></div><div class="segment" id="ncQrToggle"><button class="on" data-qr="0">빼기</button><button data-qr="1">넣기</button></div><div class="field" id="ncQrUrlWrap" style="margin-top:10px;display:none"><div class="label">QR 링크 (스캔하면 열릴 주소)</div><input class="input" id="ncQrUrl" placeholder="https://... (홈페이지·인스타·예약 등)" value="https://designgongbang.com"></div></div>
-<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">명함 템플릿 선택</div><div class="panel-sub" style="font-size:12px;color:var(--sub);margin-top:3px">브랜드 스타일에 맞는 디자인을 골라보세요 · 앞/뒤 함께 제작</div></div></div><div class="field"><div class="label">업종 (선택하면 맞춤 템플릿 추천)</div><select class="select" id="ncIndustry"><option value="">업종 선택 안 함</option><option>카페</option><option>베이커리</option><option>음식점</option><option>고깃집</option><option>미용실</option><option>네일</option><option>뷰티</option><option>피부</option><option>개발자</option><option>IT</option><option>스타트업</option><option>디자이너</option><option>포토</option><option>크리에이터</option><option>법인</option><option>기업</option><option>금융</option><option>변호사</option><option>호텔</option><option>주얼리</option><option>전통</option><option>한식</option><option>공방</option><option>작가</option></select></div><div class="tplt-tabs" id="ncTplTabs"><button data-cat="all" class="on">전체</button><button data-cat="basic">기본</button><button data-cat="job">직업·업종</button></div><input class="input tplt-search" id="ncTplSearch" placeholder="업종 검색 (예: 카페, 경찰, 개발자)"><div class="template-grid" id="ncTemplates"></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 02</div><div class="panel-title">명함 템플릿 선택</div><div class="panel-sub" style="font-size:12px;color:var(--sub);margin-top:3px">앞면과 뒷면이 한 세트로 적용됩니다</div></div></div><div class="field"><div class="label">업종</div><select class="select" id="ncIndustry"><option value="">업종 전체</option><option>경찰</option><option>카페</option><option>헤어샵</option><option>네일샵</option><option>택시</option><option>개발자</option><option>디자이너</option><option>부동산</option><option>호텔</option><option>항공사</option><option>치과</option><option>의류 쇼핑몰</option></select></div><div class="tplt-tabs" id="ncTplTabs"><button type="button" data-cat="all" class="on">전체</button><button type="button" data-cat="basic">기본</button><button type="button" data-cat="industry">업종별</button></div><input class="input tplt-search" id="ncTplSearch" type="search" placeholder="업종 또는 템플릿 이름 검색"><div class="template-grid" id="ncTemplates"></div></div>
 <div class="panel"><div class="panel-head"><div><div class="step">STEP 03</div><div class="panel-title">명함 정보</div></div></div>
 <div class="field"><div class="label">상호명</div><input class="input" id="ncCo" value="디자인공방"></div><div class="row2"><div class="field"><div class="label">이름</div><input class="input" id="ncName" value="이서준"></div><div class="field"><div class="label">직책</div><input class="input" id="ncRole" value="대표"></div></div><div class="field"><div class="label">휴대폰</div><input class="input" id="ncMobile" value="010-1234-5678"></div><div class="field"><div class="label">이메일</div><input class="input" id="ncEmail" value="design@designstudio.com"></div><div class="field"><div class="label">주소</div><input class="input" id="ncAddr" value="서울특별시 강남구 테헤란로 123"></div><div class="field"><div class="label">홈페이지</div><input class="input" id="ncWeb" value="designgongbang.com"></div>
 <div class="field photo-upload-wrap" id="photoWrap"><div class="label">프로필 사진</div><input class="input" type="file" id="ncPhoto" accept="image/*"></div></div>
+<div class="panel"><div class="panel-head"><div><div class="step">STEP 04</div><div class="panel-title">레이아웃 편집</div></div></div>
+<div class="cadj">
+<div class="segment card-face-tabs" id="cFaceTabs"><button type="button" data-face="front" class="on">앞면 편집</button><button type="button" data-face="back">뒷면 편집</button></div>
+<div class="label">텍스트 정렬</div><div class="segment" id="cAdjAlign"><button data-v="left" class="on">왼쪽</button><button data-v="center">가운데</button><button data-v="right">오른쪽</button></div>
+<div class="label" style="margin-top:12px">세로 정렬</div><div class="segment" id="cAdjValign"><button data-v="top">위</button><button data-v="center" class="on">가운데</button><button data-v="bottom">아래</button></div>
+<div class="label" style="margin-top:12px">QR 위치</div><div class="segment position-grid" id="cAdjQr"><button data-v="hidden">숨기기</button><button data-v="top-left">좌상</button><button data-v="top-right">우상</button><button data-v="bottom-left">좌하</button><button data-v="bottom-right" class="on">우하</button></div>
+<div class="label" style="margin-top:12px">로고 위치</div><div class="segment position-grid" id="cAdjLogo"><button data-v="top-left" class="on">좌상</button><button data-v="center">중앙</button><button data-v="top-right">우상</button><button data-v="bottom-left">좌하</button><button data-v="bottom-right">우하</button></div>
+<div class="label" style="margin-top:12px">정보 블록 위치</div><div class="segment" id="cAdjInfo"><button data-v="left" class="on">좌측</button><button data-v="center">중앙</button><button data-v="right">우측</button></div>
+<div class="crow"><span class="label">이름 크기</span><input type="range" id="cAdjName" min="16" max="48" value="24"><output id="cAdjNameOut">24px</output></div>
+<div class="crow"><span class="label">본문 크기</span><input type="range" id="cAdjBody" min="8" max="18" value="11"><output id="cAdjBodyOut">11px</output></div>
+<div class="crow"><span class="label">여백</span><input type="range" id="cAdjPad" min="12" max="48" value="28"><output id="cAdjPadOut">28px</output></div>
+<div class="crow"><span class="label">행간</span><input type="range" id="cAdjLh" min="1" max="2" step="0.05" value="1.5"><output id="cAdjLhOut">1.50</output></div>
+<div class="crow"><span class="label">자간</span><input type="range" id="cAdjLs" min="0" max="4" step="0.1" value="0"><output id="cAdjLsOut">0px</output></div>
+</div></div>
 </div><div class="preview-panel"><div class="right-controls"><div class="color-wrap"><strong>포인트 색상</strong><div class="chips" id="ncChips"></div></div><label class="btn ghost" for="ncImgInput" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(124,92,255,.16);border-color:var(--purple);color:var(--purple2)">이미지 추가</label><input type="file" id="ncImgInput" accept="image/*" style="display:none"><button class="btn ghost" id="ncImgRemove" style="display:none">이미지 제거</button><button class="btn ghost" id="cResetEdit">편집 초기화</button></div>
 <div class="editor-toolbar" id="cardEditor"><div class="group mode-group"><button id="cModeOff" class="on">미리보기</button><button id="cModeMove">텍스트 위치·크기</button><button id="cModeText">텍스트 색상</button></div><div class="divider"></div><div class="group"><label>선택</label><span id="cSelName">없음</span></div>
 <div class="group" id="cMoveControls" style="display:none"><label>X</label><input type="number" id="cEditX" value="0"><label>Y</label><input type="number" id="cEditY" value="0"><label>크기%</label><input type="number" id="cEditSize" value="100"><button id="cAlignLeft">왼쪽</button><button id="cAlignCenter">가운데</button><button id="cAlignRight">오른쪽</button></div>
@@ -219,9 +235,8 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .tplt-stack{position:relative;margin:0 5px 10px}
 .tplt-back-peek{position:absolute;left:9px;right:-5px;top:9px;bottom:-5px;border-radius:12px;transform:rotate(2.4deg);transition:transform .2s cubic-bezier(.2,.8,.2,1);box-shadow:0 6px 16px rgba(0,0,0,.22)}
 .tplt-scaler{position:relative;width:100%;aspect-ratio:1.62;overflow:hidden;border-radius:12px;background:#0c0e13;box-shadow:0 8px 22px rgba(0,0,0,.32);transition:box-shadow .2s}
-.tplt-scaler .card-preview{position:absolute;top:0;left:0;transform-origin:top left;box-shadow:none!important;border-radius:0!important;margin:0!important}
+.tplt-scaler .card-preview{position:absolute;top:0;left:0;transform-origin:top left;box-shadow:none!important;margin:0!important}
 .tplt:hover .tplt-back-peek{transform:rotate(4.2deg) translate(3px,2px)}
-.template-card.on .tplt-scaler{outline:2.5px solid var(--purple);outline-offset:2px;box-shadow:0 8px 26px rgba(124,92,255,.42)}
 .tpl-tag{font-size:11px;color:var(--sub);margin:0 4px;line-height:1.35}
 /* 템플릿 탭 + 업종 검색 */
 .tplt-tabs{display:flex;gap:6px;margin:2px 0 9px}
@@ -350,6 +365,298 @@ button,input,select,textarea{font:inherit}button{color:inherit}.app{max-width:15
 .tpl-restaurant .nc-logo{background:transparent;border:1px solid #c8a25a;color:#c8a25a;border-radius:50%;font-family:'Nanum Myeongjo',serif}
 .tpl-restaurant .nc-company{font-family:'Nanum Myeongjo',serif;color:#c8a25a;letter-spacing:.1em;text-transform:uppercase;font-size:13px}
 .tpl-restaurant .nc-name{font-family:'Nanum Myeongjo',serif}.tpl-restaurant .nc-lines{color:#d8ccb6}
+/* ===== 신 명함 엔진 (.cf) : 썸네일=실제 공용 렌더 ===== */
+.cf{position:relative;overflow:hidden;--cf-name:24px;--cf-body:11px;--cf-pad:28px;--cf-lh:1.5;--cf-ls:0em;--cf-talign:left;--cf-valign:center}
+.cf .nc-company{color:var(--nc-accent);font-size:20px;font-weight:900;line-height:1.15}
+.cf .nc-name{font-size:var(--cf-name);font-weight:900;line-height:1.1;color:inherit}
+.cf .nc-role{font-size:11px;margin-left:7px;color:inherit;opacity:.6;font-weight:600}
+.cf .nc-lines{margin-top:14px;display:flex;flex-direction:column;gap:6px;font-size:var(--cf-body);line-height:var(--cf-lh);color:inherit;opacity:.86}
+.cf .nc-lines span{letter-spacing:var(--cf-ls)}
+.cf .nc-logo{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--nc-accent);color:#fff;overflow:hidden}
+.cf .nc-logo .cf-ico{width:60%;height:60%;display:block}.cf .nc-logo .cf-ico svg{width:100%;height:100%;display:block}
+.cf-sub{font-size:9.5px;letter-spacing:.26em;font-weight:800;opacity:.72;margin-top:5px}
+/* QR 위치 */
+.cf-qr-br{position:absolute;right:18px;bottom:18px}.cf-qr-bl{position:absolute;left:18px;bottom:18px}
+.cf-qr-tr{position:absolute;right:18px;top:18px}.cf-qr-tl{position:absolute;left:18px;top:18px}
+.nc-qr.ph{background:conic-gradient(from 0deg,#111 0 25%,#fff 0 50%,#111 0 75%,#fff 0)0 0/9px 9px;border-radius:2px;opacity:.92}
+/* split : 좌 밴드 | 우 정보 */
+.cf.cf-l-split{display:grid;grid-template-columns:.92fr 1.32fr}
+.cf-l-split .cf-side{padding:var(--cf-pad);display:flex;flex-direction:column;justify-content:center;gap:14px}
+.cf-l-split.cf-div .cf-side{border-right:1px solid var(--nc-accent)}
+.cf-l-split .cf-main{padding:var(--cf-pad);display:flex;flex-direction:column;justify-content:var(--cf-valign);text-align:var(--cf-talign)}
+/* sidebar : 좌 풀컬러 | 우 정보 */
+.cf.cf-l-sidebar{display:grid;grid-template-columns:.74fr 1.26fr}
+.cf-l-sidebar .cf-side{background:var(--nc-accent);padding:var(--cf-pad);display:flex;flex-direction:column;justify-content:center;gap:12px}
+.cf-l-sidebar .cf-side .nc-company{color:#fff}
+.cf-l-sidebar .cf-side .nc-logo{background:rgba(255,255,255,.22);color:#fff}
+.cf-l-sidebar .cf-main{padding:var(--cf-pad);display:flex;flex-direction:column;justify-content:var(--cf-valign);text-align:var(--cf-talign)}
+/* band : 상단 컬러바 + 본문 */
+.cf.cf-l-band{display:flex;flex-direction:column}
+.cf-l-band .cf-top{background:var(--nc-accent);padding:20px var(--cf-pad);display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+.cf-l-band .cf-top .nc-company,.cf-l-band .cf-top .cf-sub{color:#fff}
+.cf-l-band .cf-top .nc-logo{background:rgba(255,255,255,.24);color:#fff;width:44px;height:44px}
+.cf-l-band .cf-body{flex:1;padding:var(--cf-pad);display:flex;flex-direction:column;justify-content:var(--cf-valign);text-align:var(--cf-talign);align-items:center}
+.cf-l-band .cf-body .nc-lines{align-items:center}
+/* emblem : 중앙 심볼 히어로 */
+.cf.cf-l-emblem{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:var(--cf-pad);text-align:center}
+.cf-l-emblem .nc-logo{width:50px;height:50px;background:transparent;border:1.5px solid var(--nc-accent);color:var(--nc-accent)}
+.cf-l-emblem .nc-company{letter-spacing:.08em;font-size:21px}
+.cf-l-emblem .nc-name{font-size:15px;margin-top:6px}
+.cf-l-emblem .nc-lines{margin-top:6px;align-items:center;font-size:10.5px;opacity:.78}
+/* stack : 비대칭 대형 타이포 */
+.cf.cf-l-stack{display:flex;flex-direction:column;justify-content:space-between;padding:var(--cf-pad);text-align:var(--cf-talign)}
+.cf-l-stack .cf-tp{display:flex;flex-direction:column;gap:9px}
+.cf-l-stack .cf-tp .nc-company{font-size:13px;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.cf-l-stack .cf-bt .nc-name{font-size:calc(var(--cf-name) + 13px);letter-spacing:-.02em;line-height:1}
+.cf-l-stack .cf-bt .nc-lines{margin-top:12px}
+/* 장식 */
+.cf-deco-line::after{content:"";position:absolute;left:var(--cf-pad);right:var(--cf-pad);bottom:15px;height:1px;background:var(--nc-accent);opacity:.5}
+.cf-deco-gold::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--nc-accent)}
+.cf-deco-corner::before{content:"";position:absolute;right:0;top:0;border-top:46px solid var(--nc-accent);border-left:46px solid transparent}
+.cf-deco-dots::after{content:"";position:absolute;right:16px;top:14px;width:36px;height:18px;background:radial-gradient(var(--nc-accent) 1.4px,transparent 1.5px)0 0/8px 8px;opacity:.5}
+.cf-deco-dash::after{content:"";position:absolute;left:calc(var(--cf-pad) + 6px);right:calc(var(--cf-pad) + 6px);bottom:16px;border-top:1.5px dashed var(--nc-accent);opacity:.55}
+/* 세로형 : 2단 레이아웃을 위→아래 스택으로 */
+.cf.vertical.cf-l-split,.cf.vertical.cf-l-sidebar{display:flex;flex-direction:column}
+.cf.vertical.cf-l-split .cf-side,.cf.vertical.cf-l-sidebar .cf-side{border-right:0;border-bottom:1px solid rgba(255,255,255,.14);align-items:center;text-align:center}
+.cf.vertical.cf-l-split .cf-main,.cf.vertical.cf-l-sidebar .cf-main{align-items:center;text-align:center}
+/* 뒷면 */
+.cf.nc-back-card{display:flex;align-items:center;justify-content:center}
+.cf-backwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px;text-align:center;width:100%}
+.cf-backwrap .nc-company{color:inherit;font-size:23px}
+.cf-backwrap .nc-logo{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.16);overflow:hidden}
+.cf-backwrap .nc-logo .cf-ico{width:58%;height:58%}.cf-backwrap .nc-logo .cf-ico svg{width:100%;height:100%}
+.cf-back-slogan{font-size:12.5px;opacity:.82;letter-spacing:.02em}
+.cf-back-mono{font-family:'Courier New',monospace}
+.cf-back-mono .nc-company::before{content:"$ "}
+/* 썸네일 카드 : 앞면 + 뒷면 살짝 겹침 */
+.tplt-peek{position:absolute;left:10px;right:-6px;top:8px;bottom:-6px;overflow:hidden;border-radius:12px;transform:rotate(2.6deg);transform-origin:center;box-shadow:0 6px 16px rgba(0,0,0,.28);transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.tplt-peek .card-preview{position:absolute;top:0;left:0;transform-origin:top left;box-shadow:none!important;margin:0!important}
+.tplt:hover .tplt-peek{transform:rotate(4.6deg) translate(3px,2px)}
+.tplt-scaler{position:relative;z-index:2}
+/* STEP 04 세부 조정 컨트롤 */
+.cadj .segment.wrap{flex-wrap:wrap}
+.cadj .segment.wrap button{flex:1 1 28%}
+.crow{display:flex;align-items:center;gap:10px;margin-top:11px}
+.crow .label{margin:0;min-width:62px;font-size:12px}
+.crow input[type=range]{flex:1;accent-color:var(--purple)}
+/* ===== Business card v2: one TemplateData renderer for cards and thumbnails ===== */
+#ncTemplates{grid-template-columns:1fr;gap:12px}
+#ncTemplates .template-card{min-height:190px;padding:12px;border-radius:8px;overflow:hidden;box-shadow:none;transition:transform .18s,border-color .18s;background:#0c0f16}
+#ncTemplates .template-card:hover{transform:translateY(-4px)}
+#ncTemplates .template-card.on{border-color:var(--purple);box-shadow:none}
+#ncTemplates .template-card.on:after{display:none}
+.tplt-head{justify-content:space-between;margin:0 2px 9px;gap:10px}
+.tplt-title-wrap{display:flex;align-items:baseline;gap:7px;min-width:0}
+.tplt-title{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tplt-industry{font-size:10px;font-weight:800;color:var(--purple2);white-space:nowrap}
+.tplt-stack{height:139px;margin:0 2px 9px;position:relative}
+.tplt-scaler,.tplt-peek{position:absolute;width:88%;height:auto;aspect-ratio:1.8;overflow:visible;border-radius:0;background:transparent;box-shadow:none}
+.tplt-peek{left:12%;right:auto;top:0;bottom:auto;transform:rotate(1.4deg);z-index:1}
+.tplt-scaler{left:0;top:22px;z-index:2}
+.tplt:hover .tplt-peek{transform:rotate(2.6deg) translate(2px,1px)}
+.tplt-scaler:after,.tplt-peek:after{position:absolute;right:5px;bottom:4px;padding:2px 5px;border-radius:3px;background:rgba(0,0,0,.58);color:#fff;font-size:8px;font-weight:800;line-height:1;z-index:5}
+.tplt-scaler:after{content:"앞"}.tplt-peek:after{content:"뒤"}
+.tplt-scaler .card-preview,.tplt-peek .card-preview{position:absolute;left:0;top:0;box-shadow:none!important;margin:0!important;transform-origin:top left}
+.tpl-tag{margin:0 2px;font-size:11px;line-height:1.45}
+.card-face-tabs{margin-bottom:16px}
+.cadj>.label{margin-top:12px}
+.cadj .position-grid{grid-auto-flow:row;grid-template-columns:repeat(3,minmax(0,1fr))}
+.crow output{width:43px;color:var(--sub);font-size:11px;text-align:right;font-variant-numeric:tabular-nums}
+#ncBoth{width:max-content;align-items:center}
+.nc-side.is-active-face>.nc-side-lbl{color:var(--purple2)}
+.card-preview.vertical{width:380px;aspect-ratio:1/1.8}
+
+.bc-card{--bc-primary:#7657ff;--bc-secondary:#111;--bc-name-size:24px;--bc-body-size:11px;--bc-letter-spacing:0px;--bc-line-height:1.5;--bc-padding:28px;--bc-text-align:left;--bc-text-flex:flex-start;--bc-info-align:flex-start;--bc-valign:center;position:relative;display:grid;grid-template-areas:"brand info";grid-template-columns:.85fr 1.15fr;overflow:hidden;padding:var(--bc-padding);font-weight:var(--bc-weight,700);letter-spacing:var(--bc-letter-spacing)}
+.bc-card:before,.bc-card:after{pointer-events:none}
+.bc-decor{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bc-brand-block{grid-area:brand;position:relative;z-index:2;display:flex;min-width:0;flex-direction:column;justify-content:center;gap:6px;padding-right:18px}
+.bc-info-anchor{grid-area:info;position:relative;z-index:2;display:flex;min-width:0;height:100%;flex-direction:column;justify-content:var(--bc-valign);align-items:var(--bc-info-align);text-align:var(--bc-text-align)}
+.bc-info-block{display:flex;width:max-content;max-width:100%;min-width:0;flex-direction:column;align-items:inherit;text-align:inherit}
+.bc-card .bc-logo-anchor{position:absolute;z-index:4}
+.bc-card .nc-logo{width:58px;height:58px;margin:0;border-radius:8px;display:grid;place-items:center;background:var(--bc-primary);color:#fff;overflow:hidden}
+.bc-card .nc-logo .cf-ico{display:block;width:62%;height:62%}.bc-card .nc-logo .cf-ico svg{display:block;width:100%;height:100%}
+.bc-card .nc-company{max-width:100%;color:var(--bc-primary);font-size:20px;font-weight:var(--bc-weight,800);line-height:1.12;overflow-wrap:anywhere}
+.bc-card .cf-sub{margin:0;color:inherit;font-size:9px;font-weight:700;letter-spacing:0;line-height:1.3;opacity:.66}
+.bc-person-row{display:flex;max-width:100%;align-items:baseline;justify-content:inherit;gap:8px;flex-wrap:wrap}
+.bc-card .nc-name{max-width:100%;color:inherit;font-size:var(--bc-name-size);font-weight:var(--bc-weight,800);line-height:1.08;overflow-wrap:anywhere}
+.bc-card .nc-role{margin:0;color:inherit;font-size:10px;font-weight:600;line-height:1.2;opacity:.62}
+.bc-card .nc-lines{display:flex;max-width:100%;margin-top:15px;flex-direction:column;align-items:inherit;gap:7px;color:inherit;font-size:var(--bc-body-size);line-height:var(--bc-line-height);opacity:.86}
+.bc-detail{display:flex;max-width:100%;align-items:baseline;justify-content:inherit;gap:9px;text-align:inherit}
+.bc-detail-label{flex:0 0 auto;font-size:7.5px;font-weight:800;letter-spacing:0;opacity:.58}
+.bc-detail-value{min-width:0;max-width:100%;overflow-wrap:anywhere;letter-spacing:var(--bc-letter-spacing)}
+.bc-card .nc-qr{position:absolute;z-index:5;width:58px;height:58px;inset:auto!important;padding:5px;border:0;border-radius:4px;background:#fff;overflow:hidden}
+.bc-card .nc-qr canvas,.bc-card .nc-qr img{display:block!important;width:100%!important;height:100%!important;mix-blend-mode:normal!important}
+.bc-qr-anchor{position:absolute;z-index:5;display:flex;align-items:center;gap:7px;color:inherit}
+.bc-qr-anchor .nc-qr{position:relative!important;inset:auto!important;flex:0 0 auto}
+.bc-qr-label{max-width:78px;font-size:7px;font-weight:800;line-height:1.25;letter-spacing:0;opacity:.72}
+.bc-qr-top-right,.bc-qr-bottom-right,.bc-qr-center-right{flex-direction:row-reverse;text-align:right}
+.bc-qr-top-left{left:18px!important;top:18px!important}.bc-qr-top-right{right:18px!important;top:18px!important}.bc-qr-bottom-left{left:18px!important;bottom:18px!important}.bc-qr-bottom-right{right:18px!important;bottom:18px!important}
+.bc-qr-top-center{left:50%!important;top:18px!important;transform:translateX(-50%)}.bc-qr-bottom-center{left:50%!important;bottom:18px!important;transform:translateX(-50%)}
+.bc-qr-center-left{left:18px!important;top:50%!important;transform:translateY(-50%)}.bc-qr-center-right{right:18px!important;top:50%!important;transform:translateY(-50%)}.bc-qr-center{left:50%!important;top:50%!important;transform:translate(-50%,-50%)}
+.bc-logo-top-left .bc-logo-anchor{left:var(--bc-padding);top:var(--bc-padding)}.bc-logo-top-right .bc-logo-anchor{right:var(--bc-padding);top:var(--bc-padding)}
+.bc-logo-bottom-left .bc-logo-anchor{left:var(--bc-padding);bottom:var(--bc-padding)}.bc-logo-bottom-right .bc-logo-anchor{right:var(--bc-padding);bottom:var(--bc-padding)}
+.bc-logo-center .bc-logo-anchor{left:50%;top:50%;transform:translate(-50%,-50%)}
+.bc-logo-top-center .bc-logo-anchor{left:50%;top:var(--bc-padding);transform:translateX(-50%)}.bc-logo-bottom-center .bc-logo-anchor{left:50%;bottom:var(--bc-padding);transform:translateX(-50%)}
+.bc-logo-center-left .bc-logo-anchor{left:var(--bc-padding);top:50%;transform:translateY(-50%)}.bc-logo-center-right .bc-logo-anchor{right:var(--bc-padding);top:50%;transform:translateY(-50%)}.bc-logo-hidden .bc-logo-anchor{display:none}
+.bc-logo-top-left .bc-brand-block,.bc-logo-top-right .bc-brand-block,.bc-logo-top-center .bc-brand-block{padding-top:68px}.bc-logo-bottom-left .bc-brand-block,.bc-logo-bottom-right .bc-brand-block,.bc-logo-bottom-center .bc-brand-block{padding-bottom:68px}
+.bc-qrpos-bottom-left .bc-info-block,.bc-qrpos-bottom-right .bc-info-block,.bc-qrpos-bottom-center .bc-info-block{padding-bottom:68px}.bc-qrpos-top-left .bc-info-block,.bc-qrpos-top-right .bc-info-block,.bc-qrpos-top-center .bc-info-block{padding-top:68px}
+.bc-border-hairline{box-shadow:inset 0 0 0 1px var(--bc-primary)}
+.bc-border-double{box-shadow:inset 0 0 0 1px var(--bc-primary),inset 0 0 0 4px transparent,inset 0 0 0 5px var(--bc-primary)}
+.bc-border-inset{box-shadow:inset 0 0 0 8px rgba(255,255,255,.08)}
+.bc-divider-bottom-gold .bc-decor:after{content:"";position:absolute;left:var(--bc-padding);right:var(--bc-padding);bottom:14px;height:3px;background:var(--bc-primary)}
+.bc-divider-fine .bc-decor:after{content:"";position:absolute;left:var(--bc-padding);right:var(--bc-padding);bottom:16px;height:1px;background:var(--bc-primary);opacity:.48}
+.bc-divider-vertical .bc-decor:after{content:"";position:absolute;left:42%;top:var(--bc-padding);bottom:var(--bc-padding);width:1px;background:var(--bc-primary);opacity:.4}
+.bc-divider-dashed .bc-decor:after{content:"";position:absolute;left:var(--bc-padding);right:var(--bc-padding);bottom:16px;border-top:1px dashed var(--bc-primary);opacity:.55}
+.bc-divider-road .bc-decor:after{content:"";position:absolute;left:44%;top:0;bottom:0;width:3px;background:repeating-linear-gradient(to bottom,#111 0 12px,transparent 12px 22px);opacity:.75}
+.bc-divider-route .bc-decor:after{content:"";position:absolute;left:13%;right:12%;top:47%;height:44%;border-top:1px dashed var(--bc-primary);border-radius:50%}
+.bc-divider-grid .bc-decor{background-image:linear-gradient(rgba(0,0,0,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px);background-size:42px 42px}
+.bc-divider-gold-bottom-rule .bc-decor:after{content:"";position:absolute;left:var(--bc-padding);right:var(--bc-padding);bottom:14px;height:3px;background:var(--bc-primary)}
+.bc-divider-road-center-line .bc-decor:after,.bc-divider-vertical-road-split .bc-decor:after{content:"";position:absolute;left:43%;top:0;bottom:0;width:3px;background:repeating-linear-gradient(to bottom,#111 0 12px,transparent 12px 22px);opacity:.72}
+.bc-divider-sky-flight-path .bc-decor:after,.bc-divider-boarding-grid-lines .bc-decor:after{content:"";position:absolute;left:12%;right:10%;top:48%;height:38%;border-top:1px dashed var(--bc-primary);border-radius:50%}
+.bc-divider-red-axis-lines .bc-decor:after,.bc-divider-editorial-hairlines .bc-decor:after{content:"";position:absolute;left:var(--bc-padding);right:var(--bc-padding);bottom:17px;height:1px;background:var(--bc-primary)}
+
+/* TemplateData border variants */
+.bc-border-inset-hairline,.bc-border-fine-inset,.bc-border-single-inset,.bc-border-single-gold-inset,.bc-border-navy-inset,.bc-border-mint-soft-edge{box-shadow:inset 0 0 0 1px var(--bc-primary)}
+.bc-border-beige-inset{box-shadow:inset 0 0 0 1px var(--bc-secondary)}
+.bc-border-white-inset{box-shadow:inset 0 0 0 1px rgba(255,255,255,.58)}
+.bc-border-double-inset{box-shadow:inset 0 0 0 1px var(--bc-primary),inset 0 0 0 5px transparent,inset 0 0 0 6px var(--bc-primary)}
+.bc-border-coffee-ring-inset,.bc-border-oval-hairline{box-shadow:inset 0 0 0 1px var(--bc-primary),inset 0 0 0 7px rgba(255,255,255,.18)}
+.bc-border-black-edge{box-shadow:inset 0 0 0 3px #111}
+.bc-border-terminal-window{box-shadow:inset 0 0 0 1px #30363d}
+.bc-border-navy-side-edge{box-shadow:inset 7px 0 0 var(--bc-primary)}
+.bc-border-sand-bottom-edge,.bc-border-sky-bottom-edge{box-shadow:inset 0 -7px 0 var(--bc-primary)}
+.bc-border-accent-edge{box-shadow:inset -7px 0 0 var(--bc-primary)}
+.bc-border-rose-corner,.bc-border-asymmetric-corners{box-shadow:inset 3px 3px 0 var(--bc-primary),inset -1px -1px 0 var(--bc-primary)}
+
+/* TemplateData divider variants */
+.bc-divider-cream-short-rule .bc-decor:after,.bc-divider-short-center .bc-decor:after,.bc-divider-blue-mint-short-rule .bc-decor:after,.bc-divider-ornament-short .bc-decor:after,.bc-divider-thick-short .bc-decor:after{content:"";position:absolute;left:42%;right:42%;bottom:18px;height:2px;background:var(--bc-primary)}
+.bc-divider-thick-short .bc-decor:after{height:5px}
+.bc-divider-caption-rule .bc-decor:after,.bc-divider-magazine-column-rule .bc-decor:after,.bc-divider-micro-baseline .bc-decor:after,.bc-divider-double-hairline .bc-decor:after,.bc-divider-white-grid-lines .bc-decor:after{content:"";position:absolute;left:var(--bc-padding);right:var(--bc-padding);bottom:15px;border-top:1px solid var(--bc-primary);border-bottom:1px solid var(--bc-primary);height:3px;opacity:.65}
+.bc-divider-hairline-vertical .bc-decor:after,.bc-divider-gold-center-axis .bc-decor:after,.bc-divider-code-indent-guide .bc-decor:after,.bc-divider-black-rose-split .bc-decor:after{content:"";position:absolute;left:42%;top:var(--bc-padding);bottom:var(--bc-padding);width:1px;background:var(--bc-primary);opacity:.58}
+.bc-divider-gold-flanking-lines .bc-decor:after{content:"";position:absolute;left:12%;right:12%;top:50%;height:1px;background:linear-gradient(90deg,var(--bc-primary) 0 34%,transparent 34% 66%,var(--bc-primary) 66%)}
+.bc-divider-bean-dots .bc-decor{background-image:radial-gradient(circle,var(--bc-primary) 1.4px,transparent 1.7px);background-position:20px calc(100% - 18px);background-size:10px 10px;background-repeat:repeat-x}
+.bc-divider-grid-rule .bc-decor,.bc-divider-boarding-grid-lines .bc-decor{background-image:linear-gradient(rgba(0,0,0,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.07) 1px,transparent 1px);background-size:44px 44px}
+.bc-divider-color-rail .bc-decor{background:linear-gradient(90deg,var(--bc-primary) 0 9px,transparent 9px)}
+.bc-divider-full-accent-band .bc-decor{background:linear-gradient(180deg,var(--bc-primary) 0 15px,transparent 15px)}
+.bc-divider-burgundy-needle-line .bc-decor:after{content:"";position:absolute;left:50%;top:15%;bottom:15%;width:1px;background:var(--bc-primary);opacity:.55}
+.bc-divider-burgundy-corner-line .bc-decor:after{content:"";position:absolute;right:18px;bottom:18px;width:56px;height:56px;border-right:1px solid var(--bc-primary);border-bottom:1px solid var(--bc-primary)}
+.bc-divider-mint-wave-divider .bc-decor:after,.bc-divider-rose-curve .bc-decor:after{content:"";position:absolute;left:-10%;right:-10%;top:38%;height:55%;border-top:1px solid var(--bc-primary);border-radius:50%}
+.bc-divider-building-skyline-divider .bc-decor{background:linear-gradient(90deg,transparent 0 8%,var(--bc-primary) 8% 12%,transparent 12% 16%,var(--bc-primary) 16% 22%,transparent 22%) left bottom/45% 28% no-repeat}
+.bc-divider-map-route-line .bc-decor{background-image:linear-gradient(34deg,transparent 47%,var(--bc-primary) 48% 48.5%,transparent 49%)}
+.bc-divider-terminal-prompt .bc-decor:after{content:"_";position:absolute;right:22px;bottom:18px;color:var(--bc-primary);font:700 18px 'IBM Plex Mono',monospace}
+.bc-divider-corner-lines .bc-decor{background-image:linear-gradient(90deg,var(--bc-primary) 0 36px,transparent 36px),linear-gradient(var(--bc-primary) 0 36px,transparent 36px);background-position:18px 18px;background-size:1px 54px,54px 1px;background-repeat:no-repeat}
+
+/* TemplateData motifs stay subtle so information remains the first read. */
+.bc-motif-center-rays .bc-decor{background:radial-gradient(circle at 50% 42%,rgba(199,163,82,.18) 0 18%,transparent 18.5%)}
+.bc-motif-authority-bars .bc-decor{background-image:linear-gradient(90deg,transparent 0 76%,rgba(199,163,82,.13) 76% 78%,transparent 78% 82%,rgba(199,163,82,.08) 82% 84%,transparent 84%)}
+.bc-motif-coffee-ring .bc-decor,.bc-motif-steam-arcs .bc-decor{background:radial-gradient(circle at 82% 22%,transparent 0 34px,rgba(77,51,38,.12) 35px 36px,transparent 37px)}
+.bc-motif-sweeping-curve .bc-decor{background:radial-gradient(ellipse at 100% 0,transparent 0 43%,rgba(184,63,103,.18) 43.5% 44%,transparent 44.5%)}
+.bc-motif-split-booking-panel .bc-decor{background:linear-gradient(90deg,transparent 0 68%,rgba(184,63,103,.09) 68%)}
+.bc-motif-soft-oval .bc-decor,.bc-motif-corner-petals .bc-decor{background:radial-gradient(ellipse at 8% 92%,rgba(122,31,61,.09) 0 18%,transparent 18.5%)}
+.bc-motif-checker-strip .bc-decor{background-image:linear-gradient(45deg,#111 25%,transparent 25% 75%,#111 75%);background-size:20px 20px;background-repeat:repeat-x}
+.bc-motif-road-lanes .bc-decor{background-image:repeating-linear-gradient(0deg,transparent 0 14px,rgba(17,17,17,.16) 14px 21px)}
+.bc-motif-terminal-dots .bc-decor{background-image:radial-gradient(circle,#58f08d 1px,transparent 1.4px);background-size:15px 15px;opacity:.12}
+.bc-motif-code-line-numbers .bc-decor{background:repeating-linear-gradient(180deg,rgba(88,240,141,.07) 0 1px,transparent 1px 22px)}
+.bc-motif-coordinate-cross .bc-decor,.bc-motif-crop-marks .bc-decor{background-image:linear-gradient(90deg,transparent 49.8%,rgba(217,45,48,.11) 50%,transparent 50.2%),linear-gradient(transparent 49.8%,rgba(217,45,48,.11) 50%,transparent 50.2%)}
+.bc-motif-folio-grid .bc-decor,.bc-motif-boarding-pass-grid .bc-decor,.bc-motif-magazine-columns .bc-decor{background-image:linear-gradient(90deg,transparent 32.8%,rgba(0,0,0,.07) 33%,transparent 33.2%,transparent 65.8%,rgba(0,0,0,.07) 66%,transparent 66.2%)}
+.bc-motif-skyline-blocks .bc-decor{background:linear-gradient(90deg,var(--bc-primary) 0 7%,transparent 7% 10%,var(--bc-primary) 10% 17%,transparent 17% 20%,var(--bc-primary) 20% 29%,transparent 29%) left bottom/48% 26% no-repeat;opacity:.13}
+.bc-motif-abstract-map .bc-decor{background-image:linear-gradient(32deg,transparent 46%,rgba(23,52,91,.12) 47% 47.5%,transparent 48%),linear-gradient(145deg,transparent 56%,rgba(23,52,91,.1) 57% 57.5%,transparent 58%)}
+.bc-motif-architectural-arch .bc-decor{background:radial-gradient(ellipse at 50% 100%,transparent 0 42%,rgba(199,163,82,.13) 42.5% 43%,transparent 43.5%)}
+.bc-motif-balanced-keyline .bc-decor,.bc-motif-double-frame .bc-decor{box-shadow:inset 0 0 0 1px rgba(199,163,82,.22),inset 0 0 0 6px transparent,inset 0 0 0 7px rgba(199,163,82,.16)}
+.bc-motif-dotted-flight-arc .bc-decor{background:radial-gradient(ellipse at 50% 110%,transparent 0 58%,rgba(51,161,217,.14) 58.5% 59%,transparent 59.5%)}
+.bc-motif-clean-wave .bc-decor{background:radial-gradient(ellipse at 10% 110%,rgba(43,179,168,.11) 0 42%,transparent 42.5%)}
+.bc-motif-soft-medical-cross .bc-decor{background-image:linear-gradient(90deg,transparent 47%,rgba(43,179,168,.07) 47% 53%,transparent 53%),linear-gradient(transparent 42%,rgba(43,179,168,.07) 42% 58%,transparent 58%)}
+.bc-motif-masthead-crop .bc-decor{background:linear-gradient(90deg,transparent 0 74%,rgba(166,137,92,.12) 74% 76%,transparent 76%)}
+.bc-motif-horizontal-band .bc-decor,.bc-motif-side-rail .bc-decor,.bc-motif-vertical-rule .bc-decor{background:linear-gradient(90deg,var(--bc-primary) 0 5px,transparent 5px)}
+.bc-motif-offset-circle-square .bc-decor{background:radial-gradient(circle at 82% 24%,rgba(217,45,48,.12) 0 34px,transparent 35px)}
+.bc-motif-quiet-frame .bc-decor{box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.bc-motif-baseline-dot .bc-decor,.bc-motif-index-numbers .bc-decor,.bc-motif-serial-number .bc-decor,.bc-motif-folio-index .bc-decor{background-image:radial-gradient(circle,var(--bc-primary) 1.5px,transparent 1.8px);background-position:calc(100% - 22px) calc(100% - 18px);background-size:9px 9px;background-repeat:no-repeat}
+.bc-motif-balanced-columns .bc-decor{background:linear-gradient(90deg,transparent 49.8%,rgba(255,255,255,.18) 50%,transparent 50.2%)}
+
+.bc-icon-shield-star .nc-logo{border:2px solid var(--bc-primary);background:transparent;color:var(--bc-primary);border-radius:50%}
+.bc-icon-coffee-seal .nc-logo{border:1px solid currentColor;background:transparent;color:var(--bc-primary);border-radius:50%}
+.bc-icon-scissor-curve .nc-logo{background:transparent;color:var(--bc-primary);border-radius:50%;box-shadow:inset 0 0 0 1px var(--bc-primary)}
+.bc-icon-nail-frame .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:50% 50% 8px 8px}
+.bc-icon-taxi-road .nc-logo{background:#111;color:#ffd400;border-radius:4px}
+.bc-icon-terminal .nc-logo{background:#101820;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:4px}
+.bc-icon-grid-mark .nc-logo{background:var(--bc-primary);border-radius:0}
+.bc-icon-keyline .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:4px}
+.bc-icon-hotel-crest .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:50% 50% 6px 6px}
+.bc-icon-flight-path .nc-logo{background:transparent;color:var(--bc-primary);border-radius:50%}
+.bc-icon-tooth-clean .nc-logo{background:#e8f8f6;color:var(--bc-primary);border-radius:50%}
+.bc-icon-editorial .nc-logo{background:#111;color:#fff;border-radius:0}
+.bc-icon-shield-star-emblem .nc-logo,.bc-icon-shield-watermark .nc-logo{border:2px solid var(--bc-primary);background:transparent;color:var(--bc-primary);border-radius:50%}
+.bc-icon-cup-bean-seal .nc-logo,.bc-icon-steam-line .nc-logo{border:1px solid var(--bc-primary);background:transparent;color:var(--bc-primary);border-radius:50%}
+.bc-icon-scissors-curve-large .nc-logo,.bc-icon-scissors-micro .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:50%}
+.bc-icon-nail-arch-fine .nc-logo,.bc-icon-petal-micro .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:50% 50% 8px 8px}
+.bc-icon-taxi-roof-bold .nc-logo{background:#111;color:#ffd21f;border-radius:4px}
+.bc-icon-code-brackets .nc-logo,.bc-icon-cursor-block .nc-logo{background:#101820;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:4px}
+.bc-icon-geometric-crop .nc-logo,.bc-icon-index-square .nc-logo{background:var(--bc-primary);color:#fff;border-radius:0}
+.bc-icon-building-key .nc-logo,.bc-icon-map-pin-key .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:4px}
+.bc-icon-hotel-arch-crest .nc-logo,.bc-icon-crest-mini .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:50% 50% 6px 6px}
+.bc-icon-wing-route .nc-logo,.bc-icon-flight-pin .nc-logo{background:transparent;color:var(--bc-primary);border-radius:50%}
+.bc-icon-tooth-spark-clean .nc-logo,.bc-icon-tooth-outline-small .nc-logo{background:#e8f8f6;color:var(--bc-primary);border-radius:50%}
+.bc-icon-hanger-thread .nc-logo,.bc-icon-edition-number .nc-logo{background:#111;color:#fff;border-radius:0}
+.bc-icon-solid-square .nc-logo,.bc-icon-inverse-tile .nc-logo,.bc-icon-inverse-square .nc-logo{background:var(--bc-primary);color:#fff;border-radius:0}
+.bc-icon-outline-large .nc-logo,.bc-icon-oversize-outline .nc-logo,.bc-icon-fine-line .nc-logo,.bc-icon-serif-monogram .nc-logo,.bc-icon-small-crest .nc-logo,.bc-icon-micro-mark .nc-logo,.bc-icon-route-pin .nc-logo{background:transparent;color:var(--bc-primary);border:1px solid var(--bc-primary);border-radius:4px}
+.bc-icon-wordmark-only .nc-logo{display:none}
+
+/* Basic layouts */
+.bc-layout-classic-split{grid-template-columns:.78fr 1.22fr}.bc-layout-classic-split .bc-decor:before{content:"";position:absolute;left:0;top:0;bottom:0;width:35%;background:var(--bc-primary)}.bc-layout-classic-split .bc-brand-block{justify-content:flex-end;color:#fff}.bc-layout-classic-split .nc-company{color:#fff}
+.bc-layout-classic-mark,.bc-layout-premium-crest{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:1fr .55fr;text-align:center}.bc-layout-classic-mark .bc-brand-block,.bc-layout-premium-crest .bc-brand-block{align-items:center;justify-content:flex-end;padding:0}.bc-layout-classic-mark .bc-info-anchor,.bc-layout-premium-crest .bc-info-anchor{align-items:center;text-align:center}
+.bc-layout-classic-mark.bc-logo-center .bc-logo-anchor{top:25%}
+.bc-layout-modern-sidebar{grid-template-columns:.68fr 1.32fr}.bc-layout-modern-sidebar .bc-decor:before{content:"";position:absolute;left:0;top:0;bottom:0;width:31%;background:var(--bc-primary)}.bc-layout-modern-sidebar .bc-brand-block{justify-content:flex-end;color:#fff}.bc-layout-modern-sidebar .nc-company{color:#fff}
+.bc-layout-modern-contact{grid-template-columns:.7fr 1.3fr}.bc-layout-modern-contact .bc-brand-block{padding-left:10px;border-left:4px solid var(--bc-primary)}
+.bc-layout-minimal-space{grid-template-areas:"brand brand" ". info";grid-template-rows:1fr 1fr}.bc-layout-minimal-space .bc-brand-block{align-self:start}.bc-layout-minimal-space .bc-info-anchor{align-self:end}
+.bc-layout-minimal-rule{grid-template-columns:1fr}.bc-layout-minimal-rule .bc-brand-block{align-self:start}.bc-layout-minimal-rule .bc-info-anchor{align-self:end}
+.bc-layout-premium-crest .nc-company{font-family:'Noto Serif KR',serif}.bc-layout-premium-balanced{grid-template-columns:1fr 1fr}.bc-layout-premium-balanced .bc-brand-block{border-right:1px solid var(--bc-primary)}
+.bc-layout-creative-grid{grid-template-columns:1.25fr .75fr}.bc-layout-creative-grid .bc-brand-block{justify-content:flex-end}.bc-layout-creative-grid .nc-company{font-size:37px;color:inherit}.bc-layout-creative-grid .bc-decor:before{content:"";position:absolute;width:86px;height:86px;right:20px;top:20px;background:var(--bc-primary)}
+.bc-layout-creative-notes{grid-template-areas:"info brand";grid-template-columns:1.3fr .7fr}.bc-layout-creative-notes .bc-brand-block{align-items:flex-end;text-align:right;border-left:1px solid var(--bc-primary);padding:0 0 0 18px}
+.bc-layout-noir-block{grid-template-columns:1fr 1fr}.bc-layout-noir-block .bc-decor:before{content:"";position:absolute;left:8%;top:12%;width:34%;height:76%;border:1px solid var(--bc-primary)}
+.bc-layout-noir-columns{grid-template-columns:.72fr 1.28fr}.bc-layout-noir-columns .bc-brand-block{border-right:1px solid var(--bc-primary)}
+.bc-layout-noir-columns.bc-logo-center .bc-logo-anchor{left:22%;top:50%}
+
+/* Industry front/back layouts */
+.bc-layout-police-emblem{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:1.4fr .6fr}.bc-layout-police-emblem .bc-brand-block{align-items:center;justify-content:flex-end;padding:0;text-align:center}.bc-layout-police-emblem .bc-info-anchor{align-items:flex-end;text-align:right}.bc-layout-police-emblem .nc-company{color:var(--bc-primary);font-size:25px}.bc-layout-police-emblem.bc-logo-center .bc-logo-anchor{top:34%}
+.bc-layout-police-right{grid-template-columns:.62fr 1.38fr}.bc-layout-police-right .bc-brand-block{justify-content:flex-start}.bc-layout-police-right .bc-info-anchor{align-items:flex-end;text-align:right;padding-bottom:8px}
+.bc-layout-cafe-seal{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:1.25fr .75fr}.bc-layout-cafe-seal .bc-brand-block{align-items:center;justify-content:flex-end;padding:0;text-align:center}.bc-layout-cafe-seal .bc-info-anchor{align-items:center;text-align:center}.bc-layout-cafe-seal.bc-logo-center .bc-logo-anchor{top:31%}
+.bc-layout-cafe-social{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:.75fr 1.25fr}.bc-layout-cafe-social .bc-brand-block,.bc-layout-cafe-social .bc-info-anchor{align-items:center;text-align:center;padding:0}.bc-layout-cafe-social .bc-info-anchor{justify-content:flex-start}
+.bc-layout-cafe-social.bc-logo-center .bc-logo-anchor{top:18%}
+.bc-layout-hair-asymmetric{grid-template-areas:"brand ." "info info";grid-template-columns:1.35fr .65fr;grid-template-rows:1fr 1fr}.bc-layout-hair-asymmetric .bc-brand-block{align-self:start;justify-content:flex-start}.bc-layout-hair-asymmetric .nc-company{font-size:40px;line-height:.95;color:inherit}.bc-layout-hair-asymmetric .bc-info-anchor{align-items:flex-start;justify-content:flex-end}.bc-layout-hair-asymmetric .bc-decor:after{content:"";position:absolute;width:72%;height:55%;right:-12%;top:9%;border:1px solid var(--bc-primary);border-radius:50%}
+.bc-layout-hair-booking{grid-template-columns:1.22fr .78fr}.bc-layout-hair-booking .bc-brand-block{justify-content:flex-start}.bc-layout-hair-booking .bc-info-anchor{align-items:flex-start}.bc-layout-hair-booking .nc-qr{width:86px;height:86px}.bc-layout-hair-booking .bc-qr-bottom-right{right:28px!important;bottom:28px!important}
+.bc-layout-hair-booking.bc-qrpos-bottom-right .bc-info-block{padding-bottom:98px}
+.bc-layout-nail-center{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:1.25fr .75fr}.bc-layout-nail-center .bc-brand-block{align-items:center;justify-content:flex-end;padding:0;text-align:center}.bc-layout-nail-center .bc-info-anchor{align-items:center;text-align:center}.bc-layout-nail-center .nc-company{font-family:'Noto Serif KR',serif;font-weight:500}.bc-layout-nail-center.bc-logo-center .bc-logo-anchor{top:31%}
+.bc-layout-nail-corner{grid-template-columns:.65fr 1.35fr}.bc-layout-nail-corner .bc-brand-block{justify-content:flex-start}.bc-layout-nail-corner .bc-info-anchor{align-items:flex-end;justify-content:flex-end;text-align:right}.bc-layout-nail-corner .bc-decor:after{content:"";position:absolute;left:-12%;top:-20%;width:48%;height:76%;border:1px solid var(--bc-primary);border-radius:50%}
+.bc-layout-taxi-bold{grid-template-columns:1.2fr .8fr}.bc-layout-taxi-bold .bc-brand-block{justify-content:center}.bc-layout-taxi-bold .nc-company{font-size:44px;line-height:.9;color:#111}.bc-layout-taxi-bold .bc-decor:before{content:"";position:absolute;left:0;right:0;top:0;height:18px;background:repeating-conic-gradient(#111 0 25%,transparent 0 50%) 0 0/20px 20px}.bc-layout-taxi-bold .bc-info-anchor{align-items:flex-end;text-align:right}
+.bc-layout-taxi-split{grid-template-columns:.82fr 1.18fr}.bc-layout-taxi-split .bc-decor:before{content:"";position:absolute;left:0;top:0;bottom:0;width:38%;background:#111}.bc-layout-taxi-split .bc-brand-block{color:#ffd400;justify-content:center}.bc-layout-taxi-split .nc-company{color:#ffd400}.bc-layout-taxi-split .bc-info-anchor{color:#111;padding-left:18px}
+.bc-layout-developer-terminal{grid-template-columns:.92fr 1.08fr;padding-top:52px}.bc-layout-developer-terminal .bc-decor:before{content:"●  ●  ●";position:absolute;left:18px;right:18px;top:16px;height:25px;padding-left:10px;border-bottom:1px solid #30363d;color:#ff6b6b;font-size:10px;word-spacing:5px}.bc-layout-developer-terminal .nc-company,.bc-layout-developer-terminal .bc-detail-label{color:var(--bc-primary)}
+.bc-layout-developer-right{grid-template-columns:.64fr 1.36fr}.bc-layout-developer-right .bc-info-anchor{align-items:flex-end;text-align:right}.bc-layout-developer-right .bc-detail-label{color:var(--bc-primary);opacity:1}.bc-layout-developer-right .nc-company:before{content:"> "}
+.bc-layout-designer-grid{grid-template-columns:1.28fr .72fr}.bc-layout-designer-grid .bc-brand-block{justify-content:flex-end}.bc-layout-designer-grid .nc-company{font-size:42px;line-height:.9;color:inherit}.bc-layout-designer-grid .bc-info-anchor{align-items:flex-end;justify-content:flex-start;text-align:right}.bc-layout-designer-grid .bc-decor:before{content:"";position:absolute;right:20px;bottom:20px;width:48px;height:48px;background:var(--bc-primary)}
+.bc-layout-designer-details{grid-template-areas:"info brand";grid-template-columns:1.3fr .7fr}.bc-layout-designer-details .bc-brand-block{align-items:flex-end;text-align:right;border-left:1px solid #111;padding:0 0 0 20px}.bc-layout-designer-details .bc-info-anchor{align-items:flex-start}
+.bc-layout-realestate-split{grid-template-columns:.78fr 1.22fr}.bc-layout-realestate-split .bc-decor:before{content:"";position:absolute;left:0;top:0;bottom:0;width:36%;background:var(--bc-primary)}.bc-layout-realestate-split .bc-brand-block{color:#fff;justify-content:flex-end}.bc-layout-realestate-split .nc-company{color:#fff}.bc-layout-realestate-split .bc-info-anchor{padding-left:18px}
+.bc-layout-realestate-map{grid-template-columns:1.28fr .72fr}.bc-layout-realestate-map .bc-decor{opacity:.22;background:linear-gradient(32deg,transparent 44%,var(--bc-primary) 45% 46%,transparent 47%),linear-gradient(145deg,transparent 55%,var(--bc-primary) 56% 57%,transparent 58%)}.bc-layout-realestate-map .bc-info-anchor{align-items:flex-start}.bc-layout-realestate-map .nc-qr{width:72px;height:72px}
+.bc-layout-hotel-crest{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:1.35fr .65fr}.bc-layout-hotel-crest .bc-brand-block{align-items:center;justify-content:flex-end;padding:0;text-align:center}.bc-layout-hotel-crest .bc-info-anchor{align-items:center;text-align:center}.bc-layout-hotel-crest .nc-company{font-family:'Noto Serif KR',serif}.bc-layout-hotel-crest.bc-logo-center .bc-logo-anchor{top:31%}
+.bc-layout-hotel-balanced{grid-template-columns:1fr 1fr}.bc-layout-hotel-balanced .bc-brand-block{align-items:flex-start;border-right:1px solid var(--bc-primary)}.bc-layout-hotel-balanced .bc-info-anchor{align-items:flex-end;text-align:right;padding-left:18px}
+.bc-layout-hotel-balanced.bc-logo-center .bc-logo-anchor{left:25%;top:27%}
+.bc-layout-airline-route{grid-template-columns:1fr 1fr}.bc-layout-airline-route .bc-brand-block{justify-content:center}.bc-layout-airline-route .bc-info-anchor{align-items:flex-end;text-align:right}.bc-layout-airline-route .nc-company{color:#173a5f}
+.bc-layout-airline-right{grid-template-columns:.55fr 1.45fr}.bc-layout-airline-right .bc-info-anchor{align-items:flex-end;text-align:right}.bc-layout-airline-right .bc-decor:before{content:"";position:absolute;left:7%;top:50%;width:30%;border-top:1px dashed var(--bc-secondary)}
+.bc-layout-dental-clean{grid-template-columns:.72fr 1.28fr}.bc-layout-dental-clean .bc-decor:before{content:"";position:absolute;left:0;top:0;bottom:0;width:32%;background:#dff5f1}.bc-layout-dental-clean .bc-brand-block{justify-content:flex-end}.bc-layout-dental-clean .bc-info-anchor{padding-left:18px}
+.bc-layout-dental-center{grid-template-areas:"brand" "info";grid-template-columns:1fr;grid-template-rows:.8fr 1.2fr}.bc-layout-dental-center .bc-brand-block,.bc-layout-dental-center .bc-info-anchor{align-items:center;text-align:center;padding:0}.bc-layout-dental-center .bc-info-anchor{justify-content:flex-start}
+.bc-layout-dental-center.bc-logo-center .bc-logo-anchor{top:18%}
+.bc-layout-fashion-editorial{grid-template-columns:1.38fr .62fr}.bc-layout-fashion-editorial .bc-brand-block{justify-content:flex-end}.bc-layout-fashion-editorial .nc-company{font-family:'Noto Serif KR',serif;font-size:42px;line-height:.92;color:#111}.bc-layout-fashion-editorial .bc-info-anchor{align-items:flex-end;text-align:right}.bc-layout-fashion-editorial .bc-decor:before{content:"01";position:absolute;right:23px;top:20px;color:var(--bc-primary);font:700 12px 'IBM Plex Mono',monospace}
+.bc-layout-fashion-magazine{grid-template-columns:.7fr 1.3fr}.bc-layout-fashion-magazine .bc-brand-block{justify-content:flex-start;border-right:1px solid #111}.bc-layout-fashion-magazine .bc-info-anchor{align-items:flex-end;text-align:right;padding-left:18px}.bc-layout-fashion-magazine .bc-detail-label{opacity:1}
+.bc-card .txt{letter-spacing:var(--bc-letter-spacing)}
+.bc-card .bc-brand-block{align-items:var(--bc-text-flex)!important;text-align:var(--bc-text-align)!important}
+.bc-card .bc-info-block{align-items:var(--bc-text-flex)!important;text-align:var(--bc-text-align)!important}
+.bc-card .bc-info-anchor{align-items:var(--bc-info-align)!important;justify-content:var(--bc-valign)!important;text-align:var(--bc-text-align)!important}
+
+.bc-photo{grid-template-areas:"photo copy";grid-template-columns:.9fr 1.1fr;padding:0}.bc-photo-media{grid-area:photo;min-height:100%;background:#e8e9ef;overflow:hidden}.bc-photo-media img{width:100%;height:100%;display:block;object-fit:cover}.bc-photo-copy{grid-area:copy;display:flex;min-width:0;flex-direction:column;justify-content:center;padding:var(--bc-padding)}.bc-photo-copy .bc-brand-block,.bc-photo-copy .bc-info-anchor{width:100%;height:auto;padding:0}.bc-photo-copy .bc-brand-block{justify-content:flex-start;margin-bottom:14px}
+.bc-card.vertical{display:flex;flex-direction:column;justify-content:space-between;padding:var(--bc-padding)}
+.bc-card.vertical .bc-brand-block{width:100%;min-height:42%;align-items:center;justify-content:flex-end;padding:0;text-align:center;border:0}
+.bc-card.vertical .bc-info-anchor{width:100%;min-height:46%;align-items:var(--bc-info-align);padding:12px 0 0;text-align:var(--bc-text-align);border:0}
+.bc-card.vertical .bc-decor:before{max-width:100%}
+.bc-card.vertical.bc-photo{padding:0}.bc-card.vertical.bc-photo .bc-photo-media{width:100%;min-height:52%}.bc-card.vertical.bc-photo .bc-photo-copy{width:100%;min-height:48%;padding:var(--bc-padding)}.bc-card.vertical.bc-photo .bc-info-anchor{min-height:0;padding:0}
+@media(max-width:440px){#ncTemplates{grid-template-columns:1fr}.tplt-stack{height:128px}.cadj .position-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* AI 배경 밝기 자동 감지 -> 글자색 자동 (사용자가 직접 지정한 색은 인라인이라 유지됨) */
 .banner.aibg-light .headline,.banner.aibg-light .subline,.banner.aibg-light #bInfo,.aibg-light .cp-title,.aibg-light .cp-cond,.aibg-light .cp-eyebrow,.aibg-light .cp-shop,.aibg-light .menu-item strong,.aibg-light .menu-item span,.aibg-light .menu-section h3,.aibg-light .mv-kicker,.aibg-light .mv-shop,.aibg-light .mv-desc,.aibg-light .mv-phone{color:#16171b}
 .banner.aibg-dark .headline,.banner.aibg-dark .subline{color:#fff}
@@ -612,22 +919,27 @@ $("#bTxtBold").onclick=()=>{if(!bSel)return;bPush();const s=bTstyle(bSel.dataset
 $("#bTxtItalic").onclick=()=>{if(!bSel)return;bPush();const s=bTstyle(bSel.dataset.tkey);s.italic=!s.italic;bApply(bSel);bSync()};
 $("#bResetEdit").onclick=()=>{bPush();bannerState.textStyles={};bSel=null;bRemoveHandle();$$("#banner .txt").forEach(el=>{el.style.transform="";el.style.color="";el.style.fontFamily="";el.style.fontWeight="";el.style.fontStyle="";el.style.textAlign="";el.classList.remove("sel")});bSync()};
 
-/* ---- 명함 텍스트 편집기 (배너 편집기의 명함 전용 버전) ---- */
-let cMode="none",cSel=null,cDrag=null,cResize=null,cHist=[];
+/* ---- 명함 텍스트 편집기: 앞면/뒷면을 독립적으로 편집 ---- */
+let cMode="none",cSel=null,cDrag=null,cResize=null,cHist=[],cActiveFace="front";
+function cFaceRoot(face){return $(face==="back"?"#ncBack":"#ncFront")}
+function cFaceOf(el){return el&&el.closest("#ncBack")?"back":"front"}
 function cPush(){cHist.push(JSON.stringify(ncState.textStyles));if(cHist.length>60)cHist.shift()}
 function cTstyle(k){return ncState.textStyles[k]||(ncState.textStyles[k]={x:0,y:0,size:100,align:"",color:"",font:"",bold:false,italic:false})}
 function cApply(el){const s=ncState.textStyles[el.dataset.tkey];if(!s)return;const sc=(s.size||100)/100||1;el.style.transform=`translate(${s.x||0}px,${s.y||0}px) scale(${sc})`;el.style.color=s.color||"";el.style.fontFamily=s.font||"";el.style.fontWeight=s.bold?"900":"";el.style.fontStyle=s.italic?"italic":"";if(s.align)el.style.textAlign=s.align;const h=el.querySelector(".txt-handle");if(h){h.style.transform="scale("+(1/sc)+")";h.style.transformOrigin="bottom right"}}
 function cApplyAll(){$$("#ncFit .txt").forEach(cApply)}
 function cRemoveHandle(){$$("#ncFit .txt-handle").forEach(h=>h.remove())}
 function cAddHandle(el){if(getComputedStyle(el).position==="static")el.style.position="relative";const h=document.createElement("div");h.className="txt-handle";el.appendChild(h);h.onpointerdown=e=>{e.stopPropagation();e.preventDefault();cPush();const s=cTstyle(el.dataset.tkey);cResize={el,key:el.dataset.tkey,sx:e.clientX,os:s.size||100}}}
-function cSync(){if(!cSel){$("#cSelName").textContent="없음";return}const s=cTstyle(cSel.dataset.tkey);$("#cSelName").textContent=(cSel.textContent||cSel.dataset.tkey).slice(0,12);$("#cEditX").value=Math.round(s.x||0);$("#cEditY").value=Math.round(s.y||0);$("#cEditSize").value=Math.round(s.size||100);$$("#cTxtColors .chip").forEach(c=>c.classList.toggle("on",c.dataset.c===(s.color||"")));$("#cTxtFont").value=s.font||"";$("#cTxtBold").classList.toggle("on",!!s.bold);$("#cTxtItalic").classList.toggle("on",!!s.italic)}
-function cSelectTxt(el){$$("#ncFit .txt").forEach(x=>x.classList.remove("sel"));cRemoveHandle();cSel=el;el.classList.add("sel");cSync();if(cMode==="move")cAddHandle(el)}
-function cBind(){$$("#ncFit .txt").forEach(el=>{el.onclick=e=>{if(cMode==="none")return;e.stopPropagation();cSelectTxt(el)};el.onpointerdown=e=>{if(cMode!=="move")return;if(e.target.classList.contains("txt-handle"))return;e.preventDefault();cSelectTxt(el);cPush();const s=cTstyle(el.dataset.tkey);cDrag={key:el.dataset.tkey,el,sx:e.clientX,sy:e.clientY,ox:s.x||0,oy:s.y||0}}});if(cSel){const re=$(`#ncFit .txt[data-tkey="${cSel.dataset.tkey}"]`);cSel=re||null;if(cSel){cSel.classList.add("sel");if(cMode==="move")cAddHandle(cSel)}}}
+function cSync(){if(!cSel){$("#cSelName").textContent="없음";return}const s=cTstyle(cSel.dataset.tkey);$("#cSelName").textContent=(cSel.textContent||cSel.dataset.tkey).trim().slice(0,12);$("#cEditX").value=Math.round(s.x||0);$("#cEditY").value=Math.round(s.y||0);$("#cEditSize").value=Math.round(s.size||100);$$("#cTxtColors .chip").forEach(c=>c.classList.toggle("on",c.dataset.c===(s.color||"")));$("#cTxtFont").value=s.font||"";$("#cTxtBold").classList.toggle("on",!!s.bold);$("#cTxtItalic").classList.toggle("on",!!s.italic)}
+function cSelectTxt(el){if(cFaceOf(el)!==cActiveFace)return;$$("#ncFit .txt").forEach(x=>x.classList.remove("sel"));cRemoveHandle();cSel=el;el.classList.add("sel");cSync();if(cMode==="move")cAddHandle(el)}
+function cBind(){$$("#ncFit .txt").forEach(el=>{el.onclick=e=>{if(cMode==="none"||cFaceOf(el)!==cActiveFace)return;e.stopPropagation();cSelectTxt(el)};el.onpointerdown=e=>{if(cMode!=="move"||cFaceOf(el)!==cActiveFace)return;if(e.target.classList.contains("txt-handle"))return;e.preventDefault();cSelectTxt(el);cPush();const s=cTstyle(el.dataset.tkey);cDrag={key:el.dataset.tkey,el,sx:e.clientX,sy:e.clientY,ox:s.x||0,oy:s.y||0}}});if(cSel){const root=cFaceRoot(cActiveFace),re=root&&root.querySelector(`.txt[data-tkey="${cSel.dataset.tkey}"]`);cSel=re||null;if(cSel){cSel.classList.add("sel");if(cMode==="move")cAddHandle(cSel)}}}
 document.addEventListener("pointermove",e=>{if(cResize){const s=ncState.textStyles[cResize.key];s.size=Math.max(30,Math.min(600,cResize.os+(e.clientX-cResize.sx)/cScale));cApply(cResize.el);cSync();return}if(!cDrag)return;const s=ncState.textStyles[cDrag.key];s.x=cDrag.ox+(e.clientX-cDrag.sx)/cScale;s.y=cDrag.oy+(e.clientY-cDrag.sy)/cScale;cApply(cDrag.el);cSync()});
 document.addEventListener("pointerup",()=>{cDrag=null;cResize=null});
-document.addEventListener("keydown",e=>{const t=(e.target.tagName||"");if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT")return;if(!$("#view-card").classList.contains("on"))return;if(e.key==="z"||e.key==="Z"){e.preventDefault();if(cHist.length){ncState.textStyles=JSON.parse(cHist.pop());cardRender();cSync()}}});
-function cSetMode(m){cMode=m;[["cModeOff","none"],["cModeMove","move"],["cModeText","text"]].forEach(([id,mm])=>$("#"+id).classList.toggle("on",mm===m));$("#cMoveControls").style.display=m==="move"?"flex":"none";$("#cTextControls").style.display=m==="text"?"flex":"none";cRemoveHandle();$$("#ncFit .txt").forEach(x=>x.classList.remove("sel"));cSel=null;cSync();["#ncFront","#ncBack"].forEach(sel=>{const bd=$(sel);if(!bd)return;bd.classList.toggle("editing",m!=="none");bd.classList.toggle("mode-move",m==="move");bd.classList.toggle("mode-text",m==="text")})}
+document.addEventListener("keydown",e=>{const t=(e.target.tagName||"");if(t==="INPUT"||t==="TEXTAREA"||t==="SELECT")return;if(!$("#view-card").classList.contains("on"))return;if((e.ctrlKey||e.metaKey)&&(e.key==="z"||e.key==="Z")){e.preventDefault();if(cHist.length){ncState.textStyles=JSON.parse(cHist.pop());cardRender();cSync()}}});
+function cUpdateFaceUi(){$$("#cFaceTabs button").forEach(b=>b.classList.toggle("on",b.dataset.face===cActiveFace));$$("#ncBoth .nc-side").forEach(s=>s.classList.toggle("is-active-face",s.querySelector(cActiveFace==="back"?"#ncBack":"#ncFront")!==null))}
+function cSetFace(face){cActiveFace=face==="back"?"back":"front";if(typeof ncState!=="undefined")ncState.activeFace=cActiveFace;cSetMode("none");cUpdateFaceUi();if(typeof cAdjSync==="function")cAdjSync(ncTpl(ncState.tpl),false)}
+function cSetMode(m){cMode=m;[["cModeOff","none"],["cModeMove","move"],["cModeText","text"]].forEach(([id,mm])=>$("#"+id).classList.toggle("on",mm===m));$("#cMoveControls").style.display=m==="move"?"flex":"none";$("#cTextControls").style.display=m==="text"?"flex":"none";cRemoveHandle();$$("#ncFit .txt").forEach(x=>x.classList.remove("sel"));cSel=null;cSync();["front","back"].forEach(face=>{const bd=cFaceRoot(face),active=face===cActiveFace&&m!=="none";if(!bd)return;bd.classList.toggle("editing",active);bd.classList.toggle("mode-move",active&&m==="move");bd.classList.toggle("mode-text",active&&m==="text")})}
 $("#cModeOff").onclick=()=>cSetMode("none");$("#cModeMove").onclick=()=>cSetMode("move");$("#cModeText").onclick=()=>cSetMode("text");
+$$("#cFaceTabs button").forEach(b=>b.onclick=()=>cSetFace(b.dataset.face));
 ["cEditX","cEditY","cEditSize"].forEach(id=>{$("#"+id).onfocus=()=>{if(cSel)cPush()};$("#"+id).oninput=e=>{if(!cSel)return;const s=cTstyle(cSel.dataset.tkey),map={cEditX:"x",cEditY:"y",cEditSize:"size"};s[map[id]]=+e.target.value||0;cApply(cSel)}});
 [["cAlignLeft","left"],["cAlignCenter","center"],["cAlignRight","right"]].forEach(([id,a])=>$("#"+id).onclick=()=>{if(!cSel)return;cPush();cTstyle(cSel.dataset.tkey).align=a;cApply(cSel)});
 TXTCOLORS.forEach(c=>{const e=document.createElement("span");e.className="chip";e.dataset.c=c;e.style.background=c;e.onclick=()=>{if(!cSel)return;cPush();cTstyle(cSel.dataset.tkey).color=c;cApply(cSel);cSync()};$("#cTxtColors").append(e)});
@@ -635,7 +947,7 @@ FONTS.forEach(([n,f])=>$("#cTxtFont").insertAdjacentHTML("beforeend",`<option va
 $("#cTxtFont").onchange=e=>{if(!cSel)return;cPush();cTstyle(cSel.dataset.tkey).font=e.target.value;cApply(cSel)};
 $("#cTxtBold").onclick=()=>{if(!cSel)return;cPush();const s=cTstyle(cSel.dataset.tkey);s.bold=!s.bold;cApply(cSel);cSync()};
 $("#cTxtItalic").onclick=()=>{if(!cSel)return;cPush();const s=cTstyle(cSel.dataset.tkey);s.italic=!s.italic;cApply(cSel);cSync()};
-$("#cResetEdit").onclick=()=>{cPush();ncState.textStyles={};ncState.logoImg="";ncState.photo="";ncState.photoPos={x:50,y:50};AI_BG["card"]=null;cSel=null;cRemoveHandle();const el=aiEl("card");if(el){el.style.backgroundImage="";el.style.backgroundSize="";el.style.backgroundPosition="";el.style.backgroundRepeat=""}const rm=$("#ncImgRemove");if(rm)rm.style.display="none";cardRender();cSync();try{autosaveScope("card")}catch(e){}};
+$("#cResetEdit").onclick=()=>{cPush();ncState.textStyles={};ncState.logoImg="";ncState.photo="";ncState.photoPos={x:50,y:50};AI_BG["card"]=null;cSel=null;cRemoveHandle();const el=aiEl("card");if(el){el.style.backgroundImage="";el.style.backgroundSize="";el.style.backgroundPosition="";el.style.backgroundRepeat=""}const rm=$("#ncImgRemove");if(rm)rm.style.display="none";if(typeof cAdjSync==="function")cAdjSync(ncTpl(ncState.tpl),true);cardRender();cSync();try{autosaveScope("card")}catch(e){}};
 
 let cpState={type:"discount",accent:"#df4b3f",textStyles:{},texts:["사용 시 직원에게 보여주세요"]};
 SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===6?" on":"");e.style.background=c;e.onclick=()=>{$$("#cpChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");cpState.accent=c;couponRender()};$("#cpChips").append(e)});
@@ -677,14 +989,15 @@ function cpSetMode(m){cpMode=m;[["cpModeOff","none"],["cpModeMove","move"],["cpM
 if($("#cpModeOff")){$("#cpModeOff").onclick=()=>cpSetMode("none");$("#cpModeMove").onclick=()=>cpSetMode("move");$("#cpModeText").onclick=()=>cpSetMode("text");["cpEditX","cpEditY","cpEditSize"].forEach(id=>{$("#"+id).onfocus=()=>{if(cpSel)cpPush()};$("#"+id).oninput=e=>{if(!cpSel)return;const s=cpTstyle(cpSel.dataset.tkey),map={cpEditX:"x",cpEditY:"y",cpEditSize:"size"};s[map[id]]=+e.target.value||0;cpApply(cpSel)}});[["cpAlignLeft","left"],["cpAlignCenter","center"],["cpAlignRight","right"]].forEach(([id,a])=>$("#"+id).onclick=()=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).align=a;cpApply(cpSel)});TXTCOLORS.forEach(c=>{const e=document.createElement("span");e.className="chip";e.dataset.c=c;e.style.background=c;e.onclick=()=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).color=c;cpApply(cpSel);cpSyncUI()};$("#cpTxtColors").append(e)});FONTS.forEach(([n,f])=>$("#cpTxtFont").insertAdjacentHTML("beforeend",`<option value="${f}">${n}</option>`));$("#cpTxtFont").onchange=e=>{if(!cpSel)return;cpPush();cpTstyle(cpSel.dataset.tkey).font=e.target.value;cpApply(cpSel)};$("#cpTxtBold").onclick=()=>{if(!cpSel)return;cpPush();const s=cpTstyle(cpSel.dataset.tkey);s.bold=!s.bold;cpApply(cpSel);cpSyncUI()};$("#cpTxtItalic").onclick=()=>{if(!cpSel)return;cpPush();const s=cpTstyle(cpSel.dataset.tkey);s.italic=!s.italic;cpApply(cpSel);cpSyncUI()}}
 
 // 명함 템플릿 레지스트리 — 완전히 다른 브랜드 스타일. bg/fg + 업종추천 + 배지.
-const ncTemplates=[
- {id:"signature",name:"Signature",ko:"시그니처",cat:"basic",tag:"클래식 로고 중심의 심플 명함",badge:"BEST",bg:"#f6f5f2",fg:"#1a1a1a",back:"#1a1a1a",inds:["기본","디자인","브랜드","공방","디자이너"]},
- {id:"premium",name:"Premium",ko:"프리미엄",cat:"basic",tag:"고급스러운 블랙 & 골드 조합",badge:"NEW",bg:"#111111",fg:"#efe1c2",back:"#0c0c0c",inds:["법인","기업","호텔","변호사","주얼리"]},
- {id:"modern",name:"Modern",ko:"모던",cat:"basic",tag:"감각적인 컬러 & 여백 중심",badge:"NEW",bg:"#f4f5f7",fg:"#17181c",back:"#eceef3",inds:["개발자","IT","스타트업","디자이너"]},
- {id:"vertical",name:"Vertical",ko:"세로형",cat:"basic",tag:"세로 분할로 차별화된 레이아웃",badge:"",bg:"#eef0ec",fg:"#232a25",back:"#3a4139",inds:["공방","작가","카페","브랜드"]},
- {id:"creative",name:"Creative",ko:"크리에이티브",cat:"basic",tag:"브랜드 감성을 강조한 감각적 디자인",badge:"HOT",bg:"#f7f4ee",fg:"#191919",back:"#191919",inds:["디자이너","크리에이터","작가","포토"]},
- {id:"luxury",name:"Luxury",ko:"럭셔리",cat:"basic",tag:"투명감 + 빛 반사 효과의 럭셔리 스타일",badge:"NEW",bg:"#e9ebf0",fg:"#2a2d36",back:"#20222a",inds:["뷰티","법인","호텔","주얼리"]}
-];
+/* TemplateData is the sole template source for thumbnails and both live faces. */
+const ncTemplates=Array.isArray(window.BUSINESS_CARD_TEMPLATES)?window.BUSINESS_CARD_TEMPLATES:[];
+const LEGACY_CARD_TEMPLATE_IDS=Object.freeze({
+ vertical:"signature",luxury:"premium",portfolio:"designer",restaurant:"hotel",rest:"hotel",estate:"realestate",dev:"developer",
+ j_boutique:"fashion",j_police:"police",j_cafe:"cafe",j_hair:"hair",j_designer:"designer",j_chef:"hotel",j_hotel:"hotel",
+ j_airline:"airline",j_mobile:"airline",j_realestate:"realestate",j_law:"police",j_dental:"dental",j_education:"airline",
+ j_fitness:"developer",j_nail:"nail",j_flower:"nail",j_taxi:"taxi",j_dessert:"cafe",j_freelancer:"designer",j_developer:"developer"
+});
+const CARD_ICON_ALIASES={monogram:"spark","plus-grid":"spark","wordmark-dot":"spark","offset-circle":"spark","crop-corner":"pen","serif-monogram":"spark","shield-star":"shield","coffee-cup-bean":"cup","scissors-curve":"scissors","nail-arch":"nail","taxi-roof-check":"car","terminal-code":"code","geometry-grid":"pen","building-key":"building","hotel-arch":"hotel","wing-flight-path":"plane","tooth-spark":"tooth","hanger-thread":"hanger"};
 // 업종별 아이콘 (라인 SVG, currentColor)
 const NC_ICONS={
  hanger:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 6a2 2 0 1 1 1.4 3.4c-.4.4-.4.9-.4 1.1L3 17.5c-.6.4-.3 1.5.5 1.5h17c.8 0 1.1-1.1.5-1.5L12 10.5"/></svg>',
@@ -708,60 +1021,13 @@ const NC_ICONS={
  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>',
  code:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13 6l-2 12"/></svg>'
 };
-function svgIcon(n){return NC_ICONS[n]||NC_ICONS.spark}
-// 직업·업종별 템플릿 — 앞면=업종 엠블럼(아이콘+상호+영문), 뒷면=정보. 데이터로 확장 쉬움.
-const NC_JOBS=[
- {id:"j_boutique",ko:"의류 쇼핑몰",label:"BOUTIQUE",sub:"FASHION STORE",icon:"hanger",bg:"#f2ebdf",fg:"#3a3128",accent:"#b0946b",back:"#efe7d8",font:"serif"},
- {id:"j_police",ko:"경찰",label:"POLICE",sub:"TO PROTECT AND SERVE",icon:"shield",bg:"#1d2947",fg:"#f2f4fa",accent:"#d4b25a",back:"#141d34",font:""},
- {id:"j_cafe",ko:"카페",label:"CAFE",sub:"PREMIUM COFFEE",icon:"cup",bg:"#2e3a2f",fg:"#efe7d6",accent:"#c6a568",back:"#f3ede0",font:"serif"},
- {id:"j_hair",ko:"헤어샵",label:"HAIR SALON",sub:"BEAUTY & STYLE",icon:"scissors",bg:"#141414",fg:"#f4f4f4",accent:"#c8c8c8",back:"#0e0e0e",font:"serif"},
- {id:"j_designer",ko:"디자이너",label:"DESIGNER",sub:"CREATIVE STUDIO",icon:"pen",bg:"#17181a",fg:"#f2f2f2",accent:"#9aa0a6",back:"#eceef2",font:""},
- {id:"j_chef",ko:"요리사",label:"Chef",sub:"KOREAN CUISINE",icon:"chef",bg:"#14110d",fg:"#e9dcc2",accent:"#c8a45a",back:"#efe6d4",font:"serif"},
- {id:"j_hotel",ko:"호텔",label:"HOTEL",sub:"PREMIUM SERVICE",icon:"hotel",bg:"#16233f",fg:"#efe3c4",accent:"#c8a45a",back:"#101a30",font:"serif"},
- {id:"j_airline",ko:"항공사",label:"AIRLINE",sub:"SERVICE WITH CARE",icon:"plane",bg:"#eef3f8",fg:"#173a5f",accent:"#2f6fb0",back:"#dbe7f2",font:""},
- {id:"j_mobile",ko:"휴대폰 매장",label:"MOBILE",sub:"STORE",icon:"phone",bg:"#ffffff",fg:"#17324f",accent:"#2f6fb0",back:"#eef3f8",font:""},
- {id:"j_realestate",ko:"부동산",label:"REAL ESTATE",sub:"YOUR TRUSTED PARTNER",icon:"building",bg:"#f6f1e8",fg:"#3a3226",accent:"#b79b5e",back:"#ede4d3",font:"serif"},
- {id:"j_law",ko:"법무",label:"LAW FIRM",sub:"LEGAL COUNSEL",icon:"column",bg:"#15140f",fg:"#e6dcc2",accent:"#c8a45a",back:"#efe6d2",font:"serif"},
- {id:"j_dental",ko:"치과",label:"DENTAL CLINIC",sub:"YOUR SMILE, OUR CARE",icon:"tooth",bg:"#ffffff",fg:"#14494a",accent:"#17868a",back:"#e4f1f0",font:""},
- {id:"j_education",ko:"학원",label:"EDUCATION",sub:"LEARNING CENTER",icon:"book",bg:"#ffffff",fg:"#1b2a4a",accent:"#2f4a8a",back:"#e7ecf6",font:"serif"},
- {id:"j_fitness",ko:"헬스장",label:"FITNESS",sub:"TRAIN HARD",icon:"dumbbell",bg:"#141414",fg:"#f4f4f4",accent:"#8bd44a",back:"#0e0e0e",font:""},
- {id:"j_nail",ko:"네일샵",label:"NAIL SALON",sub:"BEAUTY FOR YOU",icon:"nail",bg:"#f6d9e2",fg:"#7a3a52",accent:"#c96f92",back:"#f7e7ee",font:"serif"},
- {id:"j_flower",ko:"꽃집",label:"FLOWER SHOP",sub:"LOVE & FLOWERS",icon:"flower",bg:"#f4f2ea",fg:"#3a4a34",accent:"#7f9a5e",back:"#eaeee0",font:"serif"},
- {id:"j_taxi",ko:"택시",label:"TAXI",sub:"SAFE & FAST",icon:"car",bg:"#f4c21a",fg:"#1a1a1a",accent:"#141414",back:"#1a1a1a",font:""},
- {id:"j_dessert",ko:"디저트카페",label:"DESSERT CAFE",sub:"SWEET MOMENTS",icon:"cake",bg:"#f3e9e0",fg:"#7a4a44",accent:"#c98a7a",back:"#efe0d6",font:"serif"},
- {id:"j_freelancer",ko:"프리랜서",label:"FREELANCER",sub:"IDEA TO REALITY",icon:"spark",bg:"#ffffff",fg:"#17324f",accent:"#2f6fb0",back:"#eef3f8",font:""},
- {id:"j_developer",ko:"개발자",label:"DEVELOPER",sub:"CODE THE FUTURE",icon:"code",bg:"#0d1117",fg:"#e6edf3",accent:"#3fb950",back:"#161b22",font:"mono"}
-].map(j=>Object.assign({name:j.label,cat:"job",tag:j.ko+" 전용 디자인",badge:"",inds:[j.ko]},j));
-ncTemplates.push(...NC_JOBS);
-function ncTpl(id){return ncTemplates.find(t=>t.id===id)||ncTemplates[0]}
-let ncState={orientation:"horizontal",kind:"normal",tpl:"signature",industry:"",accent:"#7657ff",photo:"",logoImg:"",logoOn:true,qr:false,corner:"round",photoPos:{x:50,y:50},textStyles:{}};
-function tplBadgeHtml(b){if(!b)return"";const cls=b==="BEST"?"b-best":b==="NEW"?"b-new":b==="HOT"?"b-hot":b==="인기"?"b-pop":"b-rec";return `<span class="tpl-badge ${cls}">${b}</span>`}
-// 템플릿 미리보기용 샘플 명함 데이터 (실제 앞면을 축소 렌더)
-const NC_SAMPLE={co:"한디자인",name:"김한아",role:"대표",mobile:"010-1234-5678",email:"kimhana@handesign.kr",addr:"서울특별시 강남구 테헤란로 123",web:"www.handesign.kr"};
-function tplBadgeIn(b){if(!b)return"";const cls=b==="BEST"?"b-best":b==="NEW"?"b-new":"b-hot";return `<span class="tpl-badge-in ${cls}">${b}</span>`}
-function ncMiniFront(t){const s=NC_SAMPLE;if(t.cat==="job"){return `<div class="card-preview horizontal nc-front jobcard jtpl-${t.id}" style="background:${t.bg};color:${t.fg};--nc-accent:${t.accent};font-family:${jobFont(t.font)||'inherit'}"><div class="nc-emblem"><div class="nc-jicon">${svgIcon(t.icon)}</div><div class="nc-company">${t.label}</div><div class="nc-jsub">${t.sub}</div></div></div>`}const o=t.id==="vertical"?"vertical":"horizontal";const left=`<div class="nc-left"><div class="nc-logo">HD</div><div class="nc-company">${s.co}</div></div>`;const right=`<div class="nc-right"><div class="nc-name">${s.name}<span class="nc-role">${s.role}</span></div><div class="nc-lines"><span>${s.mobile}</span><span>${s.email}</span><span>${s.addr}</span><span>${s.web}</span></div></div>`;return `<div class="card-preview ${o} nc-front tpl-${t.id}">${left}${right}</div>`}
-// 미니 명함을 셀 너비에 맞춰 축소
-function fitMiniCards(){document.querySelectorAll("#ncTemplates .tplt-scaler").forEach(sc=>{const card=sc.firstElementChild;if(!card)return;card.style.transform="none";const nw=card.offsetWidth||610,nh=card.offsetHeight||339,W=sc.clientWidth,H=sc.clientHeight;if(!W||!H)return;const k=Math.min(W/nw,H/nh),x=(W-nw*k)/2,y=(H-nh*k)/2;card.style.transform="translate("+x+"px,"+y+"px) scale("+k+")"})}
-window.addEventListener("resize",()=>{try{fitMiniCards()}catch(e){}});
+let ncState={orientation:"horizontal",kind:"normal",tpl:"signature",industry:"",accent:"",photo:"",logoImg:"",logoOn:true,qr:true,corner:"round",photoPos:{x:50,y:50},textStyles:{},cardEdit:{front:{},back:{}},activeFace:"front"};
 const ncFilter={cat:"all",q:""};
-function renderCardTemplates(){const box=$("#ncTemplates");if(!box)return;const q=(ncFilter.q||"").trim().toLowerCase();const list=ncTemplates.filter(t=>{if(ncFilter.cat!=="all"&&t.cat!==ncFilter.cat)return false;if(q){const hay=((t.ko||"")+" "+(t.name||"")+" "+(t.label||"")+" "+(t.inds||[]).join(" ")).toLowerCase();if(!hay.includes(q))return false}return true});if(!list.length){box.innerHTML='<div style="grid-column:1/-1;color:var(--sub);font-size:12.5px;padding:18px 4px">검색 결과가 없어요. 다른 업종으로 검색해보세요.</div>';return}box.innerHTML=list.map((t,i)=>`<div class="template-card tplt tplt-${t.id}${t.id===ncState.tpl?" on":""}" data-id="${t.id}"><div class="tplt-head"><span class="tplt-title">${String(i+1).padStart(2,"0")}. ${t.name}</span><span class="tplt-ko">(${t.ko||""})</span>${tplBadgeIn(t.badge)}</div><div class="tplt-stack"><div class="tplt-back-peek" style="background:${t.back||t.bg}"></div><div class="tplt-scaler">${ncMiniFront(t)}</div></div><div class="tpl-tag">${t.tag}</div></div>`).join("");$$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");cardRender()});requestAnimationFrame(fitMiniCards)}
-function bindTplFilters(){$$("#ncTplTabs button").forEach(b=>b.onclick=()=>{ncFilter.cat=b.dataset.cat;$$("#ncTplTabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");renderCardTemplates()});const s=$("#ncTplSearch");if(s)s.oninput=e=>{ncFilter.q=e.target.value;if(e.target.value.trim()){ncFilter.cat="all";$$("#ncTplTabs button").forEach(x=>x.classList.toggle("on",x.dataset.cat==="all"))}renderCardTemplates()}}
-function recommendedTpls(){const ind=ncState.industry;if(!ind)return[];return ncTemplates.filter(t=>(t.inds||[]).some(x=>x===ind)).map(t=>t.id)}
-function applyAiPick(){const rec=recommendedTpls();ncState.tpl=rec[0]||"signature";renderCardTemplates();cardRender()}
-renderCardTemplates();bindTplFilters();
-{const _ni=$("#ncIndustry");if(_ni)_ni.onchange=()=>{ncState.industry=_ni.value;renderCardTemplates()}}
-$$("#ncTemplates .template-card").forEach(c=>c.onclick=()=>{ncState.tpl=c.dataset.id;$$("#ncTemplates .template-card").forEach(x=>x.classList.remove("on"));c.classList.add("on");cardRender()});
-$$("#ncOrientation button").forEach(b=>b.onclick=()=>{$$("#ncOrientation button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.orientation=b.dataset.o;cardRender()});
-$$("#ncKind button").forEach(b=>b.onclick=()=>{$$("#ncKind button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.kind=b.dataset.k;$("#photoWrap").style.display=ncState.kind==="photo"?"block":"none";cardRender()});
-$$("#ncQrToggle button").forEach(b=>b.onclick=()=>{$$("#ncQrToggle button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.qr=b.dataset.qr==="1";const w=$("#ncQrUrlWrap");if(w)w.style.display=ncState.qr?"":"none";cardRender()});
-$$("#ncCorner button").forEach(b=>b.onclick=()=>{$$("#ncCorner button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.corner=b.dataset.c;cardRender()});
-$$("#ncLogoToggle button").forEach(b=>b.onclick=()=>{$$("#ncLogoToggle button").forEach(x=>x.classList.remove("on"));b.classList.add("on");ncState.logoOn=b.dataset.on==="1";cardRender()});
-SOLID.forEach((c,i)=>{const e=document.createElement("span");e.className="chip"+(i===0?" on":"");e.style.background=c;e.onclick=()=>{$$("#ncChips .chip").forEach(x=>x.classList.remove("on"));e.classList.add("on");ncState.accent=c;cardRender()};$("#ncChips").append(e)});
-["ncCo","ncName","ncRole","ncMobile","ncEmail","ncAddr","ncWeb","ncQrUrl"].forEach(id=>$("#"+id).addEventListener("input",cardRender));
-$("#ncPhoto").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{ncState.photo=r.result;cardRender()};r.readAsDataURL(f)};
+function syncCardAssetRemove(){const remove=$("#ncImgRemove");if(remove)remove.style.display=(ncState.kind==="photo"?ncState.photo:ncState.logoImg)?"":"none"}
+$("#ncPhoto").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{ncState.photo=r.result;syncCardAssetRemove();cardRender()};r.readAsDataURL(f);e.target.value=""};
 // 포토명함이면 사진영역 전체(ncState.photo), 일반명함이면 로고 자리(ncState.logoImg = "D" 대체).
-$("#ncImgInput").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{if(ncState.kind==="photo"){ncState.photo=r.result}else{ncState.logoImg=r.result}$("#ncImgRemove").style.display="";cardRender()};r.readAsDataURL(f);e.target.value=""};
-$("#ncImgRemove").onclick=()=>{if(ncState.kind==="photo"){ncState.photo=""}else{ncState.logoImg=""}$("#ncImgRemove").style.display="none";cardRender()};
+$("#ncImgInput").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{if(ncState.kind==="photo"){ncState.photo=r.result}else{ncState.logoImg=r.result}syncCardAssetRemove();cardRender()};r.readAsDataURL(f);e.target.value=""};
+$("#ncImgRemove").onclick=()=>{if(ncState.kind==="photo"){ncState.photo=""}else{ncState.logoImg=""}syncCardAssetRemove();cardRender()};
 // 포토명함 사진 위치 조정: 사진을 마우스/터치로 드래그해 보이는 영역 이동(object-position).
 let photoDrag=null;
 function bindPhotoDrag(){const img=$("#ncFront .nc-photo-img");if(!img)return;img.style.cursor="move";img.style.touchAction="none";img.onpointerdown=e=>{e.preventDefault();e.stopPropagation();const rect=img.getBoundingClientRect();const pp=ncState.photoPos||{x:50,y:50};photoDrag={sx:e.clientX,sy:e.clientY,ox:pp.x,oy:pp.y,w:rect.width||1,h:rect.height||1,img}}}
@@ -770,21 +1036,78 @@ document.addEventListener("pointerup",()=>{if(photoDrag){photoDrag=null;try{auto
 /* 명함 미리보기: 모바일에서 PC 비율 그대로 축소(메뉴판/쿠폰과 동일). 자연폭은 offsetWidth(가로610/세로380)로 읽음. */
 let cScale=1;
 function fitCard(){const both=document.getElementById("ncBoth"),fit=document.getElementById("ncFit");if(!both||!fit)return;const stage=fit.parentElement;if(!stage)return;const cs=getComputedStyle(stage),pad=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0);const avail=stage.clientWidth-pad;if(avail<=0)return;both.style.transform='none';const natW=both.offsetWidth,natH=both.offsetHeight;if(!natW)return;cScale=Math.min(1,avail/natW);both.style.transform='scale('+cScale+')';fit.style.width=(natW*cScale)+'px';fit.style.height=(natH*cScale)+'px'}
-window.addEventListener("resize",()=>{try{fitCard()}catch(e){}});
-function isLightHex(h){if(!h)return false;h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),bl=parseInt(h.slice(4,6),16);return (0.299*r+0.587*g+0.114*bl)>150}
-function jobFont(f){return f==="serif"?"'Nanum Myeongjo',serif":f==="mono"?"'Courier New',monospace":""}
-function renderBack(){const b=$("#ncBack");if(!b)return;let o=ncState.orientation;if(ncState.tpl==="vertical")o="vertical";const t=ncTpl(ncState.tpl);
-if(t.cat==="job"){b.className=`card-preview ${o} nc-back-card jobback jtpl-${t.id}`;const bk=t.back||"#fff";const light=isLightHex(bk),fg=light?"#1c1c1c":"#ffffff";b.style.background=bk;b.style.color=fg;b.style.setProperty("--nc-accent",t.accent);b.style.fontFamily="";b.style.borderRadius=ncState.corner==="sharp"?"0":"";const qrH=ncState.qr?'<div class="nc-qr nc-bqr" id="ncBackQr"></div>':'';b.innerHTML=`<div class="nc-backinfo"><div class="nc-name txt" data-tkey="bname" style="color:${fg}">${$("#ncName").value}<span class="nc-role txt" data-tkey="brole" style="color:${fg}">${$("#ncRole").value}</span></div><div class="nc-lines" style="color:${fg}"><span class="txt" data-tkey="bl0">${$("#ncMobile").value}</span><span class="txt" data-tkey="bl1">${$("#ncEmail").value}</span><span class="txt" data-tkey="bl2">${$("#ncAddr").value}</span><span class="txt" data-tkey="bl3">${$("#ncWeb").value}</span></div>${qrH}</div>`;if(ncState.qr)makeQR($("#ncBackQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);return}
-b.className=`card-preview ${o} nc-back-card tpl-${ncState.tpl}`;b.style.setProperty("--nc-accent",ncState.accent);const bk=t.back||ncState.accent;b.style.background=bk;const light=isLightHex(bk),fg=light?"#1a1a1a":"#ffffff";b.style.color=fg;b.style.borderRadius=ncState.corner==="sharp"?"0":"";const logoInner=ncState.logoImg?`<img src="${ncState.logoImg}" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block">`:"D";
-const logoCls="nc-logo"+(ncState.logoImg?" has-img":"");const logoBg=light?"rgba(0,0,0,.07)":"rgba(255,255,255,.18)";b.innerHTML=`<div class="nc-back-inner">${ncState.logoOn?`<div class="${logoCls} txt" data-tkey="blogo" style="${ncState.logoImg?"":"background:"+logoBg+";color:"+fg}">${logoInner}</div>`:""}<div class="nc-company txt" data-tkey="bco" style="color:${fg}">${$("#ncCo").value}</div><div class="nc-back-slogan txt" data-tkey="bslogan" style="color:${fg};opacity:.82">${$("#ncWeb").value||$("#ncMobile").value||""}</div></div>`}
-function cardRender(){const el=$("#ncFront");let o=ncState.orientation;if(ncState.tpl==="vertical")o="vertical";el.style.setProperty("--nc-accent",ncState.accent);
-const _t=ncTpl(ncState.tpl);let bg=_t.bg||"#fff",color=_t.fg||"#151923";
-const qrHtml=ncState.qr?'<div class="nc-qr" id="ncQr"></div>':'';
-const logoInner=ncState.logoImg?`<img src="${ncState.logoImg}" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block">`:"D";
-const logoCls="nc-logo"+(ncState.logoImg?" has-img":"");
-if(ncState.kind==="photo"){el.className=`card-preview ${o} photo-card tpl-${ncState.tpl}`;el.style.background=bg;el.style.color=color;el.style.fontFamily="";el.style.borderRadius=ncState.corner==="sharp"?"0":"";el.innerHTML=`<div class="photo-area">${ncState.photo?`<img class="nc-photo-img" src="${ncState.photo}" style="object-position:${(ncState.photoPos&&ncState.photoPos.x)||50}% ${(ncState.photoPos&&ncState.photoPos.y)||50}%">`:""}</div><div class="photo-info" style="position:relative"><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role txt" data-tkey="role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);renderBack();cApplyAll();cBind();try{bindPhotoDrag()}catch(e){}applyBg("card");try{fitCard()}catch(e){}return}
-if(_t.cat==="job"){el.className=`card-preview ${o} nc-front jobcard jtpl-${_t.id}`;el.style.background=_t.bg;el.style.color=_t.fg;el.style.setProperty("--nc-accent",_t.accent);el.style.fontFamily=jobFont(_t.font);el.style.borderRadius=ncState.corner==="sharp"?"0":"";el.innerHTML=`<div class="nc-emblem"><div class="nc-jicon">${svgIcon(_t.icon)}</div><div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div><div class="nc-jsub txt" data-tkey="jsub">${_t.sub}</div></div>`;renderBack();cApplyAll();cBind();applyBg("card");try{fitCard()}catch(e){}return}
-el.className=`card-preview ${o} nc-front tpl-${ncState.tpl}`;el.style.background=bg;el.style.color=color;el.style.fontFamily="";el.style.borderRadius=ncState.corner==="sharp"?"0":"";el.innerHTML=`<div class="nc-left">${ncState.logoOn?`<div class="${logoCls} txt" data-tkey="logo">${logoInner}</div>`:""}<div class="nc-company txt" data-tkey="co">${$("#ncCo").value}</div></div><div class="nc-right"><div class="nc-name txt" data-tkey="name">${$("#ncName").value}<span class="nc-role txt" data-tkey="role">${$("#ncRole").value}</span></div><div class="nc-lines"><span class="txt" data-tkey="l0">${$("#ncMobile").value}</span><span class="txt" data-tkey="l1">${$("#ncEmail").value}</span><span class="txt" data-tkey="l2">${$("#ncAddr").value}</span><span class="txt" data-tkey="l3">${$("#ncWeb").value}</span></div>${qrHtml}</div>`;if(ncState.qr)makeQR($("#ncQr"),((($("#ncQrUrl")||{}).value)||$("#ncWeb").value||""),50);renderBack();cApplyAll();cBind();applyBg("card");try{fitCard()}catch(e){}}
+/* Business card renderer: thumbnails and live front/back share renderFace. */
+function cardEsc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}
+function cardClassToken(v){return String(v||"none").toLowerCase().replace(/[^a-z0-9-]/g,"-")}
+function faceValue(value,side,fallback){if(value&&typeof value==="object"&&!Array.isArray(value)&&Object.prototype.hasOwnProperty.call(value,side))return value[side];return value==null?fallback:value}
+function normalizeCardPosition(value,fallback){const aliases={tl:"top-left",tc:"top-center",tr:"top-right",cl:"center-left",cr:"center-right",bl:"bottom-left",bc:"bottom-center",br:"bottom-right",none:"hidden"};return aliases[value]||value||fallback}
+function migrateCardTemplateId(id){const next=LEGACY_CARD_TEMPLATE_IDS[id]||id;return ncTemplates.some(t=>t.id===next)?next:"signature"}
+function ncTpl(id){return ncTemplates.find(t=>t.id===migrateCardTemplateId(id))||ncTemplates[0]}
+function normalizeCardEdit(){const raw=ncState.cardEdit&&typeof ncState.cardEdit==="object"?ncState.cardEdit:{};if(!raw.front&&!raw.back){const old=Object.assign({},raw);const migrated={};if(old.align)migrated.textAlign=old.align;if(old.valign)migrated.verticalAlign=old.valign;if(old.qrPos)migrated.qrPosition=normalizeCardPosition(old.qrPos,"hidden");if(old.logoPos)migrated.logoPosition=normalizeCardPosition(old.logoPos,"top-left");if(old.infoPos)migrated.infoPosition=old.infoPos;if(old.nameSize)migrated.nameSize=old.nameSize;if(old.bodySize)migrated.bodySize=old.bodySize;if(old.pad)migrated.padding=old.pad;if(old.lh)migrated.lineHeight=old.lh;if(old.ls!=null)migrated.letterSpacing=Math.max(0,old.ls);ncState.cardEdit={front:migrated,back:{}}}else{ncState.cardEdit={front:Object.assign({},raw.front||{}),back:Object.assign({},raw.back||{})}}}
+function migrateCardTextStyles(t){const old=ncState.textStyles&&typeof ncState.textStyles==="object"?ncState.textStyles:{};const entries=Object.entries(old);if(!entries.some(([key])=>!key.includes(":")))return old;const direct={co:"front:co",logo:"front:logo",slogan:"front:kicker",bco:"back:co",blogo:"back:logo",bslogan:"back:kicker"},detailKeys={name:"name",role:"role",l0:"mobile",l1:"email",l2:"addr",l3:"web"},next={};entries.forEach(([key,value])=>{if(key.includes(":")){next[key]=value;return}let target=direct[key];const detailKey=detailKeys[key];if(!target&&detailKey){for(const side of ["front","back"]){const specs=(side==="front"?t.frontDetails:t.backDetails)||[],index=specs.findIndex(spec=>spec.key===detailKey);if(index>=0){target=side+":detail:"+index;break}}}next[target||key]=value});return next}
+function normalizeCardState(){ncState.tpl=migrateCardTemplateId(ncState.tpl);const template=ncTpl(ncState.tpl);ncState.orientation=ncState.orientation==="vertical"?"vertical":"horizontal";ncState.kind=ncState.kind==="photo"?"photo":"normal";ncState.corner=ncState.corner==="sharp"?"sharp":"round";ncState.logoOn=ncState.logoOn!==false;ncState.qr=!!ncState.qr;ncState.textStyles=migrateCardTextStyles(template);ncState.photoPos=ncState.photoPos||{x:50,y:50};normalizeCardEdit();if(ncState.accent==="#7657ff"&&ncState.tpl!=="signature")ncState.accent="";ncState.activeFace=ncState.activeFace==="back"?"back":"front";cActiveFace=ncState.activeFace}
+function positionAxis(value,axis){value=normalizeCardPosition(value,"center");if(axis==="x")return value.includes("right")?"right":value.includes("left")?"left":"center";return value.includes("bottom")?"bottom":value.includes("top")?"top":"center"}
+function alignFlex(value){return value==="right"?"flex-end":value==="center"?"center":"flex-start"}
+function verticalFlex(value){return value==="bottom"?"flex-end":value==="top"?"flex-start":"center"}
+function cardFaceDefaults(t,side){return {
+ background:side==="back"?t.backBackground:t.frontBackground,
+ textColor:side==="back"?t.backTextColor:t.frontTextColor,
+ layout:side==="back"?t.backLayout:t.frontLayout,
+ textAlign:side==="back"?t.backTextAlign:t.frontTextAlign,
+ verticalAlign:faceValue(t.verticalAlign,side,"center"),logoPosition:normalizeCardPosition(faceValue(t.logoPosition,side,"top-left"),"top-left"),
+ infoPosition:normalizeCardPosition(faceValue(t.infoPosition,side,"center"),"center"),qrPosition:normalizeCardPosition(faceValue(t.qrPosition,side,"hidden"),"hidden"),
+ dividerStyle:faceValue(t.dividerStyle,side,"none"),borderStyle:faceValue(t.borderStyle,side,"none"),iconStyle:faceValue(t.iconStyle,side,"none"),motif:faceValue(t.motif,side,"none"),
+ nameSize:+faceValue(t.nameSize,side,24),bodySize:+faceValue(t.bodySize,side,11),letterSpacing:Math.max(0,+faceValue(t.letterSpacing,side,0)),lineHeight:+faceValue(t.lineHeight,side,1.5),padding:+faceValue(t.padding,side,28),fontWeight:+faceValue(t.fontWeight,side,700),borderRadius:+t.borderRadius||0
+}}
+function cardFaceSettings(t,side,d){const base=cardFaceDefaults(t,side),edit=d&&d.edit&&d.edit[side]||{};const out=Object.assign({},base,edit);out.logoPosition=normalizeCardPosition(out.logoPosition,base.logoPosition);out.qrPosition=normalizeCardPosition(out.qrPosition,base.qrPosition);out.infoPosition=normalizeCardPosition(out.infoPosition,base.infoPosition);out.letterSpacing=Math.max(0,+out.letterSpacing||0);return out}
+function svgIcon(n){return NC_ICONS[CARD_ICON_ALIASES[n]||n]||NC_ICONS.spark}
+function ncInit(s){s=(s||"").trim();return s?s.slice(0,2):"D"}
+function ncLogoInner(d,t){return d.logoImg?`<img src="${cardEsc(d.logoImg)}" alt="">`:`<span class="cf-ico">${svgIcon(t.icon)}</span>`}
+function templateHasQr(t){return ["front","back"].some(side=>normalizeCardPosition(faceValue(t.qrPosition,side,"hidden"),"hidden")!=="hidden")}
+function cardDetailValue(spec,d){let value=spec.key?d[spec.key]:spec.value;if(value==null)value="";value=String(value);if(spec.format==="handle"){value=value.replace(/^https?:\/\//,"").replace(/^www\./,"").split(/[\/.]/)[0];value=value?"@"+value:""}return value}
+function renderCardDetails(t,side,d){const specs=(side==="back"?t.backDetails:t.frontDetails)||[];return specs.map((spec,i)=>{if(spec.key==="co")return"";const value=cardDetailValue(spec,d);if(!value)return"";const key=`${side}:detail:${i}`,special=spec.key==="name"?" nc-name":spec.key==="role"?" nc-role":" bc-detail-value";return `<div class="bc-detail bc-detail-${cardClassToken(spec.key||spec.format||"text")}">${spec.label?`<span class="bc-detail-label">${cardEsc(spec.label)}</span>`:""}<span class="txt${special}" data-tkey="${key}">${cardEsc(value)}</span></div>`}).join("")}
+function ncQrHTML(show,pos,d,t){if(!show||pos==="hidden")return"";const value=d.qrUrl||d.web||"https://designgongbang.com";return `<div class="bc-qr-anchor bc-qr-${cardClassToken(pos)}"><div class="nc-qr" data-card-qr="${cardEsc(value)}"></div>${t.qrLabel?`<span class="bc-qr-label">${cardEsc(t.qrLabel)}</span>`:""}</div>`}
+function renderFace(t,side,d,mode){const s=cardFaceSettings(t,side,d),orientation=d.orientation==="vertical"?"vertical":"horizontal",corner=d.corner==="sharp"?0:s.borderRadius,primary=d.accent||t.primaryColor,infoX=positionAxis(s.infoPosition,"x"),details=renderCardDetails(t,side,d),logo=d.logoOn&&s.logoPosition!=="hidden"?`<div class="bc-logo-anchor"><div class="nc-logo txt${d.logoImg?" has-img":""}" data-tkey="${side}:logo">${ncLogoInner(d,t)}</div></div>`:"",brand=`<div class="bc-brand-block"><div class="nc-company txt" data-tkey="${side}:co">${cardEsc(d.co)}</div>${t.kicker?`<div class="cf-sub txt" data-tkey="${side}:kicker">${cardEsc(t.kicker)}</div>`:""}</div>`,info=`<div class="bc-info-anchor"><div class="bc-info-block nc-lines">${details}</div></div>`,qr=ncQrHTML(d.qr,s.qrPosition,d,t),deco='<div class="bc-decor" aria-hidden="true"></div>';
+ const style=`background:${s.background};color:${s.textColor};border-radius:${corner}px;font-family:${t.fontFamily};--nc-accent:${primary};--bc-primary:${primary};--bc-secondary:${t.secondaryColor};--bc-name-size:${s.nameSize}px;--bc-body-size:${s.bodySize}px;--bc-letter-spacing:${s.letterSpacing}px;--bc-line-height:${s.lineHeight};--bc-padding:${s.padding}px;--bc-weight:${s.fontWeight};--bc-text-align:${s.textAlign};--bc-text-flex:${alignFlex(s.textAlign)};--bc-info-align:${alignFlex(infoX)};--bc-valign:${verticalFlex(s.verticalAlign)}`;
+ let html=deco+logo+brand+info+qr,photoClass="";
+ if(side==="front"&&d.kind==="photo"){const pp=d.photoPos||{x:50,y:50},px=Number.isFinite(+pp.x)?+pp.x:50,py=Number.isFinite(+pp.y)?+pp.y:50,photo=d.photo?`<img class="nc-photo-img" src="${cardEsc(d.photo)}" alt="" style="object-position:${px}% ${py}%">`:"";html=deco+`<div class="bc-photo-media">${photo}</div>`+logo+`<div class="bc-photo-copy">${brand}${info}</div>`+qr;photoClass=" bc-photo"}
+ const qrClass=d.qr&&s.qrPosition!=="hidden"?` bc-qrpos-${cardClassToken(s.qrPosition)}`:"",cls=`card-preview ${orientation} bc-card bc-${side}${photoClass}${qrClass} bc-template-${cardClassToken(t.id)} bc-layout-${cardClassToken(s.layout)} bc-divider-${cardClassToken(s.dividerStyle)} bc-border-${cardClassToken(s.borderStyle)} bc-icon-${cardClassToken(s.iconStyle)} bc-motif-${cardClassToken(s.motif)} bc-logo-${cardClassToken(s.logoPosition)} bc-info-${cardClassToken(s.infoPosition)}`;
+ return {cls,style,html,settings:s,mode}
+}
+function hydrateCardQrs(root){if(!root||typeof makeQR!=="function")return;root.querySelectorAll("[data-card-qr]").forEach(q=>{const value=q.getAttribute("data-card-qr")||"https://designgongbang.com";q.innerHTML="";makeQR(q,value,52)})}
+function ncSampleData(t){return {co:"디자인공방",name:"이서준",role:"대표",mobile:"010-1234-5678",email:"design@designstudio.com",addr:"서울특별시 강남구 테헤란로 123",web:"designgongbang.com",qrUrl:"https://designgongbang.com",qr:templateHasQr(t),logoOn:true,logoImg:"",corner:"round",orientation:t.orientation||"horizontal",kind:"normal",photo:"",photoPos:{x:50,y:50},accent:"",edit:{front:{},back:{}}}}
+function ncMiniFront(t){const r=renderFace(t,"front",ncSampleData(t),"thumb");return `<div class="${r.cls}" style="${r.style}">${r.html}</div>`}
+function ncMiniBack(t){const r=renderFace(t,"back",ncSampleData(t),"thumb");return `<div class="${r.cls}" style="${r.style}">${r.html}</div>`}
+function fitMiniCards(){document.querySelectorAll("#ncTemplates .tplt-scaler, #ncTemplates .tplt-peek").forEach(sc=>{const card=sc.querySelector(".card-preview");if(!card)return;card.style.transform="none";const nw=card.offsetWidth||610,nh=card.offsetHeight||339,W=sc.clientWidth,H=sc.clientHeight;if(!W||!H)return;const k=Math.min(W/nw,H/nh),x=(W-nw*k)/2,y=(H-nh*k)/2;card.style.transform=`translate(${x}px,${y}px) scale(${k})`})}
+function renderCardTemplates(){const box=$("#ncTemplates");if(!box)return;normalizeCardState();const q=(ncFilter.q||"").trim().toLowerCase(),list=ncTemplates.filter(t=>{if(ncFilter.cat!=="all"&&t.category!==ncFilter.cat)return false;if(!q)return true;return [t.name,t.industry,t.description,...(t.industries||[]),...(t.searchAliases||[])].join(" ").toLowerCase().includes(q)});if(!list.length){box.innerHTML='<div class="tplt-empty">검색 결과가 없습니다.</div>';return}box.innerHTML=list.map(t=>`<article class="template-card tplt${t.id===ncState.tpl?" on":""}" data-id="${cardEsc(t.id)}"><div class="tplt-head"><div class="tplt-title-wrap"><strong class="tplt-title">${cardEsc(t.name)}</strong><span class="tplt-industry">${cardEsc(t.industry)}</span></div></div><div class="tplt-stack"><div class="tplt-peek">${ncMiniBack(t)}</div><div class="tplt-scaler">${ncMiniFront(t)}</div></div><div class="tpl-tag">${cardEsc(t.description)}</div></article>`).join("");box.querySelectorAll(".template-card").forEach(c=>c.onclick=()=>ncSelectTpl(c.dataset.id));hydrateCardQrs(box);requestAnimationFrame(fitMiniCards)}
+function syncCardPrimaryControls(){const t=ncTpl(ncState.tpl);$$("#ncOrientation button").forEach(b=>b.classList.toggle("on",b.dataset.o===ncState.orientation));$$("#ncQrToggle button").forEach(b=>b.classList.toggle("on",(b.dataset.qr==="1")===!!ncState.qr));const qw=$("#ncQrUrlWrap");if(qw)qw.style.display=ncState.qr?"":"none";$$("#ncChips .chip").forEach(c=>c.classList.toggle("on",!!ncState.accent&&c.dataset.c===ncState.accent));$$("#ncTemplates .template-card").forEach(c=>c.classList.toggle("on",c.dataset.id===t.id))}
+function ncSelectTpl(id){const t=ncTpl(id);ncState.tpl=t.id;ncState.orientation=t.orientation||"horizontal";ncState.accent="";ncState.qr=templateHasQr(t);ncState.textStyles={};ncState.cardEdit={front:{},back:{}};ncState.industry=t.category==="industry"?t.industry:ncState.industry;syncCardPrimaryControls();cAdjSync(t,true);cardRender();try{autosaveScope("card")}catch(e){}}
+function bindTplFilters(){$$("#ncTplTabs button").forEach(b=>b.onclick=()=>{ncFilter.cat=b.dataset.cat;$$("#ncTplTabs button").forEach(x=>x.classList.toggle("on",x===b));renderCardTemplates()});const search=$("#ncTplSearch");if(search)search.oninput=e=>{ncFilter.q=e.target.value;renderCardTemplates()};const industry=$("#ncIndustry");if(industry)industry.onchange=()=>{ncState.industry=industry.value;ncFilter.q=industry.value;if(search)search.value=industry.value;ncFilter.cat="all";$$("#ncTplTabs button").forEach(x=>x.classList.toggle("on",x.dataset.cat==="all"));renderCardTemplates()}}
+function recommendedTpls(){const ind=ncState.industry;if(!ind)return[];return ncTemplates.filter(t=>t.industry===ind||(t.industries||[]).includes(ind)).map(t=>t.id)}
+function applyAiPick(){const rec=recommendedTpls();ncSelectTpl(rec[0]||"signature")}
+function setSeg(id,value){const box=$("#"+id);if(box)box.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.v===value))}
+function rangeOutput(id,value){const out=$("#"+id+"Out");if(!out)return;out.textContent=id==="cAdjLh"?(+value).toFixed(2):id==="cAdjLs"?`${(+value).toFixed(+value%1?1:0)}px`:`${Math.round(+value)}px`}
+function setRange(id,value){const input=$("#"+id);if(input)input.value=value;rangeOutput(id,value)}
+function cAdjSync(t,reset){normalizeCardState();if(reset)ncState.cardEdit={front:{},back:{}};const s=cardFaceSettings(t,cActiveFace,{edit:ncState.cardEdit});setSeg("cAdjAlign",s.textAlign);setSeg("cAdjValign",s.verticalAlign);setSeg("cAdjQr",s.qrPosition);setSeg("cAdjLogo",s.logoPosition);setSeg("cAdjInfo",positionAxis(s.infoPosition,"x"));setRange("cAdjName",s.nameSize);setRange("cAdjBody",s.bodySize);setRange("cAdjPad",s.padding);setRange("cAdjLh",s.lineHeight);setRange("cAdjLs",s.letterSpacing);cUpdateFaceUi()}
+function bindCardControlsV2(){
+ const chipBox=$("#ncChips");if(chipBox&&!chipBox.children.length)SOLID.forEach(c=>{const chip=document.createElement("span");chip.className="chip";chip.style.background=c;chipBox.append(chip)});
+ ["ncCo","ncName","ncRole","ncMobile","ncEmail","ncAddr","ncWeb","ncQrUrl"].forEach(id=>{const input=$("#"+id);if(input)input.oninput=cardRender});
+ [["cAdjAlign","textAlign"],["cAdjValign","verticalAlign"],["cAdjQr","qrPosition"],["cAdjLogo","logoPosition"],["cAdjInfo","infoPosition"]].forEach(([id,key])=>{const box=$("#"+id);if(!box)return;box.querySelectorAll("button").forEach(b=>b.onclick=()=>{box.querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");normalizeCardEdit();const value=b.dataset.v;ncState.cardEdit[cActiveFace][key]=value;if(key==="qrPosition"&&value!=="hidden"){ncState.qr=true;syncCardPrimaryControls()}cardRender();try{autosaveScope("card")}catch(e){}})});
+ [["cAdjName","nameSize"],["cAdjBody","bodySize"],["cAdjPad","padding"],["cAdjLh","lineHeight"],["cAdjLs","letterSpacing"]].forEach(([id,key])=>{const input=$("#"+id);if(!input)return;input.oninput=()=>{normalizeCardEdit();const value=+input.value;ncState.cardEdit[cActiveFace][key]=value;rangeOutput(id,value);cardRender()}});
+ $$("#ncOrientation button").forEach(b=>b.onclick=()=>{ncState.orientation=b.dataset.o;syncCardPrimaryControls();cardRender()});
+ $$("#ncKind button").forEach(b=>b.onclick=()=>{$$("#ncKind button").forEach(x=>x.classList.toggle("on",x===b));ncState.kind=b.dataset.k;$("#photoWrap").style.display=ncState.kind==="photo"?"block":"none";syncCardAssetRemove();cardRender()});
+ $$("#ncQrToggle button").forEach(b=>b.onclick=()=>{ncState.qr=b.dataset.qr==="1";if(ncState.qr){normalizeCardEdit();const t=ncTpl(ncState.tpl),current=cardFaceSettings(t,cActiveFace,{edit:ncState.cardEdit});if(current.qrPosition==="hidden")ncState.cardEdit[cActiveFace].qrPosition="bottom-right"}syncCardPrimaryControls();cAdjSync(ncTpl(ncState.tpl),false);cardRender()});
+ $$("#ncCorner button").forEach(b=>b.onclick=()=>{$$("#ncCorner button").forEach(x=>x.classList.toggle("on",x===b));ncState.corner=b.dataset.c;cardRender()});
+ $$("#ncLogoToggle button").forEach(b=>b.onclick=()=>{$$("#ncLogoToggle button").forEach(x=>x.classList.toggle("on",x===b));ncState.logoOn=b.dataset.on==="1";cardRender()});
+ $$("#ncChips .chip").forEach((chip,i)=>{chip.dataset.c=SOLID[i]||"";chip.onclick=()=>{ncState.accent=chip.dataset.c;syncCardPrimaryControls();cardRender()}});
+ bindTplFilters()
+}
+function ncLiveData(){return {co:$("#ncCo").value,name:$("#ncName").value,role:$("#ncRole").value,mobile:$("#ncMobile").value,email:$("#ncEmail").value,addr:$("#ncAddr").value,web:$("#ncWeb").value,qrUrl:((($("#ncQrUrl")||{}).value)||""),qr:ncState.qr,logoOn:ncState.logoOn,logoImg:ncState.logoImg,corner:ncState.corner,orientation:ncState.orientation,accent:ncState.accent,kind:ncState.kind,photo:ncState.photo,photoPos:ncState.photoPos,edit:ncState.cardEdit}}
+function applyRenderedFace(el,result){el.className=result.cls;el.setAttribute("style",result.style);el.innerHTML=result.html}
+function renderBack(){const el=$("#ncBack");if(!el)return null;normalizeCardState();const result=renderFace(ncTpl(ncState.tpl),"back",ncLiveData(),"live");applyRenderedFace(el,result);hydrateCardQrs(el);return result}
+function cardRender(){const front=$("#ncFront"),back=$("#ncBack");if(!front||!back)return;normalizeCardState();const t=ncTpl(ncState.tpl),d=ncLiveData();applyRenderedFace(front,renderFace(t,"front",d,"live"));applyRenderedFace(back,renderFace(t,"back",d,"live"));hydrateCardQrs(front);hydrateCardQrs(back);cApplyAll();cBind();if(d.kind==="photo")try{bindPhotoDrag()}catch(e){}applyBg("card");cUpdateFaceUi();try{fitCard()}catch(e){}}
+window.addEventListener("resize",()=>{try{fitCard();fitMiniCards()}catch(e){}});
+bindCardControlsV2();normalizeCardState();syncCardPrimaryControls();cAdjSync(ncTpl(ncState.tpl),false);renderCardTemplates();
 
 /* ============================================================
    AI 배경 디자인 생성 (OpenAI gpt-image-1, 백엔드 경유)
@@ -961,7 +1284,7 @@ if(scope==="menu"){const t=menuTemplates.find(x=>x.id===menuState.tpl);const cat
 const p=panelOf(scope);const base={theme:p.querySelector(".ai-theme").value,mood:p.querySelector(".ai-mood").value,style:((p.querySelector(".ai-style")||{}).value||"photo"),decorations:[...p.querySelectorAll(".ai-deco.on")].map(x=>x.dataset.v),customDeco:[...p.querySelectorAll(".ai-custom-item")].map(i=>i.value.trim()).filter(Boolean).join(", ").slice(0,120)};
 if(scope==="banner"){return Object.assign(base,{documentType:"banner",businessType:$("#shop").value,layoutType:"가로형 배너",ratio:bannerState.ratio,accentColor:bannerState.accent,title:$("#headline").value,subtitle:$("#sub").value})}
 if(scope==="coupon"){return Object.assign(base,{documentType:"coupon",layoutType:cpState.type,accentColor:cpState.accent,title:$("#cpTitle").value,subtitle:$("#cpCond").value})}
-return Object.assign(base,{documentType:"businessCard",orientation:ncState.orientation,layoutType:ncState.orientation+"/"+ncState.kind,accentColor:ncState.accent,title:$("#ncCo").value,subtitle:$("#ncName").value})}
+{const t=ncTpl(ncState.tpl);return Object.assign(base,{documentType:"businessCard",industry:ncState.industry||t.industry,businessType:ncState.industry||t.industry,orientation:ncState.orientation,layoutType:t.name+" / "+(ncState.orientation==="vertical"?"세로형":"가로형"),templateStyle:t.frontLayout+" / "+t.backLayout,accentColor:ncState.accent||t.primaryColor,title:$("#ncCo").value,subtitle:$("#ncName").value})}}
 
 function isPremium(){return !!(window._premiumInfo&&window._premiumInfo.premium)}
 // 프리미엄 월 할당량(요금제): 베이직40/라이트70/프로100/프리미엄200장. 월별 localStorage 카운터.
@@ -1030,18 +1353,33 @@ async function aiGenerate(scope){
   finally{aiBusy=false;gen.textContent="AI 디자인 생성";document.querySelectorAll(".ai-regen").forEach(b=>b.disabled=false);updateRemainingUI()}
 }
 function aiRemove(scope){AI_BG[scope]=null;BG_FIT[scope]="cover";autosaveClear(scope);if(scope==="banner"){bannerState.textStyles={}}const el=aiEl(scope);el.style.backgroundImage="";el.style.backgroundSize="";el.style.backgroundPosition="";el.style.backgroundRepeat="";renderScope(scope);const p=panelOf(scope);p.querySelector(".ai-regen").style.display="none";p.querySelector(".ai-remove").style.display="none";p.querySelector(".ai-download").style.display="none";p.querySelector(".ai-status").textContent=""}
-// 미리보기(AI배경 + 텍스트 + 레이아웃)를 통째로 캡처해 dataURL 반환. 편집 핸들/선택테두리는 제외.
-async function captureBoard(scope){
-  const board=aiEl(scope);
+// 미리보기(AI배경 + 텍스트 + 레이아웃)를 통째로 캡처. 편집 핸들/선택테두리는 제외.
+async function captureElement(board){
   const savedCls=board.className;
   const savedTransform=board.style.transform;board.style.transform="none";  // 캡처는 원본 크기로(모바일 스케일 무시)
   board.classList.remove("editing","mode-move","mode-text");
   const handles=[...board.querySelectorAll(".txt-handle")];handles.forEach(h=>h.style.display="none");
   const sels=[...board.querySelectorAll(".sel")];sels.forEach(s=>s.classList.remove("sel"));
   try{
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
     const canvas=await html2canvas(board,{backgroundColor:null,scale:2,useCORS:true,logging:false});
     return canvas.toDataURL("image/png");
   }finally{board.className=savedCls;board.style.transform=savedTransform;handles.forEach(h=>h.style.display="");sels.forEach(s=>s.classList.add("sel"))}
+}
+function loadCaptureImage(url){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=url})}
+async function captureCardFaceUrls(){
+  const both=$("#ncBoth"),savedTransform=both?both.style.transform:"";
+  if(both)both.style.transform="none";
+  try{return await Promise.all([captureElement($("#ncFront")),captureElement($("#ncBack"))])}
+  finally{if(both)both.style.transform=savedTransform}
+}
+async function captureBoard(scope){
+  if(scope!=="card")return captureElement(aiEl(scope));
+  const urls=await captureCardFaceUrls(),images=await Promise.all(urls.map(loadCaptureImage)),gap=40;
+  const canvas=document.createElement("canvas");canvas.width=images.reduce((sum,img)=>sum+(img.naturalWidth||img.width),0)+gap;canvas.height=Math.max(...images.map(img=>img.naturalHeight||img.height));
+  const ctx=canvas.getContext("2d");ctx.fillStyle="#f3f4f8";ctx.fillRect(0,0,canvas.width,canvas.height);
+  let x=0;images.forEach(img=>{const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;ctx.drawImage(img,x,(canvas.height-h)/2,w,h);x+=w+gap});
+  return canvas.toDataURL("image/png");
 }
 // 보관함 저장용: 캡처 이미지를 적당히 줄이고 JPEG로 압축해 dataURL 반환(Firestore 1MB 한도 대비).
 function compressForSave(dataUrl){
@@ -1077,17 +1415,18 @@ function downloadBg(scope){
   if(!img){alert("먼저 AI 배경을 생성해 주세요.");return}
   const a=document.createElement("a");a.href=img;a.download=`design-gongbang-${scope}-bg.png`;document.body.appendChild(a);a.click();a.remove();
 }
-// PDF 저장: 미리보기를 캡처해 실제 크기의 1페이지 PDF로.
+// PDF 저장: 명함은 앞면과 뒷면을 각각 한 페이지로, 나머지는 한 페이지로 저장.
 async function downloadPdf(scope,btn){
   if(typeof html2canvas!=="function"||!window.jspdf){alert("PDF 준비 중이에요. 잠시 후 다시 시도해 주세요.");return}
   const label=btn?btn.textContent:"";if(btn){btn.disabled=true;btn.textContent="저장 중…"}
   try{
-    const url=await captureBoard(scope);
-    const img=new Image();await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=url});
-    const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+    const urls=scope==="card"?await captureCardFaceUrls():[await captureBoard(scope)];
+    const images=await Promise.all(urls.map(loadCaptureImage));
     const jsPDF=window.jspdf.jsPDF;
+    const first=images[0],w=first.naturalWidth||first.width,h=first.naturalHeight||first.height;
     const pdf=new jsPDF({orientation:w>=h?"landscape":"portrait",unit:"px",format:[w,h]});
-    pdf.addImage(url,"PNG",0,0,w,h);
+    pdf.addImage(urls[0],"PNG",0,0,w,h);
+    for(let i=1;i<images.length;i++){const image=images[i],iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height;pdf.addPage([iw,ih],iw>=ih?"landscape":"portrait");pdf.addImage(urls[i],"PNG",0,0,iw,ih)}
     pdf.save(`design-gongbang-${scope}.pdf`);
   }catch(e){alert("PDF 저장에 실패했어요. 잠시 후 다시 시도해 주세요.")}
   finally{if(btn){btn.disabled=false;btn.textContent=label}}
@@ -1114,7 +1453,7 @@ async function saveDesign(scope,btn){
 let reeditActive=false,galItems=[];
 async function captureEditState(scope){
   const view=document.getElementById("view-"+scope),inputs={};
-  if(view)view.querySelectorAll("input[id],textarea[id],select[id]").forEach(el=>{inputs[el.id]=el.value});
+  if(view)view.querySelectorAll('input[id]:not([type="file"]),textarea[id],select[id]').forEach(el=>{inputs[el.id]=el.value});
   const stMap={banner:bannerState,menu:menuState,coupon:cpState,card:ncState};
   let aiBg=AI_BG[scope]||"";
   if(aiBg){try{aiBg=await compressForSave(aiBg)}catch(e){}}
@@ -1127,11 +1466,11 @@ function restoreEditState(es,opts){opts=opts||{};
   if(!st)return false;
   try{const ns=JSON.parse(JSON.stringify(es.state||{}));Object.keys(st).forEach(k=>delete st[k]);Object.assign(st,ns)}catch(e){}
   AI_BG[scope]=es.aiBg||null;BG_FIT[scope]=es.bgFit||"cover";
-  Object.entries(es.inputs||{}).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&val!=null)el.value=val});
+  Object.entries(es.inputs||{}).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&el.type!=="file"&&val!=null)el.value=val});
   try{
     if(scope==="menu"){if(typeof renderMenuInputs==="function")renderMenuInputs();document.querySelectorAll("#menuTemplates .template-card").forEach(c=>c.classList.toggle("on",c.dataset.id===menuState.tpl))}
     if(scope==="coupon"){document.querySelectorAll("#cpType button").forEach(b=>b.classList.toggle("on",b.dataset.type===cpState.type));if(typeof renderCpTexts==="function")renderCpTexts()}
-    if(scope==="card"){document.querySelectorAll("#ncOrientation button").forEach(b=>b.classList.toggle("on",b.dataset.o===ncState.orientation));document.querySelectorAll("#ncKind button").forEach(b=>b.classList.toggle("on",b.dataset.k===ncState.kind));document.querySelectorAll("#ncQrToggle button").forEach(b=>b.classList.toggle("on",(b.dataset.qr==="1")===!!ncState.qr));document.querySelectorAll("#ncCorner button").forEach(b=>b.classList.toggle("on",b.dataset.c===(ncState.corner||"round")));document.querySelectorAll("#ncLogoToggle button").forEach(b=>b.classList.toggle("on",(b.dataset.on==="1")===(ncState.logoOn!==false)));const pw=document.getElementById("photoWrap");if(pw)pw.style.display=ncState.kind==="photo"?"block":"none";const qw=document.getElementById("ncQrUrlWrap");if(qw)qw.style.display=ncState.qr?"":"none";const rm=document.getElementById("ncImgRemove");if(rm)rm.style.display=(ncState.logoImg||ncState.photo)?"":"none"}
+    if(scope==="card"){normalizeCardState();cActiveFace=ncState.activeFace;syncCardPrimaryControls();document.querySelectorAll("#ncKind button").forEach(b=>b.classList.toggle("on",b.dataset.k===ncState.kind));document.querySelectorAll("#ncCorner button").forEach(b=>b.classList.toggle("on",b.dataset.c===(ncState.corner||"round")));document.querySelectorAll("#ncLogoToggle button").forEach(b=>b.classList.toggle("on",(b.dataset.on==="1")===(ncState.logoOn!==false)));const pw=document.getElementById("photoWrap");if(pw)pw.style.display=ncState.kind==="photo"?"block":"none";syncCardAssetRemove();const ind=document.getElementById("ncIndustry");if(ind&&[...ind.options].some(o=>o.value===ncState.industry))ind.value=ncState.industry;renderCardTemplates();cAdjSync(ncTpl(ncState.tpl),false)}
   }catch(e){}
   if(!opts.silent){const nav=document.querySelector('.nav button[data-tab="'+scope+'"]');if(nav)nav.click();}
   try{renderScope(scope)}catch(e){}
